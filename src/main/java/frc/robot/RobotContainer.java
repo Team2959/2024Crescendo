@@ -20,13 +20,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private static double kDriveYExponent = 2; // 1.4;
-  private static double kDriveXExponent = 2; // 1.7;
+  private static double kDriveYExponent = 2;
+  private static double kDriveXExponent = 2;
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  //private final CommandXboxController m_driverController =
-  //    new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   Robot m_robot;
 
@@ -69,10 +65,10 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+ 
     m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
           () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
           () -> m_robot.isTeleopEnabled()));
- 
   }
 
   /**

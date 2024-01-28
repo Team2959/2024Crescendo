@@ -22,7 +22,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private SparkPIDController m_shooterPidController;
 
-
   private static final double kShooterP = 0.01;
   private static final double kShooterI = 0.0;
   private static final double kShooterD = 0.0;

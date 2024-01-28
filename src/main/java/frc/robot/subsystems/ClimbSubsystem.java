@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkRelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -17,6 +18,8 @@ public class ClimbSubsystem extends SubsystemBase {
   private CANSparkMax m_rightClimbMotor;
   private SparkPIDController m_climbLeftPidController;
   private SparkPIDController m_climbRightPidController;
+  private SparkRelativeEncoder m_leftClimbEncoder;
+  private SparkRelativeEncoder m_rightClimbEncoder;
 
   private static final double kClimbP = 0.01;
   private static final double kClimbI = 0.0;
@@ -32,8 +35,8 @@ public class ClimbSubsystem extends SubsystemBase {
     m_leftClimbMotor.restoreFactoryDefaults();
     m_rightClimbMotor.restoreFactoryDefaults();
 
-    m_leftClimbMotor.getEncoder();
-    m_rightClimbMotor.getEncoder();
+    m_leftClimbEncoder = (SparkRelativeEncoder)m_leftClimbMotor.getEncoder();
+    m_rightClimbEncoder = (SparkRelativeEncoder)m_rightClimbMotor.getEncoder();
 
     m_leftClimbMotor.setIdleMode(IdleMode.kBrake);
     m_rightClimbMotor.setIdleMode(IdleMode.kBrake);

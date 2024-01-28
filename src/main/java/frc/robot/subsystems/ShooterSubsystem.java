@@ -31,8 +31,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    m_leftShooterWheel = new CANSparkMax(RobotMap.kLeftShooterWheel, CANSparkMax.MotorType.kBrushless);
-    m_rightShooterWheel = new CANSparkMax(RobotMap.kRightShooterWheel, CANSparkMax.MotorType.kBrushless);
+    m_leftShooterWheel = new CANSparkMax(RobotMap.kLeftShooterCANSparkMaxWheel, CANSparkMax.MotorType.kBrushless);
+    m_rightShooterWheel = new CANSparkMax(RobotMap.kRightShooterCANSparkMaxWheel, CANSparkMax.MotorType.kBrushless);
 
     m_leftShooterWheel.restoreFactoryDefaults();
 

@@ -11,11 +11,12 @@ import com.revrobotics.SparkRelativeEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
-public class ShooterSubsystem extends SubsystemBase {
-
+public class ShooterSubsystem extends SubsystemBase
+{
   private CANSparkMax m_leftShooterWheel;
   private CANSparkMax m_rightShooterWheel;
   private SparkRelativeEncoder m_shooterEncoder;
@@ -27,9 +28,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private static final double kShooterD = 0.0;
   private static final double kShooterFF = 0;
   private static final double kShooterIZone = 0;
+  private double m_targetVelocity = 5000.0;
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {
+  public ShooterSubsystem() 
+  {
     m_leftShooterWheel = new CANSparkMax(RobotMap.kLeftShooterCANSparkMaxWheel, CANSparkMax.MotorType.kBrushless);
     m_rightShooterWheel = new CANSparkMax(RobotMap.kRightShooterCANSparkMaxWheel, CANSparkMax.MotorType.kBrushless);
 
@@ -55,12 +58,36 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // how to access the current shooter velocity
-    // m_shooterEncoder.getVelocity();
+    DebugDisplay();
   }
 
   public void ShooterVelocity(double velocity)
   {
     m_shooterPidController.setReference(velocity, ControlType.kVelocity);
+  }
+
+  public void DebugDisplay()
+  {
+    SmartDashboard.putNumber(getName() + "/current velocity", m_shooterEncoder.getVelocity());
+    if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
+    {
+      double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
+      double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
+      double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
+      double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kShooterFF);
+
+      m_shooterPidController.setP(pGain); 
+      m_shooterPidController.setI(iGain); 
+      m_shooterPidController.setD(dGain); 
+      m_shooterPidController.setFF(ffGain); 
+     
+      SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    }
+    m_targetVelocity = SmartDashboard.getNumber(getName() + "/target velocity", m_targetVelocity);
+  }
+
+  public double TargetVelocity()
+  {
+    return m_targetVelocity;
   }
 }

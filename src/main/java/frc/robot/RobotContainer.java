@@ -4,12 +4,18 @@
 
 package frc.robot;
 
+import frc.robot.commands.ToggleIntakeCommand;
+import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -23,6 +29,8 @@ public class RobotContainer {
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
 
   Robot m_robot;
 
@@ -32,6 +40,9 @@ public class RobotContainer {
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
   double m_speedMultiplier = 0.70;
+
+  JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
+  JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -69,6 +80,10 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
           () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
           () -> m_robot.isTeleopEnabled()));
+
+    // m_intakeButton.onTrue(new ToggleIntakeCommand(m_intakeSubsystem));
+    m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
+    m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem));
   }
 
   /**

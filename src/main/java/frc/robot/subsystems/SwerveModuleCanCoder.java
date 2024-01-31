@@ -109,7 +109,7 @@ public class SwerveModuleCanCoder {
         SmartDashboard.putNumber(m_name + "/Drive Encoder Velocity", m_driveEncoder.getVelocity());
         SmartDashboard.putNumber(m_name + "/Drive Encoder Position", m_driveEncoder.getPosition()); 
         SmartDashboard.putNumber(m_name + "/Turn Motor Position", m_steerEncoder.getPosition());
-        SmartDashboard.putNumber(m_name + "/Turn Absolute Position", m_steerAbsoluteEncoder.getAbsolutePosition().getValue());
+        SmartDashboard.putNumber(m_name + "/Turn Absolute Position", getCanCoder().getDegrees());
 
        m_drivePIDController.setP (SmartDashboard.getNumber(m_name + "/Drive P", kDriveP));
        m_drivePIDController.setI (SmartDashboard.getNumber(m_name + "/Drive I", kDriveI));
@@ -126,7 +126,12 @@ public class SwerveModuleCanCoder {
 
     private Rotation2d getCanCoder()
     {
-        return Rotation2d.fromDegrees(m_steerAbsoluteEncoder.getAbsolutePosition().getValue());
+        double rotations = m_steerAbsoluteEncoder.getAbsolutePosition().getValue();
+        double degrees = rotations * 360;
+        if (degrees < 0)
+          degrees += 360;    
+
+        return Rotation2d.fromDegrees(degrees);
     }
 
     private double getAbsoluteEncoderPosition()

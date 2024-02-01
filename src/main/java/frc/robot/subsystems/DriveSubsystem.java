@@ -62,17 +62,13 @@ public class DriveSubsystem extends SubsystemBase {
         m_kinematics = new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
                 kBackRightLocation);
 
-        m_frontLeft = new SwerveModuleCanCoder(RobotMap.kFrontLeftDriveCANSparkMaxMotor,
-                RobotMap.kFrontLeftTurnCANSparkMaxMotor, RobotMap.kFrontLeftCANCoder,
+        m_frontLeft = new SwerveModuleCanCoder(RobotMap.kFrontLeftModule,
                 RobotMap.kZeroedFrontLeft, "Front Left");
-        m_frontRight = new SwerveModuleCanCoder(RobotMap.kFrontRightDriveCANSparkMaxMotor,
-                RobotMap.kFrontRightTurnCANSparkMaxMotor, RobotMap.kFrontRightCANCoder,
+        m_frontRight = new SwerveModuleCanCoder(RobotMap.kFrontRightModule,
                 RobotMap.kZeroedFrontRight, "Front Right");
-        m_backLeft = new SwerveModuleCanCoder(RobotMap.kBackLeftDriveCANSparkMaxMotor,
-                RobotMap.kBackLeftTurnCANSparkMaxMotor, RobotMap.kBackLeftCANCoder,
+        m_backLeft = new SwerveModuleCanCoder(RobotMap.kBackLeftModule,
                 RobotMap.kZeroedBackLeft, "Back Left");
-        m_backRight = new SwerveModuleCanCoder(RobotMap.kBackRightDriveCANSparkMaxMotor,
-                RobotMap.kBackRightTurnCANSparkMaxMotor, RobotMap.kBackRightCANCoder,
+        m_backRight = new SwerveModuleCanCoder(RobotMap.kBackRigvhtModule,
                 RobotMap.kZeroedBackRight, "Back Right");
 
         m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());

@@ -6,23 +6,25 @@ package frc.robot;
 
 public final class RobotMap {
 
+    // Swerve Motor Assemblies - SparkMax
+    // Drive motor CAN == module #
+    // Steer motor CAN == module # + 10
+    // CAN coder CAN == module #
+    public static final int kFrontLeftModule = 4;
+    public static final int kBackLeftModule = 2;
+    public static final int kBackRigvhtModule = 5;
+    public static final int kFrontRightModule = 1;
+    // unused module - 3
+
     // CAN motor addresses
-    public static final int kFrontLeftDriveCANSparkMaxMotor = 4;
-    public static final int kBackLeftDriveCANSparkMaxMotor = 2;
-    public static final int kBackRightDriveCANSparkMaxMotor = 3;
-    public static final int kFrontRightDriveCANSparkMaxMotor = 1;
-    public static final int kFrontLeftTurnCANSparkMaxMotor = 14;
-    public static final int kBackLeftTurnCANSparkMaxMotor = 12;
-    public static final int kBackRightTurnCANSparkMaxMotor = 13;
-    public static final int kFrontRightTurnCANSparkMaxMotor = 11;
+        // SparkMax
     public static final int kLeftClimbCANSparkMaxMotor = 21;
     public static final int kRightClimbCANSparkMaxMotor = 22;
     public static final int kLeftShooterCANSparkMaxWheel = 23;
     public static final int kRightShooterCANSparkMaxWheel = 24;
-
+        // Victor SPX
     public static final int kIntakeVictorSpMotor = 1;
     public static final int kWallSpacerVictorSpMotor = 2;
-    public static final int kNoteDetectorDigitalInput = 1;
 
     // PWM motor addresses
 
@@ -35,6 +37,7 @@ public final class RobotMap {
     // REV Pneumatic Hub solenoid addresses
 
     // Digital IO addresses
+    public static final int kNoteDetectorDigitalInput = 1;
 
     // Operator input USB ports
     public static final int kLeftJoystick = 0;
@@ -57,9 +60,4 @@ public final class RobotMap {
     public static final double kZeroedFrontRight = 2.668;   // for FR module 1
     public static final double kZeroedBackLeft = 5.429;     // for BL module 2
     public static final double kZeroedBackRight = 3.731;    // for BR module 5
-
-    public static final int kFrontLeftCANCoder = 4;     // for FL module 4
-    public static final int kBackLeftCANCoder = 2;      //for BL module 2
-    public static final int kFrontRightCANCoder = 1;    // for FR module 1
-    public static final int kBackRightCANCoder = 5;     //for BR module 5
 };

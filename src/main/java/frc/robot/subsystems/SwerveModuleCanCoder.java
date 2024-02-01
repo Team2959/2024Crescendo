@@ -40,8 +40,13 @@ public class SwerveModuleCanCoder {
     private static final int kSteerCurrentLimitAmps = 40; 
     private static final double kSteerMotorRotationsPerRevolution = 12.8;
 
+    public SwerveModuleCanCoder(int motorAssembly, double steerOffset, String name)
+    {
+        this(motorAssembly, motorAssembly + 10, motorAssembly, steerOffset, name);
+    }
+
     // https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/SwerveModule.java
-    public SwerveModuleCanCoder(int driveMotor, int steerMotor, int steerAbsoluteEncoder, double steerOffset, String name)
+    private SwerveModuleCanCoder(int driveMotor, int steerMotor, int steerAbsoluteEncoder, double steerOffset, String name)
     {
         m_driveMotor = new CANSparkMax(driveMotor, CANSparkMax.MotorType.kBrushless);
         m_steerMotor = new CANSparkMax(steerMotor, CANSparkMax.MotorType.kBrushless);

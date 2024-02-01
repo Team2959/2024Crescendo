@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;

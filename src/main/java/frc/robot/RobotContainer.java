@@ -28,7 +28,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
 

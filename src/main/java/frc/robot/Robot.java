@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.m_driveSubsystem.initalize();
   }
 
   /** This function is called periodically during autonomous. */
@@ -77,6 +78,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    m_robotContainer.m_driveSubsystem.initalize();
   }
 
   /** This function is called periodically during operator control. */

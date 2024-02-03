@@ -6,9 +6,11 @@ package frc.robot;
 
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.ToggleWallSpacerCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.WallSpacerSubsystem;
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,18 +32,25 @@ public class RobotContainer {
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
 
   Robot m_robot;
 
   Joystick m_leftJoystick = new Joystick(RobotMap.kLeftJoystick);
   Joystick m_rightJoystick = new Joystick(RobotMap.kRightJoystick);
+  Joystick m_buttonBox = new Joystick(RobotMap.kButtonBox);
+
   Conditioning m_driveXConditioning = new Conditioning();
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
   double m_speedMultiplier = 0.70;
-
+  
+  // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
+
+  // co-pilot box buttons
+  JoystickButton m_wallSpacerButton = new JoystickButton(m_buttonBox, RobotMap.kToggleWallSpacerButton);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -82,6 +91,7 @@ public class RobotContainer {
 
     // m_intakeButton.onTrue(new ToggleIntakeCommand(m_intakeSubsystem));
     m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
+    m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem));
   }
 

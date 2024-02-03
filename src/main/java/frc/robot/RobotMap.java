@@ -53,7 +53,8 @@ public final class RobotMap {
     public static final int kResetNavXButton = 10;
 
     // Co-Piolet Button board
-
+    public static final int kToggleWallSpacerButton = 1;
+    
     // Zeroed values, should be in radians
     // source is google document in Electrical for team - module data
     public static final double kZeroedFrontLeft = 5.171;    // for FL module 4

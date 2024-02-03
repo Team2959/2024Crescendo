@@ -13,9 +13,9 @@ import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    private final WPI_VictorSPX m_intakeMotor = new WPI_VictorSPX(RobotMap.kIntakeVictorSpMotor);
-    private final DigitalInput m_noteDetect = new DigitalInput(RobotMap.kNoteDetectorDigitalInput);
-    double m_intakeSpeed = 1.0;
+  private final WPI_VictorSPX m_intakeMotor = new WPI_VictorSPX(RobotMap.kIntakeVictorSpMotor);
+  private final DigitalInput m_noteDetect = new DigitalInput(RobotMap.kNoteDetectorDigitalInput);
+  double m_intakeSpeed = 1.0;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -26,18 +26,24 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void DebugDisplay()
+  public void smartDashboardInit()
+  {
+    SmartDashboard.putNumber(getName() + "/Target Speed", m_intakeSpeed);
+    SmartDashboard.putBoolean(getName() + "/Note Detect", m_noteDetect.get());
+  }
+
+  public void smartDashboardUpdate()
   {
     m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
     SmartDashboard.putBoolean(getName() + "/Note Detect", m_noteDetect.get());
   }
 
-public void toggleIntakeSubsystem() {
-  double speed = m_intakeMotor.get();
+  public void toggleIntakeSubsystem() {
+    double speed = m_intakeMotor.get();
 
-  if (speed == 0.0)
-    m_intakeMotor.set(m_intakeSpeed);
-  else
-    m_intakeMotor.set(0);
-}
+    if (speed == 0.0)
+      m_intakeMotor.set(m_intakeSpeed);
+    else
+      m_intakeMotor.set(0);
+  }
 }

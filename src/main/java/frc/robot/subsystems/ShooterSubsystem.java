@@ -57,18 +57,35 @@ public class ShooterSubsystem extends SubsystemBase
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    DebugDisplay();
   }
 
-  public void ShooterVelocity(double velocity)
+  public void controlShooterToVelocity(double velocity)
   {
     m_shooterPidController.setReference(velocity, ControlType.kVelocity);
   }
 
-  public void DebugDisplay()
+  public double getTargetVelocity()
+  {
+    return m_targetVelocity;
+  }
+
+  public void smartDashboardInit()
   {
     SmartDashboard.putNumber(getName() + "/current velocity", m_shooterEncoder.getVelocity());
+    SmartDashboard.putNumber(getName() + "/target velocity", getTargetVelocity());
+
+    SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    SmartDashboard.putNumber(getName() + "/shooter P", kShooterP);
+    SmartDashboard.putNumber(getName() + "/shooter I", kShooterI);
+    SmartDashboard.putNumber(getName() + "/shooter D", kShooterD);
+    SmartDashboard.putNumber(getName() + "/shooter FF", kShooterFF);
+  }
+
+  public void smartDashboardUpdate()
+  {
+    SmartDashboard.putNumber(getName() + "/current velocity", m_shooterEncoder.getVelocity());
+    m_targetVelocity = SmartDashboard.getNumber(getName() + "/target velocity", getTargetVelocity());
+
     if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
     {
       double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
@@ -83,11 +100,5 @@ public class ShooterSubsystem extends SubsystemBase
      
       SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
     }
-    m_targetVelocity = SmartDashboard.getNumber(getName() + "/target velocity", m_targetVelocity);
-  }
-
-  public double TargetVelocity()
-  {
-    return m_targetVelocity;
   }
 }

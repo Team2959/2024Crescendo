@@ -7,12 +7,14 @@ package frc.robot;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.ToggleWallSpacerCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.WallSpacerSubsystem;
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -33,6 +35,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
+  // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   Robot m_robot;
 
@@ -65,7 +68,10 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-  }
+
+    smartDashboardInit();
+    registerSmartDashboardCalls();
+}
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -93,6 +99,30 @@ public class RobotContainer {
     m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
     m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem));
+  }
+
+  public void smartDashboardInit() {
+      SmartDashboard.putNumber("Speed Multiplier", m_speedMultiplier);
+      m_driveSubsystem.smartDashboardInit();
+      m_shooterSubsystem.smartDashboardInit();
+      m_intakeSubsystem.smartDashboardInit();
+      // m_climbSubsystem.smartDashboardInit();
+  }
+
+  public void registerSmartDashboardCalls() {
+      m_robot.addPeriodic(() -> {
+          // m_driveSubsystem.smartDashboardUpdate();
+          smartDashboardUpdate();
+      }, 2, 0.502);
+      m_robot.addPeriodic(() -> {
+          m_shooterSubsystem.smartDashboardUpdate();
+          m_intakeSubsystem.smartDashboardUpdate();
+          // m_climbSubsystem.smartDashboardUpdate();
+      }, 1, 0.303);
+  }
+
+  public void smartDashboardUpdate() {
+    m_speedMultiplier = SmartDashboard.getNumber("Speed Multiplier", m_speedMultiplier);
   }
 
   /**

@@ -107,11 +107,6 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_odometry.update(getAngle(), getPositions());
-        
-        // if(m_rotationAlignmentOn) {
-        //     // TODO trapezoidal
-        //     autoRotateValue = m_rotationController.calculate(m_navX.getAngle());
-        // }
 
         m_ticks++;
         if (m_ticks % 15 != 7)
@@ -132,20 +127,9 @@ public class DriveSubsystem extends SubsystemBase {
         // m_frontRight.smartDashboardInit();
         // m_backLeft.smartDashboardInit();
         // m_backRight.smartDashboardInit();
-
-        // SmartDashboard.putNumber(getName() + "/Smart Motion Vel", kSmartMotionVel);
-        // SmartDashboard.putNumber(getName() + "/Smart Motion Accel", kSmartMotionAccel);
     }
 
     public void smartDashboardUpdate() {
-        // var maxVel = SmartDashboard.getNumber(getName() + "/Smart Motion Vel", kSmartMotionVel);
-        // var maxAccel = SmartDashboard.getNumber(getName() + "/Smart Motion Accel", kSmartMotionAccel);
-
-        // m_frontLeft.setSmartMotion(maxVel, maxAccel);
-        // m_frontRight.setSmartMotion(maxVel, maxAccel);
-        // m_backLeft.setSmartMotion(maxVel, maxAccel);
-        // m_backRight.setSmartMotion(maxVel, maxAccel);
-
         // m_frontLeft.smartDashboardUpdate();
         // m_frontRight.smartDashboardUpdate();
         // m_backLeft.smartDashboardUpdate();
@@ -153,12 +137,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void drive(double xMetersPerSecond, double yMetersPerSecond,
-            double rotationRadiansPerSecond, boolean fieldRelative) {
-        // if(m_rotationAlignmentOn) {
-            // var autoRotateValue = m_rotationController.calculate(getAngle().getDegrees());
-            // rotationRadiansPerSecond = Math.toRadians(autoRotateValue * 360);
-        // }
-
+            double rotationRadiansPerSecond, boolean fieldRelative)
+    {
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond,
                         getAngle())

@@ -203,4 +203,14 @@ public class SwerveModuleCanCoder {
         var angleInRadians = degrees * Math.PI / 180.0;
         setSteerAngleInRadians(angleInRadians);
     }
+
+    public void checkRelativeEncoderToAbsoluteEncoder()
+    {
+        //we put that the difference should be less than 0.025 which is approximately 0.5% margin of error
+        // 0.025 radians is ~ 1.5 degrees
+        if (Math.abs(getAbsoluteEncoderPosition() - getPosition().angle.getRadians()) > 0.025)
+        {
+            resetAngleEncoderToAbsolute();
+        }
+    }
 }

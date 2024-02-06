@@ -119,6 +119,9 @@ public class RobotContainer {
           m_intakeSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
+      m_robot.addPeriodic(() -> {
+          m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
+      }, 1, 0.107);
   }
 
   public void smartDashboardUpdate() {

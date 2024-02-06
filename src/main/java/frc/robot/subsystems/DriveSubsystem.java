@@ -188,6 +188,14 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.lockWheelAtAngleInDegrees(45);
     }
 
+    public void checkRelativeEncoderToAbsoluteEncoder()
+    {
+        m_frontLeft.checkRelativeEncoderToAbsoluteEncoder();
+        m_backLeft.checkRelativeEncoderToAbsoluteEncoder();
+        m_frontRight.checkRelativeEncoderToAbsoluteEncoder();
+        m_backRight.checkRelativeEncoderToAbsoluteEncoder();
+    }
+
     public void resetNavX() {
         m_navX.reset();
     }

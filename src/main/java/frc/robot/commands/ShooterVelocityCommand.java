@@ -20,7 +20,7 @@ public class ShooterVelocityCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooter.controlShooterToVelocity(m_shooter.getTargetVelocity());
+    m_shooter.controlShooterToVelocity(m_shooter.getLeftTargetVelocity(), m_shooter.geRightTargetVelocity());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,7 +30,7 @@ public class ShooterVelocityCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.controlShooterToVelocity(0);
+    m_shooter.controlShooterToVelocity(0, 0);
   }
 
   // Returns true when the command should end.

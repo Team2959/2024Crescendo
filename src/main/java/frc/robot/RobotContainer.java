@@ -101,7 +101,6 @@ public class RobotContainer {
           () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
           () -> m_robot.isTeleopEnabled()));
 
-    // m_intakeButton.onTrue(new ToggleIntakeCommand(m_intakeSubsystem));
     m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
     m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem));

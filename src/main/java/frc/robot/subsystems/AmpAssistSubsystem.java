@@ -81,7 +81,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
      SmartDashboard.putNumber(getName() + "/Amp Assist Position", getPosition());
   }
 
-  public void smartDashboardUpdate(){
+  public void smartDashboardUpdate()
+  {
      m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
      SmartDashboard.putNumber(getName() + "/Target Speed", getPosition());
   }

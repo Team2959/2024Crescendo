@@ -34,6 +34,9 @@ public final class RobotMap {
     public static final int kLeftWallIntake = 2;
     public static final int kRightWallIntake = 3;
 
+    //idk what this is
+    public static final int kAmpStringPotAnalog = 1;
+
     // REV Pneumatic Hub solenoid addresses
 
     // Digital IO addresses
@@ -54,7 +57,9 @@ public final class RobotMap {
 
     // Co-Piolet Button board
     public static final int kToggleWallSpacerButton = 1;
-    
+    public static final int kExtendAmpAssistPleaseButton = 2;
+    public static final int kRetractAmpAssistPleaseButton = 3;
+
     // Zeroed values, should be in radians
     // source is google document in Electrical for team - module data
     public static final double kZeroedFrontLeft = 5.171;    // for FL module 4

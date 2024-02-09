@@ -15,11 +15,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final WPI_VictorSPX m_intakeMotor = new WPI_VictorSPX(RobotMap.kIntakeVictorSpMotor);
   private final DigitalInput m_noteDetect = new DigitalInput(RobotMap.kNoteDetectorDigitalInput);
-  double m_intakeSpeed = -1.0;
-  double m_reverseIntakeSpeed = 0.25;
+
+  double m_intakeSpeed = 1.0;
+  double m_reverseIntakeSpeed = -0.25;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
+    m_intakeMotor.setInverted(true);
   }
 
   @Override
@@ -52,10 +54,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void reverseIntake() {
     m_intakeMotor.set(m_reverseIntakeSpeed);
-
   }
 
   public void stopMotor() {
     m_intakeMotor.set(0);
+  }
+
+  public boolean isNotePresent()
+  {
+    return m_noteDetect.get();
   }
 }

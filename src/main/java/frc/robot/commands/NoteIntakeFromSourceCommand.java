@@ -5,19 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 
 public class NoteIntakeFromSourceCommand extends Command {
+  private IntakeSubsystem m_intakeSubsystem;
+  private ShooterSubsystem m_shooterSubsystem;
   /** Creates a new NoteIntakeFromSourceCommand. */
-  public NoteIntakeFromSourceCommand(ShooterSubsystem shooter)
+  public NoteIntakeFromSourceCommand(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem)
   {
+    m_intakeSubsystem = intakeSubsystem;
+    m_shooterSubsystem = shooterSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(m_shooterSubsystem);
+    addRequirements(m_intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_intakeSubsystem.reverseIntake();
+    m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.SourceLoad);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -25,11 +35,14 @@ public class NoteIntakeFromSourceCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intakeSubsystem.stopMotor();
+    m_shooterSubsystem.stopShooterMotor();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_intakeSubsystem.isNotePresent();
   }
 }

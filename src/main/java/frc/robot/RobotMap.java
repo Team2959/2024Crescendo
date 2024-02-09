@@ -49,6 +49,7 @@ public final class RobotMap {
 
     // Driver Buttons
     public static final int kRightTriggerFire = 1;
+    public static final int kReverseIntake = 3;
     public static final int kRightToggleIntakeButton = 2;
     public static final int kRightLockWheels = 3;
 

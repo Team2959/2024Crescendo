@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ExtendAmpAssistCommand;
 import frc.robot.commands.RetractAmpAssistCommand;
+import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.ToggleWallSpacerCommand;
@@ -33,11 +34,11 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
-  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  // public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
-  private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
+  // private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
+  // private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   Robot m_robot;
@@ -54,6 +55,8 @@ public class RobotContainer {
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
+  JoystickButton m_reverseIntakeButton = new JoystickButton(m_rightJoystick, RobotMap.kReverseIntake);
+
 
   // co-pilot box buttons
   JoystickButton m_wallSpacerButton = new JoystickButton(m_buttonBox, RobotMap.kToggleWallSpacerButton);
@@ -77,6 +80,7 @@ public class RobotContainer {
 
     smartDashboardInit();
     registerSmartDashboardCalls();
+    m_intakeSubsystem.stopMotor();
 }
 
   /**
@@ -97,23 +101,24 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
  
-    m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
-          () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
-          () -> m_robot.isTeleopEnabled()));
+    // // m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
+    //       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
+    //       () -> m_robot.isTeleopEnabled()));
 
     m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
-    m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
+    // m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem));
-    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
-    m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
+    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
   }
 
   public void smartDashboardInit() {
       SmartDashboard.putNumber("Speed Multiplier", m_speedMultiplier);
-      m_driveSubsystem.smartDashboardInit();
+      // m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
-      m_AmpAssistSubsystem.smartDashboardInit();
+      // m_AmpAssistSubsystem.smartDashboardInit();
       // m_climbSubsystem.smartDashboardInit();
   }
 
@@ -125,12 +130,12 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
           m_intakeSubsystem.smartDashboardUpdate();
-          m_AmpAssistSubsystem.smartDashboardUpdate();
+          // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
-      m_robot.addPeriodic(() -> {
-          m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
-      }, 1, 0.107);
+      // m_robot.addPeriodic(() -> {
+      //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
+      // }, 1, 0.107);
   }
 
   public void smartDashboardUpdate() {

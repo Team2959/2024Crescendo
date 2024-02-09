@@ -29,8 +29,8 @@ public class ShooterSubsystem extends SubsystemBase
   private static final double kShooterD = 0.0;
   private static final double kShooterFF = 0;
   private static final double kShooterIZone = 0;
-  private double m_leftTargetVelocity = 5000.0;
-  private double m_rightTargetVelocity = 5000.0;
+  private double m_leftTargetVelocity = 1.0;//5000.0; We have been using -0.75 at distance of 20 in
+  private double m_rightTargetVelocity = 1.0;//5000.0; We have been using -0.75 at distance of 20 in
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() 
@@ -70,8 +70,10 @@ public class ShooterSubsystem extends SubsystemBase
 
   public void controlShooterToVelocity(double leftVelocity, double rightVelocity)
   {
-    m_leftShooterPidController.setReference(leftVelocity, ControlType.kVelocity);
-    m_rightShooterPidController.setReference(rightVelocity, ControlType.kVelocity);
+    // m_leftShooterPidController.setReference(leftVelocity, ControlType.kVelocity);
+    // m_rightShooterPidController.setReference(rightVelocity, ControlType.kVelocity);
+    m_leftShooterWheel.set(leftVelocity);
+    m_rightShooterWheel.set(rightVelocity);
   }
 
   public double getLeftTargetVelocity()

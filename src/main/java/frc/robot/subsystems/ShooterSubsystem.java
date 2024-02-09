@@ -156,7 +156,7 @@ public class ShooterSubsystem extends SubsystemBase
     SmartDashboard.putNumber(getName() + "/left target velocity", getLeftTargetVelocity());
     SmartDashboard.putNumber(getName() + "/right target velocity", geRightTargetVelocity());
 
-    SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    SmartDashboard.putBoolean(getName() + "/Update Values", false);
     SmartDashboard.putNumber(getName() + "/shooter P", kShooterP);
     SmartDashboard.putNumber(getName() + "/shooter I", kShooterI);
     SmartDashboard.putNumber(getName() + "/shooter D", kShooterD);
@@ -174,18 +174,19 @@ public class ShooterSubsystem extends SubsystemBase
   {
     SmartDashboard.putNumber(getName() + "/left current velocity", m_leftShooterEncoder.getVelocity());
     SmartDashboard.putNumber(getName() + "/right current velocity", m_rightShooterEncoder.getVelocity());
-    m_leftTargetVelocity = SmartDashboard.getNumber(getName() + "/left target velocity", getLeftTargetVelocity());
-    m_rightTargetVelocity = SmartDashboard.getNumber(getName() + "/right target velocity", geRightTargetVelocity());
 
-    m_trapVelocity = SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
-    m_centerSpeakerVelocity = SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
-    m_sideFastMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
-    m_sideSlowMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
-    m_ampVelocity = SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
-    m_sourceVelocity = SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
+    if (SmartDashboard.getBoolean(getName() + "/Update Values", false))
+    {
+      m_leftTargetVelocity = SmartDashboard.getNumber(getName() + "/left target velocity", getLeftTargetVelocity());
+      m_rightTargetVelocity = SmartDashboard.getNumber(getName() + "/right target velocity", geRightTargetVelocity());
 
-    // if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
-    // {
+      m_trapVelocity = SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
+      m_centerSpeakerVelocity = SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
+      m_sideFastMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
+      m_sideSlowMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
+      m_ampVelocity = SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
+      m_sourceVelocity = SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
+
     //   double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
     //   double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
     //   double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
@@ -201,7 +202,7 @@ public class ShooterSubsystem extends SubsystemBase
     //   m_rightShooterPidController.setD(dGain);
     //   m_rightShooterPidController.setFF(ffGain);
 
-    //   SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
-    // }
+      SmartDashboard.putBoolean(getName() + "/Update Values", false);
+    }
   }
 }

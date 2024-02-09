@@ -98,35 +98,37 @@ public class SwerveModuleCanCoder {
     }
 
     public void smartDashboardInit() {
-        SmartDashboard.putNumber(m_name + "/Drive P", m_drivePIDController.getP());
-        SmartDashboard.putNumber(m_name + "/Drive I", m_drivePIDController.getI());
-        SmartDashboard.putNumber(m_name + "/Drive D", m_drivePIDController.getD());
-        SmartDashboard.putNumber(m_name + "/Drive IZone", m_drivePIDController.getIZone());
-        SmartDashboard.putNumber(m_name + "/Drive FF", m_drivePIDController.getFF());
-        SmartDashboard.putNumber(m_name + "/Turn P", m_steerPIDController.getP());
-        SmartDashboard.putNumber(m_name + "/Turn I", m_steerPIDController.getI());
-        SmartDashboard.putNumber(m_name + "/Turn D", m_steerPIDController.getD());
-        SmartDashboard.putNumber(m_name + "/Turn IZone", m_steerPIDController.getIZone());
-        SmartDashboard.putNumber(m_name + "/Turn FF", m_steerPIDController.getFF());
+        SmartDashboard.putNumber(m_name + "/Steer Motor Position", m_steerEncoder.getPosition());
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition());
+        // SmartDashboard.putNumber(m_name + "/Drive P", m_drivePIDController.getP());
+        // SmartDashboard.putNumber(m_name + "/Drive I", m_drivePIDController.getI());
+        // SmartDashboard.putNumber(m_name + "/Drive D", m_drivePIDController.getD());
+        // SmartDashboard.putNumber(m_name + "/Drive IZone", m_drivePIDController.getIZone());
+        // SmartDashboard.putNumber(m_name + "/Drive FF", m_drivePIDController.getFF());
+        // SmartDashboard.putNumber(m_name + "/Steer P", m_steerPIDController.getP());
+        // SmartDashboard.putNumber(m_name + "/Steer I", m_steerPIDController.getI());
+        // SmartDashboard.putNumber(m_name + "/Steer D", m_steerPIDController.getD());
+        // SmartDashboard.putNumber(m_name + "/Steer IZone", m_steerPIDController.getIZone());
+        // SmartDashboard.putNumber(m_name + "/Steer FF", m_steerPIDController.getFF());
     }
 
     public void smartDashboardUpdate() {
-        SmartDashboard.putNumber(m_name + "/Drive Encoder Velocity", m_driveEncoder.getVelocity());
-        SmartDashboard.putNumber(m_name + "/Drive Encoder Position", m_driveEncoder.getPosition()); 
-        SmartDashboard.putNumber(m_name + "/Turn Motor Position", m_steerEncoder.getPosition());
-        SmartDashboard.putNumber(m_name + "/Turn Absolute Position", getCanCoder().getDegrees());
+        // SmartDashboard.putNumber(m_name + "/Drive Encoder Velocity", m_driveEncoder.getVelocity());
+        // SmartDashboard.putNumber(m_name + "/Drive Encoder Position", m_driveEncoder.getPosition()); 
+        SmartDashboard.putNumber(m_name + "/Steer Motor Position", m_steerEncoder.getPosition());
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition());
 
-       m_drivePIDController.setP (SmartDashboard.getNumber(m_name + "/Drive P", kDriveP));
-       m_drivePIDController.setI (SmartDashboard.getNumber(m_name + "/Drive I", kDriveI));
-       m_drivePIDController.setD (SmartDashboard.getNumber(m_name + "/Drive D", kDriveD));
-       m_drivePIDController.setIZone (SmartDashboard.getNumber(m_name + "/Drive IZone", kDriveIZone));
-       m_drivePIDController.setFF (SmartDashboard.getNumber(m_name + "/Drive FF", kDriveFF));
+    //    m_drivePIDController.setP (SmartDashboard.getNumber(m_name + "/Drive P", kDriveP));
+    //    m_drivePIDController.setI (SmartDashboard.getNumber(m_name + "/Drive I", kDriveI));
+    //    m_drivePIDController.setD (SmartDashboard.getNumber(m_name + "/Drive D", kDriveD));
+    //    m_drivePIDController.setIZone (SmartDashboard.getNumber(m_name + "/Drive IZone", kDriveIZone));
+    //    m_drivePIDController.setFF (SmartDashboard.getNumber(m_name + "/Drive FF", kDriveFF));
 
-       m_steerPIDController.setP (SmartDashboard.getNumber(m_name + "/Turn P", kSteerP));
-       m_steerPIDController.setI (SmartDashboard.getNumber(m_name + "/Turn I", kSteerI));
-       m_steerPIDController.setD (SmartDashboard.getNumber(m_name + "/Turn D", kSteerD));
-       m_steerPIDController.setIZone (SmartDashboard.getNumber(m_name + "/Turn IZone", kSteerIZone));
-       m_steerPIDController.setFF (SmartDashboard.getNumber(m_name + "/Turn FF", kSteerFF));
+    //    m_steerPIDController.setP (SmartDashboard.getNumber(m_name + "/Steer P", kSteerP));
+    //    m_steerPIDController.setI (SmartDashboard.getNumber(m_name + "/Steer I", kSteerI));
+    //    m_steerPIDController.setD (SmartDashboard.getNumber(m_name + "/Steer D", kSteerD));
+    //    m_steerPIDController.setIZone (SmartDashboard.getNumber(m_name + "/Steer IZone", kSteerIZone));
+    //    m_steerPIDController.setFF (SmartDashboard.getNumber(m_name + "/Steer FF", kSteerFF));
     }
 
     private Rotation2d getCanCoder()

@@ -130,7 +130,7 @@ public class RobotContainer {
 
   public void smartDashboardInit() {
       SmartDashboard.putNumber("Speed Multiplier", m_speedMultiplier);
-      // m_driveSubsystem.smartDashboardInit();
+      m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
       // m_AmpAssistSubsystem.smartDashboardInit();
@@ -139,7 +139,7 @@ public class RobotContainer {
 
   public void registerSmartDashboardCalls() {
       m_robot.addPeriodic(() -> {
-          // m_driveSubsystem.smartDashboardUpdate();
+          m_driveSubsystem.smartDashboardUpdate();
           smartDashboardUpdate();
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {

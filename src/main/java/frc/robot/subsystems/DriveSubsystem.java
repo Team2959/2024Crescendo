@@ -35,8 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
     public static final double kMaxSpeedMetersPerSecond = 4;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;// kMaxSpeedMetersPerSecond /
                                                                           // Math.hypot(0.381, 0.381);
-    // TODO: ensure this is the correct value for 2024 robot
-    private static final double kHalfTrackWidthMeters = 0.571 / 2.0;
+    private static final double kHalfTrackWidthMeters = 0.5715 / 2.0;
     private final Translation2d kFrontLeftLocation = new Translation2d(kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kFrontRightLocation = new Translation2d(kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
@@ -123,17 +122,17 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void smartDashboardInit() {
-        // m_frontLeft.smartDashboardInit();
-        // m_frontRight.smartDashboardInit();
-        // m_backLeft.smartDashboardInit();
-        // m_backRight.smartDashboardInit();
+        m_frontLeft.smartDashboardInit();
+        m_frontRight.smartDashboardInit();
+        m_backLeft.smartDashboardInit();
+        m_backRight.smartDashboardInit();
     }
 
     public void smartDashboardUpdate() {
-        // m_frontLeft.smartDashboardUpdate();
-        // m_frontRight.smartDashboardUpdate();
-        // m_backLeft.smartDashboardUpdate();
-        // m_backRight.smartDashboardUpdate();
+        m_frontLeft.smartDashboardUpdate();
+        m_frontRight.smartDashboardUpdate();
+        m_backLeft.smartDashboardUpdate();
+        m_backRight.smartDashboardUpdate();
     }
 
     public void drive(double xMetersPerSecond, double yMetersPerSecond,

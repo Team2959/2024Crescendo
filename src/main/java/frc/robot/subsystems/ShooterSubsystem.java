@@ -39,15 +39,15 @@ public class ShooterSubsystem extends SubsystemBase
   private static final double kShooterD = 0.0;
   private static final double kShooterFF = 0;
   private static final double kShooterIZone = 0;
-  private double m_leftTargetVelocity = 1.0;//5000.0; We have been using -0.75 at distance of 20 in from trap
-  private double m_rightTargetVelocity = 1.0;//5000.0; We have been using -0.75 at distance of 20 in from trap
-  private double m_trapVelocity = 0.75; //guess
-  private double m_centerSpeakerVelocity = 0.75; //guess
-  private double m_sideSlowMotorSpeakerVelocity = 0.50; //guess
-  private double m_sideFastMotorSpeakerVelocity = 0.75; //guess
-  private double m_ampVelocity = 0.75; //guess
- private double m_sourceVelocity = 0.75; //guess
 
+  private double m_leftTargetVelocity = 1.0;
+  private double m_rightTargetVelocity = 1.0;
+  private double m_trapVelocity = 0.75; // distance of 20 inches
+  private double m_centerSpeakerVelocity = 0.75; //guess
+  private double m_sideSlowMotorSpeakerVelocity = 0.85; //guess
+  private double m_sideFastMotorSpeakerVelocity = 1.0; //guess
+  private double m_ampVelocity = 0.5; //guess
+  private double m_sourceVelocity = -0.25; //guess
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() 
@@ -104,12 +104,12 @@ public class ShooterSubsystem extends SubsystemBase
         rightVelocity = m_centerSpeakerVelocity;
         break;
      case LeftSpeaker:
-        leftVelocity = m_sideFastMotorSpeakerVelocity;
-        rightVelocity = m_sideSlowMotorSpeakerVelocity;
-        break;
-     case RightSpeaker:
         leftVelocity = m_sideSlowMotorSpeakerVelocity;
         rightVelocity = m_sideFastMotorSpeakerVelocity;
+        break;
+     case RightSpeaker:
+        leftVelocity = m_sideFastMotorSpeakerVelocity;
+        rightVelocity = m_sideSlowMotorSpeakerVelocity;
         break;
     case Amp:
         leftVelocity = m_ampVelocity;
@@ -126,7 +126,12 @@ public class ShooterSubsystem extends SubsystemBase
     controlShooterToVelocity(leftVelocity, rightVelocity);
   }
 
-  public void controlShooterToVelocity(double leftVelocity, double rightVelocity)
+  public void stopShooterMotor()
+  {
+    controlShooterToVelocity(0, 0);
+  }
+
+  private void controlShooterToVelocity(double leftVelocity, double rightVelocity)
   {
     // m_leftShooterPidController.setReference(leftVelocity, ControlType.kVelocity);
     // m_rightShooterPidController.setReference(rightVelocity, ControlType.kVelocity);
@@ -157,10 +162,10 @@ public class ShooterSubsystem extends SubsystemBase
     SmartDashboard.putNumber(getName() + "/shooter D", kShooterD);
     SmartDashboard.putNumber(getName() + "/shooter FF", kShooterFF);
 
-    SmartDashboard.getNumber(getName() + "/trap target velocity", m_trapVelocity);
-    SmartDashboard.getNumber(getName() + "/speaker center velocity", m_centerSpeakerVelocity);
+    SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
+    SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
     SmartDashboard.getNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
-    SmartDashboard.getNumber(getName() + "/speaker left velocity", m_sideFastMotorSpeakerVelocity);
+    SmartDashboard.getNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
     SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
     SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
   }
@@ -171,38 +176,32 @@ public class ShooterSubsystem extends SubsystemBase
     SmartDashboard.putNumber(getName() + "/right current velocity", m_rightShooterEncoder.getVelocity());
     m_leftTargetVelocity = SmartDashboard.getNumber(getName() + "/left target velocity", getLeftTargetVelocity());
     m_rightTargetVelocity = SmartDashboard.getNumber(getName() + "/right target velocity", geRightTargetVelocity());
-    m_trapVelocity = SmartDashboard.getNumber(getName() + "/trap target velocity", m_trapVelocity);
-    m_centerSpeakerVelocity = SmartDashboard.getNumber(getName() + "/center speaker target velocity", m_centerSpeakerVelocity);
-    m_sideFastMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/left speaker target velocity", m_sideFastMotorSpeakerVelocity);
-    m_sideSlowMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker slow target velocity", m_sideSlowMotorSpeakerVelocity);
-    m_ampVelocity = SmartDashboard.getNumber(getName() + "/amp target velocity", m_ampVelocity);
-    m_sourceVelocity = SmartDashboard.getNumber(getName() + "/source target velocity", m_sourceVelocity);
 
+    m_trapVelocity = SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
+    m_centerSpeakerVelocity = SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
+    m_sideFastMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
+    m_sideSlowMotorSpeakerVelocity = SmartDashboard.getNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
+    m_ampVelocity = SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
+    m_sourceVelocity = SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
 
-    if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
-    {
-      double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
-      double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
-      double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
-      double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kShooterFF);
+    // if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
+    // {
+    //   double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
+    //   double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
+    //   double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
+    //   double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kShooterFF);
 
-      m_leftShooterPidController.setP(pGain);
-      m_leftShooterPidController.setI(iGain);
-      m_leftShooterPidController.setD(dGain);
-      m_leftShooterPidController.setFF(ffGain);
+    //   m_leftShooterPidController.setP(pGain);
+    //   m_leftShooterPidController.setI(iGain);
+    //   m_leftShooterPidController.setD(dGain);
+    //   m_leftShooterPidController.setFF(ffGain);
 
-      m_rightShooterPidController.setP(pGain);
-      m_rightShooterPidController.setI(iGain);
-      m_rightShooterPidController.setD(dGain);
-      m_rightShooterPidController.setFF(ffGain);
+    //   m_rightShooterPidController.setP(pGain);
+    //   m_rightShooterPidController.setI(iGain);
+    //   m_rightShooterPidController.setD(dGain);
+    //   m_rightShooterPidController.setFF(ffGain);
 
-      SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
-    }
-  }
-
-  public void stopShooterMotor()
-  {
-    m_leftShooterWheel.set(0);
-    m_rightShooterWheel.set(0);
+    //   SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    // }
   }
 }

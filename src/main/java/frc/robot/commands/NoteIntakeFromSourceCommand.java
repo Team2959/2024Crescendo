@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 public class NoteIntakeFromSourceCommand extends Command {
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
+
   /** Creates a new NoteIntakeFromSourceCommand. */
   public NoteIntakeFromSourceCommand(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem)
   {

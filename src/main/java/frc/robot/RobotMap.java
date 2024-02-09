@@ -27,14 +27,13 @@ public final class RobotMap {
     public static final int kWallSpacerVictorSpMotor = 2;
 
     // PWM motor addresses
-
-    // Servos
+        // Servos
     public static final int kLeftAmpServo = 1;
     public static final int kRightAmpServo = 0;
-    public static final int kLeftWallIntake = 2;
-    public static final int kRightWallIntake = 3;
+    // public static final int kLeftWallIntake = 2;
+    // public static final int kRightWallIntake = 3;
 
-    //idk what this is
+    // Analog Input addresses
     public static final int kAmpStringPotAnalog = 1;
 
     // REV Pneumatic Hub solenoid addresses

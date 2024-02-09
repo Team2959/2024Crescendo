@@ -36,7 +36,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
-  // public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   // private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
@@ -59,7 +59,6 @@ public class RobotContainer {
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
   JoystickButton m_reverseIntakeButton = new JoystickButton(m_rightJoystick, RobotMap.kReverseIntake);
 
-
   // co-pilot box buttons
   JoystickButton m_wallSpacerButton = new JoystickButton(m_buttonBox, RobotMap.kToggleWallSpacerButton);
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -71,8 +70,6 @@ public class RobotContainer {
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
   JoystickButton m_sourceReceiveButton =new JoystickButton(m_buttonBox, RobotMap.kSourceShooterVelocityControl);
   JoystickButton m_sourceLoadButton = new JoystickButton(m_buttonBox, RobotMap.kLoadFromSourceButton);
-
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -90,8 +87,7 @@ public class RobotContainer {
 
     smartDashboardInit();
     registerSmartDashboardCalls();
-    m_intakeSubsystem.stopMotor();
-}
+  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -107,27 +103,25 @@ public class RobotContainer {
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
- 
-    // // m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
-    //       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
-    //       () -> m_robot.isTeleopEnabled()));
+    m_driveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_driveSubsystem,
+          () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
+          () -> m_robot.isTeleopEnabled()));
 
     m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
-    // m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
-    m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
+
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
     // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
-    m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
-    m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
+    // m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
+
+    m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic));
     m_centerSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker));
     m_leftSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker));
     m_rightSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker));
+    m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
+    m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
     m_sourceReceiveButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.SourceLoad));
-    m_sourceLoadButton.whileTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
+    // m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
     new Trigger(m_intakeSubsystem::isNotePresent)
       // .and(m_intakeSubsystem::isPickingUpNote)

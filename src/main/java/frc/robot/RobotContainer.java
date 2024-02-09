@@ -57,7 +57,6 @@ public class RobotContainer {
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
-  JoystickButton m_reverseIntakeButton = new JoystickButton(m_rightJoystick, RobotMap.kReverseIntake);
 
   // co-pilot box buttons
   JoystickButton m_wallSpacerButton = new JoystickButton(m_buttonBox, RobotMap.kToggleWallSpacerButton);
@@ -70,6 +69,7 @@ public class RobotContainer {
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
   JoystickButton m_sourceReceiveButton =new JoystickButton(m_buttonBox, RobotMap.kSourceShooterVelocityControl);
   JoystickButton m_sourceLoadButton = new JoystickButton(m_buttonBox, RobotMap.kLoadFromSourceButton);
+  JoystickButton m_reverseIntakeButton = new JoystickButton(m_buttonBox, RobotMap.kReverseIntake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -123,9 +123,9 @@ public class RobotContainer {
     m_sourceReceiveButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.SourceLoad));
     // m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
-    new Trigger(m_intakeSubsystem::isNotePresent)
+    // new Trigger(m_intakeSubsystem::isNotePresent)
       // .and(m_intakeSubsystem::isPickingUpNote)
-      .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
+      // .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
   }
 
   public void smartDashboardInit() {

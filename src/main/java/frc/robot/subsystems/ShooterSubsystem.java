@@ -162,12 +162,12 @@ public class ShooterSubsystem extends SubsystemBase
     SmartDashboard.putNumber(getName() + "/shooter D", kShooterD);
     SmartDashboard.putNumber(getName() + "/shooter FF", kShooterFF);
 
-    SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
-    SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
-    SmartDashboard.getNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
-    SmartDashboard.getNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
-    SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
-    SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
+    SmartDashboard.putNumber(getName() + "/trap velocity", m_trapVelocity);
+    SmartDashboard.putNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);
+    SmartDashboard.putNumber(getName() + "/side speaker slow velocity", m_sideSlowMotorSpeakerVelocity);
+    SmartDashboard.putNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
+    SmartDashboard.putNumber(getName() + "/amp velocity", m_ampVelocity);
+    SmartDashboard.putNumber(getName() + "/source velocity", m_sourceVelocity);
   }
 
   public void smartDashboardUpdate()

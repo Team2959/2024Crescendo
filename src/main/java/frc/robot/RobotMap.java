@@ -48,7 +48,6 @@ public final class RobotMap {
 
     // Driver Buttons
     public static final int kRightTriggerFire = 1;
-    public static final int kReverseIntake = 3;
     public static final int kRightToggleIntakeButton = 2;
     public static final int kRightLockWheels = 3;
 
@@ -61,10 +60,11 @@ public final class RobotMap {
     public static final int kRetractAmpAssistPleaseButton = 10;
     public static final int kAmpShooterVelocityControl = 3;
     public static final int kTrapShooterVelocityControl = 5;
+    public static final int kReverseIntake = 6;
     public static final int kCenterSpeakerShooterVelocityControl = 8;
     public static final int kLeftSpeakerShooterVelocityControl = 12;
     public static final int kRightSpeakerShooterVelocityControl = 9;
-    public static final int kSourceShooterVelocityControl = 6;
+    public static final int kSourceShooterVelocityControl = 7;
     public static final int kLoadFromSourceButton = 2;
 
     // Zeroed values, should be in radians

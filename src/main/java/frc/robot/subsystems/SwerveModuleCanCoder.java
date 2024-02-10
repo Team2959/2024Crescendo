@@ -20,7 +20,7 @@ public class SwerveModuleCanCoder {
     private static final double kSteerP = 0.4;
     private static final double kSteerI = 0.00001;
     private static final double kSteerD = 0.0;
-    private static final double kSteerFF = 0.0;
+    // private static final double kSteerFF = 0.0;
     private static final double kSteerIZone = 1.0;
 
     private CANSparkMax m_driveMotor;

@@ -35,7 +35,7 @@ public class ShooterVelocityCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stopShooterMotor();;
+    m_shooter.stopShooterMotor();
   }
 
   // Returns true when the command should end.

@@ -121,11 +121,14 @@ public class RobotContainer {
     m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
     m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
     m_sourceReceiveButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.SourceLoad));
-    // m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
+    m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
     // new Trigger(m_intakeSubsystem::isNotePresent)
-      // .and(m_intakeSubsystem::isPickingUpNote)
-      // .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
+    //   .and(m_intakeSubsystem::isPickingUpNote)
+    //   .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
+
+
+     
   }
 
   public void smartDashboardInit() {

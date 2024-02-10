@@ -18,6 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   double m_intakeSpeed = 1.0;
   double m_reverseIntakeSpeed = -0.25;
+  boolean m_pickingUpNote = false;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -43,13 +44,17 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean(getName() + "/Note Detect", m_noteDetect.get());
   }
 
+
+
   public void toggleIntakeSubsystem() {
     double speed = m_intakeMotor.get();
 
-    if (speed == 0.0)
+    if (speed == 0.0){
       m_intakeMotor.set(m_intakeSpeed);
+      m_pickingUpNote = true;
+    }
     else
-      m_intakeMotor.set(0);
+      stopMotor();
   }
 
   public void reverseIntake() {
@@ -58,10 +63,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void stopMotor() {
     m_intakeMotor.set(0);
+    m_pickingUpNote = false;
   }
 
   public boolean isNotePresent()
   {
-    return m_noteDetect.get();
+    return m_noteDetect.get() == false;
+  }
+
+  public boolean isPickingUpNote() {
+    return m_pickingUpNote;
   }
 }

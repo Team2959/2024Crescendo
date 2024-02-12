@@ -8,7 +8,9 @@ import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -107,14 +109,17 @@ public class RobotContainer {
           () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
           () -> m_robot.isTeleopEnabled()));
 
-    m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem()));
-    m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
-
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
     // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
     // m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
 
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic));
+    // m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
+    //   .alongWith(
+    //     new WaitCommand(0.25)
+    //     .andThen(new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
+    //     .until(m_intakeSubsystem::isNotePresent)
+    //     .finallyDo(() -> m_intakeSubsystem.stopMotor())));
     m_centerSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker));
     m_leftSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker));
     m_rightSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker));
@@ -123,12 +128,23 @@ public class RobotContainer {
     m_sourceReceiveButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.SourceLoad));
     m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
+    m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem));
+
     // new Trigger(m_intakeSubsystem::isNotePresent)
     //   .and(m_intakeSubsystem::isPickingUpNote)
     //   .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
 
+    // m_intakeButton.onTrue(new ConditionalCommand(
+    //   new InstantCommand(() -> m_intakeSubsystem.stopMotor(), m_intakeSubsystem),
+    //   new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem)
+    //     .until(m_intakeSubsystem::isNotePresent)
+    //     .finallyDo(() -> m_intakeSubsystem.stopMotor()),
+    //   m_intakeSubsystem.running));
 
-     
+    m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
+    // m_reverseIntakeButton.whileTrue(new InstantCommand(() ->
+    //     m_intakeSubsystem.reverseIntake(), m_intakeSubsystem)
+    //   .finallyDo(() -> m_intakeSubsystem.stopMotor()));
   }
 
   public void smartDashboardInit() {

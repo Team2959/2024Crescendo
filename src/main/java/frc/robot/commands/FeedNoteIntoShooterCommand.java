@@ -5,43 +5,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ShooterVelocityCommand extends Command {
-  private ShooterSubsystem m_shooter;
-  private ShooterSubsystem.ShooterLocation m_location;
-
-  /** Creates a new ShooterVelocityComma`nd. */
-  public ShooterVelocityCommand(
-    ShooterSubsystem shooterSubsystem,
-    ShooterSubsystem.ShooterLocation location)
-  {
-    m_shooter = shooterSubsystem;
-    m_location = location;
+public class FeedNoteIntoShooterCommand extends Command {
+  /** Creates a new FeedNoteIntoShooterCommand. */
+  private IntakeSubsystem m_intakeSubsystem;
+  
+  public FeedNoteIntoShooterCommand(IntakeSubsystem intakeSubsystem) {
+    m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooterSubsystem);
+    addRequirements(m_intakeSubsystem); 
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_shooter.controlShooterToVelocity(m_location);
+  public void initialize() 
+  {
+    m_intakeSubsystem.intakeForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_shooter.stopShooterMotor();
+  public void end(boolean interrupted) 
+  {
+    m_intakeSubsystem.stopMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    
+    return !m_intakeSubsystem.isNotePresent();
   }
 }

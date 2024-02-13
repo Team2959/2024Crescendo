@@ -7,30 +7,35 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.WallSpacerSubsystem;
 
-public class ToggleWallSpacerCommand extends Command {
-  private WallSpacerSubsystem m_wallSpacerSubsystem;
-  /** Creates a new ToggleWallSpacerCommand. */
-  public ToggleWallSpacerCommand(WallSpacerSubsystem wallSpacerSubsystem) {
+public class RetractWallSpacerCommand extends Command {
+    private WallSpacerSubsystem m_WallSpacerSubsystem;
+  /** Creates a new RetractWallSpacerCommand. */
+  public RetractWallSpacerCommand(WallSpacerSubsystem wallSpacerSubsystem) {
+    m_WallSpacerSubsystem = wallSpacerSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_wallSpacerSubsystem);
+    addRequirements(m_WallSpacerSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_wallSpacerSubsystem.toggleWallSpacerSubsystem();
+  public void initialize() 
+  {
+    m_WallSpacerSubsystem.retractWallSpacer();
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_WallSpacerSubsystem.stopWallSpacer();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return m_WallSpacerSubsystem.isWallSpacerRetracted();
   }
 }

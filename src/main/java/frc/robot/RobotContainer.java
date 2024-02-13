@@ -14,19 +14,18 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ExtendAmpAssistCommand;
+import frc.robot.commands.ExtendWallSpacerCommand;
+import frc.robot.commands.FeedNoteIntoShooterCommand;
 import frc.robot.commands.NoteIntakeFromSourceCommand;
-import frc.robot.commands.RetractAmpAssistCommand;
+import frc.robot.commands.RetractWallSpacerCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
-import frc.robot.commands.ToggleWallSpacerCommand;
-import frc.robot.subsystems.AmpAssistSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.WallSpacerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
+import frc.robot.subsystems.WallSpacerSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,13 +54,13 @@ public class RobotContainer {
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
   double m_speedMultiplier = 0.70;
-  
+  double m_delayTimeForShooter = 0.25;
+
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
 
   // co-pilot box buttons
-  JoystickButton m_wallSpacerButton = new JoystickButton(m_buttonBox, RobotMap.kToggleWallSpacerButton);
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
   JoystickButton m_retractAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kRetractAmpAssistPleaseButton);
   JoystickButton m_ampShootButton =new JoystickButton(m_buttonBox, RobotMap.kAmpShooterVelocityControl);
@@ -69,9 +68,11 @@ public class RobotContainer {
   JoystickButton m_centerSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kCenterSpeakerShooterVelocityControl);
   JoystickButton m_rightSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kRightSpeakerShooterVelocityControl);
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
-  JoystickButton m_sourceReceiveButton =new JoystickButton(m_buttonBox, RobotMap.kSourceShooterVelocityControl);
   JoystickButton m_sourceLoadButton = new JoystickButton(m_buttonBox, RobotMap.kLoadFromSourceButton);
   JoystickButton m_reverseIntakeButton = new JoystickButton(m_buttonBox, RobotMap.kReverseIntake);
+  JoystickButton m_wallSpacerExtendButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerExtendButton);
+  JoystickButton m_wallSpacerRetractButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerRetractButton);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -111,40 +112,39 @@ public class RobotContainer {
 
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
     // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
-    // m_wallSpacerButton.onTrue(new ToggleWallSpacerCommand(m_wallSpacerSubsystem));
 
-    m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic));
-    // m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
-    //   .alongWith(
-    //     new WaitCommand(0.25)
-    //     .andThen(new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
-    //     .until(m_intakeSubsystem::isNotePresent)
-    //     .finallyDo(() -> m_intakeSubsystem.stopMotor())));
-    m_centerSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker));
-    m_leftSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker));
-    m_rightSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker));
-    m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
-    m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
-    m_sourceReceiveButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.SourceLoad));
+    // All the Note delivery commands
+    // m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic));
+    m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
+      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+        
+    m_centerSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker)
+     .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+    m_leftSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker)
+      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+    m_rightSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker)
+      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+    m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)
+      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+    m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
+      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+
+    // Load Note From Source
     m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
-    m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem));
+    //WallSpacer
+    // m_wallSpacerExtendButton.onTrue(new ExtendWallSpacerCommand(m_wallSpacerSubsystem));
+    // m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
 
-    // new Trigger(m_intakeSubsystem::isNotePresent)
-    //   .and(m_intakeSubsystem::isPickingUpNote)
-    //   .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));
-
-    // m_intakeButton.onTrue(new ConditionalCommand(
-    //   new InstantCommand(() -> m_intakeSubsystem.stopMotor(), m_intakeSubsystem),
-    //   new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem)
-    //     .until(m_intakeSubsystem::isNotePresent)
-    //     .finallyDo(() -> m_intakeSubsystem.stopMotor()),
-    //   m_intakeSubsystem.running));
-
+    // Pick up Note from Floor
+    // m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem));
+    m_intakeButton.onTrue(new ConditionalCommand(
+      new InstantCommand(() -> m_intakeSubsystem.stopMotor(), m_intakeSubsystem),
+      new InstantCommand(() -> m_intakeSubsystem.intakeForward(), m_intakeSubsystem)
+        .until(m_intakeSubsystem::isNotePresent)
+        .finallyDo(() -> m_intakeSubsystem.stopMotor()),
+      m_intakeSubsystem::running));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
-    // m_reverseIntakeButton.whileTrue(new InstantCommand(() ->
-    //     m_intakeSubsystem.reverseIntake(), m_intakeSubsystem)
-    //   .finallyDo(() -> m_intakeSubsystem.stopMotor()));
   }
 
   public void smartDashboardInit() {
@@ -152,6 +152,7 @@ public class RobotContainer {
       m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
+      //m_wallSpacerSubsystem.smartDashboardInit();
       // m_AmpAssistSubsystem.smartDashboardInit();
       // m_climbSubsystem.smartDashboardInit();
   }
@@ -164,6 +165,7 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
           m_intakeSubsystem.smartDashboardUpdate();
+          //m_wallSpacerSubsystem.smartDashboardUpdate();
           // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
@@ -209,3 +211,14 @@ public class RobotContainer {
             * m_speedMultiplier;
   }
 }
+// example decorator pattern for commands
+    // m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
+    //   .alongWith(
+    //     new WaitCommand(0.25)
+    //     .andThen(new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
+    //     .until(m_intakeSubsystem::isNotePresent)
+    //     .finallyDo(() -> m_intakeSubsystem.stopMotor())));
+
+    // new Trigger(m_intakeSubsystem::isNotePresent)
+    //   .and(m_intakeSubsystem::isPickingUpNote)
+    //   .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));

@@ -18,7 +18,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   double m_intakeSpeed = 1.0;
   double m_reverseIntakeSpeed = -0.25;
-  boolean m_pickingUpNote = false;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -33,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void smartDashboardInit()
   {
     SmartDashboard.putNumber(getName() + "/Target Speed", m_intakeSpeed);
-    SmartDashboard.putBoolean(getName() + "/Note Detect", m_noteDetect.get());
+    SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
     SmartDashboard.putNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
   }
 
@@ -41,20 +40,17 @@ public class IntakeSubsystem extends SubsystemBase {
   {
     m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
     m_reverseIntakeSpeed = SmartDashboard.getNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
-    SmartDashboard.putBoolean(getName() + "/Note Detect", m_noteDetect.get());
+    SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
   }
 
+  public boolean running()
+  {
+    return m_intakeMotor.get() != 0.0;
+  }
 
-
-  public void toggleIntakeSubsystem() {
-    double speed = m_intakeMotor.get();
-
-    if (speed == 0.0){
-      m_intakeMotor.set(m_intakeSpeed);
-      m_pickingUpNote = true;
-    }
-    else
-      stopMotor();
+  public void intakeForward() 
+  {
+    m_intakeMotor.set(m_intakeSpeed);
   }
 
   public void reverseIntake() {
@@ -63,15 +59,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void stopMotor() {
     m_intakeMotor.set(0);
-    m_pickingUpNote = false;
   }
 
   public boolean isNotePresent()
   {
     return m_noteDetect.get() == false;
-  }
-
-  public boolean isPickingUpNote() {
-    return m_pickingUpNote;
   }
 }

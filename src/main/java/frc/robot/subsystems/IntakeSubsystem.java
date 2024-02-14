@@ -43,11 +43,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
   }
 
-  public boolean running()
-  {
-    return m_intakeMotor.get() != 0.0;
-  }
-
   public void intakeForward() 
   {
     m_intakeMotor.set(m_intakeSpeed);

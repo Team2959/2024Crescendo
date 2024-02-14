@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 public class NoteIntakeFromSourceCommand extends Command {
   private IntakeSubsystem m_intakeSubsystem;
   private ShooterSubsystem m_shooterSubsystem;
+  private int m_ticks;
 
   /** Creates a new NoteIntakeFromSourceCommand. */
   public NoteIntakeFromSourceCommand(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem)
@@ -26,13 +27,17 @@ public class NoteIntakeFromSourceCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_ticks = 0;
     m_intakeSubsystem.reverseIntake();
     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.SourceLoad);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (m_intakeSubsystem.isNotePresent())
+      m_ticks++;
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -44,6 +49,6 @@ public class NoteIntakeFromSourceCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intakeSubsystem.isNotePresent();
+    return m_ticks >= 20;
   }
 }

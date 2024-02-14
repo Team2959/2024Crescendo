@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ExtendWallSpacerCommand;
 import frc.robot.commands.FeedNoteIntoShooterCommand;
+import frc.robot.commands.NoteIntakeFromFloorCommand;
 import frc.robot.commands.NoteIntakeFromSourceCommand;
 import frc.robot.commands.RetractWallSpacerCommand;
 import frc.robot.commands.ReverseIntakeCommand;
@@ -137,13 +138,8 @@ public class RobotContainer {
     // m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
 
     // Pick up Note from Floor
-    // m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem));
-    m_intakeButton.onTrue(new ConditionalCommand(
-      new InstantCommand(() -> m_intakeSubsystem.stopMotor(), m_intakeSubsystem),
-      new InstantCommand(() -> m_intakeSubsystem.intakeForward(), m_intakeSubsystem)
-        .until(m_intakeSubsystem::isNotePresent)
-        .finallyDo(() -> m_intakeSubsystem.stopMotor()),
-      m_intakeSubsystem::running));
+    //m_intakeButton.onTrue(new InstantCommand(() -> m_intakeSubsystem.toggleIntakeSubsystem(), m_intakeSubsystem));
+    m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
   }
 
@@ -152,7 +148,7 @@ public class RobotContainer {
       m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
-      //m_wallSpacerSubsystem.smartDashboardInit();
+      // m_wallSpacerSubsystem.smartDashboardInit();
       // m_AmpAssistSubsystem.smartDashboardInit();
       // m_climbSubsystem.smartDashboardInit();
   }
@@ -165,7 +161,7 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
           m_intakeSubsystem.smartDashboardUpdate();
-          //m_wallSpacerSubsystem.smartDashboardUpdate();
+          // m_wallSpacerSubsystem.smartDashboardUpdate();
           // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);

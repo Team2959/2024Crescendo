@@ -28,8 +28,8 @@ public final class RobotMap {
 
     // PWM motor addresses
         // Servos
-    public static final int kLeftAmpServo = 1;
-    public static final int kRightAmpServo = 0;
+    public static final int kLeftAmpServo = 9;
+    public static final int kRightAmpServo = 8;
     // public static final int kLeftWallIntake = 2;
     // public static final int kRightWallIntake = 3;
 

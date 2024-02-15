@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,14 +12,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class WallSpacerSubsystem extends SubsystemBase {
-  private final WPI_VictorSPX m_wallSpacerMotor = new WPI_VictorSPX(RobotMap.kWallSpacerVictorSpMotor);
+  private final WPI_TalonSRX m_wallSpacerMotor = new WPI_TalonSRX(RobotMap.kWallSpacerVictorSpMotor);
   private final DigitalInput m_wallSpacerExtended = new DigitalInput(RobotMap.kWallSpacerExtendedDigitalInput);
   private final DigitalInput m_wallSpacerRetracted = new DigitalInput(RobotMap.kWallSpacerRetractedDigitalInput);
 
-  double m_wallSpacerSpeed = 0.25; //guess
+  double m_wallSpacerSpeed = 0.75;
 
   /** Creates a new WallSpacerSubsystem. */
   public WallSpacerSubsystem() {
+    m_wallSpacerMotor.setInverted(true);
   }
   
   @Override
@@ -27,11 +28,10 @@ public class WallSpacerSubsystem extends SubsystemBase {
   }
  
   public void smartDashboardInit(){
-    SmartDashboard.getNumber(getName() + "/Wall Spacer Target Speed",m_wallSpacerSpeed);
+    SmartDashboard.putNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
-    SmartDashboard.putBoolean(getName() + "/Extend Wall Spacer", false);
-    SmartDashboard.putBoolean(getName() + "/Retract Wall Spacer", false);
+    SmartDashboard.putBoolean(getName() + "/Move Wall Spacer", false);
     SmartDashboard.putBoolean(getName() + "/Stop", false);
   }
 
@@ -39,21 +39,12 @@ public class WallSpacerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
   
-
-    if (SmartDashboard.getBoolean(getName() + "/Extend Wall Spacer", false))
+    if (SmartDashboard.getBoolean(getName() + "/Move Wall Spacer", false))
     {
        m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
-       extendWallSpacer();
+       m_wallSpacerMotor.set(m_wallSpacerSpeed);
 
-      //  SmartDashboard.putBoolean(getName() + "/Extend Wall Spacer", false);
-    }
-
-    if (SmartDashboard.getBoolean(getName() + "/Retract Wall Spacer", false))
-    {
-       m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
-       retractWallSpacer();
-
-       SmartDashboard.putBoolean(getName() + "/Retract Wall Spacer", false);
+       SmartDashboard.putBoolean(getName() + "/Move Wall Spacer", false);
     }
 
     if (SmartDashboard.getBoolean(getName() + "/Stop", false))
@@ -66,12 +57,12 @@ public class WallSpacerSubsystem extends SubsystemBase {
 
   public void extendWallSpacer()
   {
-    m_wallSpacerMotor.set(-m_wallSpacerSpeed);
+    m_wallSpacerMotor.set(m_wallSpacerSpeed);
   }
 
   public void retractWallSpacer()
   {
-    m_wallSpacerMotor.set(m_wallSpacerSpeed);
+    m_wallSpacerMotor.set(-m_wallSpacerSpeed);
   }
 
   public void stopWallSpacer()

@@ -38,8 +38,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void smartDashboardUpdate()
   {
-    m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
-    m_reverseIntakeSpeed = SmartDashboard.getNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
+    // m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
+    // m_reverseIntakeSpeed = SmartDashboard.getNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
     SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
   }
 

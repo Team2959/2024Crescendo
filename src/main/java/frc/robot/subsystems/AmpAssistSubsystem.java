@@ -21,12 +21,12 @@ public class AmpAssistSubsystem extends SubsystemBase {
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
   {
-    m_LeftAmpRampServo = new PWM(RobotMap.kLeftAmpServo); 
+    // m_LeftAmpRampServo = new PWM(RobotMap.kLeftAmpServo); 
     m_RightAmpRampServo = new PWM(RobotMap.kRightAmpServo);
 
     m_potentiometer = new AnalogPotentiometer(RobotMap.kAmpStringPotAnalog);
 
-    m_LeftAmpRampServo.setPeriodMultiplier(PWM.PeriodMultiplier.k4X);
+    // m_LeftAmpRampServo.setPeriodMultiplier(PWM.PeriodMultiplier.k4X);
     m_RightAmpRampServo.setPeriodMultiplier(PWM.PeriodMultiplier.k4X);
  
     stopMotor();
@@ -53,8 +53,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
   //sets speed of ramp thing
   private void setSpeed(double speed)
   {
-    m_LeftAmpRampServo.setSpeed(speed);
-    m_RightAmpRampServo.setSpeed(-speed);
+    // m_LeftAmpRampServo.setSpeed(-speed);
+    m_RightAmpRampServo.setSpeed(speed);
   }
 
   private double getPosition()
@@ -79,11 +79,28 @@ public class AmpAssistSubsystem extends SubsystemBase {
   {
      SmartDashboard.putNumber(getName() + "/Amp Assist Speed", m_movementSpeed);
      SmartDashboard.putNumber(getName() + "/Amp Assist Position", getPosition());
-  }
+     SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
+     SmartDashboard.putBoolean(getName() + "/Stop", false);
+    }
 
   public void smartDashboardUpdate()
   {
-     m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
      SmartDashboard.putNumber(getName() + "/Target Speed", getPosition());
+    
+     if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
+     {
+        m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
+        setSpeed(m_movementSpeed);
+
+        SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
+     }
+    
+     if (SmartDashboard.getBoolean(getName() + "/Stop", false))
+     {
+        stopMotor();
+
+        SmartDashboard.putBoolean(getName() + "/Stop", false);
+     }
   }
+
 }

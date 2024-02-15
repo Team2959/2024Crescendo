@@ -22,6 +22,7 @@ import frc.robot.commands.RetractWallSpacerCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.subsystems.AmpAssistSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -41,8 +42,8 @@ public class RobotContainer {
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  // private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
-  // private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
+  private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
+ // private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   Robot m_robot;
@@ -148,8 +149,8 @@ public class RobotContainer {
       m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
-      // m_wallSpacerSubsystem.smartDashboardInit();
-      // m_AmpAssistSubsystem.smartDashboardInit();
+      m_wallSpacerSubsystem.smartDashboardInit();
+      //m_AmpAssistSubsystem.smartDashboardInit();
       // m_climbSubsystem.smartDashboardInit();
   }
 
@@ -161,8 +162,8 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
           m_intakeSubsystem.smartDashboardUpdate();
-          // m_wallSpacerSubsystem.smartDashboardUpdate();
-          // m_AmpAssistSubsystem.smartDashboardUpdate();
+          m_wallSpacerSubsystem.smartDashboardUpdate();
+         // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {

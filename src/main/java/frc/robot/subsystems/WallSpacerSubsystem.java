@@ -30,22 +30,48 @@ public class WallSpacerSubsystem extends SubsystemBase {
     SmartDashboard.getNumber(getName() + "/Wall Spacer Target Speed",m_wallSpacerSpeed);
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
+    SmartDashboard.putBoolean(getName() + "/Extend Wall Spacer", false);
+    SmartDashboard.putBoolean(getName() + "/Retract Wall Spacer", false);
+    SmartDashboard.putBoolean(getName() + "/Stop", false);
   }
 
   public void smartDashboardUpdate(){
-    m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Wall Spacer Target Speed", m_wallSpacerSpeed);
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
     SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
+  
+
+    if (SmartDashboard.getBoolean(getName() + "/Extend Wall Spacer", false))
+    {
+       m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
+       extendWallSpacer();
+
+      //  SmartDashboard.putBoolean(getName() + "/Extend Wall Spacer", false);
+    }
+
+    if (SmartDashboard.getBoolean(getName() + "/Retract Wall Spacer", false))
+    {
+       m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
+       retractWallSpacer();
+
+       SmartDashboard.putBoolean(getName() + "/Retract Wall Spacer", false);
+    }
+
+    if (SmartDashboard.getBoolean(getName() + "/Stop", false))
+    {
+       stopWallSpacer();
+
+       SmartDashboard.putBoolean(getName() + "/Stop", false);
+    }
   }
 
   public void extendWallSpacer()
   {
-    m_wallSpacerMotor.set(m_wallSpacerSpeed); //not sure whether positive is extending or retracting
+    m_wallSpacerMotor.set(-m_wallSpacerSpeed);
   }
 
   public void retractWallSpacer()
   {
-    m_wallSpacerMotor.set(-m_wallSpacerSpeed); //not sure whether negative is extending or retracting
+    m_wallSpacerMotor.set(m_wallSpacerSpeed);
   }
 
   public void stopWallSpacer()

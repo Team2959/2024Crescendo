@@ -77,15 +77,15 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void smartDashboardInit()
   {
-     SmartDashboard.putNumber(getName() + "/Amp Assist Speed", m_movementSpeed);
-     SmartDashboard.putNumber(getName() + "/Amp Assist Position", getPosition());
+     SmartDashboard.putNumber(getName() + "/Target Speed", m_movementSpeed);
+     SmartDashboard.putNumber(getName() + "/Position", getPosition());
      SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
      SmartDashboard.putBoolean(getName() + "/Stop", false);
-    }
+  }
 
   public void smartDashboardUpdate()
   {
-     SmartDashboard.putNumber(getName() + "/Target Speed", getPosition());
+     SmartDashboard.putNumber(getName() + "/Position", getPosition());
     
      if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
      {
@@ -102,5 +102,4 @@ public class AmpAssistSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(getName() + "/Stop", false);
      }
   }
-
 }

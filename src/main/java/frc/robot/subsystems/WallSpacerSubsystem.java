@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class WallSpacerSubsystem extends SubsystemBase {
-  private final WPI_TalonSRX m_wallSpacerMotor = new WPI_TalonSRX(RobotMap.kWallSpacerVictorSpMotor);
+  private final WPI_TalonSRX m_wallSpacerMotor = new WPI_TalonSRX(RobotMap.kWallSpacerTalonSrxMotor);
   private final DigitalInput m_wallSpacerExtended = new DigitalInput(RobotMap.kWallSpacerExtendedDigitalInput);
   private final DigitalInput m_wallSpacerRetracted = new DigitalInput(RobotMap.kWallSpacerRetractedDigitalInput);
 
@@ -29,19 +29,19 @@ public class WallSpacerSubsystem extends SubsystemBase {
  
   public void smartDashboardInit(){
     SmartDashboard.putNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
-    SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
-    SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
+    SmartDashboard.putBoolean(getName() + "/Extended", isWallSpacerExtended());
+    SmartDashboard.putBoolean(getName() + "/Retracted", isWallSpacerRetracted());
     SmartDashboard.putBoolean(getName() + "/Move Wall Spacer", false);
     SmartDashboard.putBoolean(getName() + "/Stop", false);
   }
 
   public void smartDashboardUpdate(){
-    SmartDashboard.putBoolean(getName() + "/Wall Spacer Extended", isWallSpacerExtended());
-    SmartDashboard.putBoolean(getName() + "/Wall Spacer Retracted", isWallSpacerRetracted());
-  
+    SmartDashboard.putBoolean(getName() + "/Extended", isWallSpacerExtended());
+    SmartDashboard.putBoolean(getName() + "/Retracted", isWallSpacerRetracted());
+
+    m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
     if (SmartDashboard.getBoolean(getName() + "/Move Wall Spacer", false))
     {
-       m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
        m_wallSpacerMotor.set(m_wallSpacerSpeed);
 
        SmartDashboard.putBoolean(getName() + "/Move Wall Spacer", false);

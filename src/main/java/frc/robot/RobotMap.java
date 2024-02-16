@@ -24,7 +24,7 @@ public final class RobotMap {
     public static final int kRightShooterCANSparkMaxWheel = 24;
         // Victor SPX
     public static final int kIntakeVictorSpMotor = 1;
-    public static final int kWallSpacerVictorSpMotor = 2;
+    public static final int kWallSpacerTalonSrxMotor = 2;
 
     // PWM motor addresses
         // Servos

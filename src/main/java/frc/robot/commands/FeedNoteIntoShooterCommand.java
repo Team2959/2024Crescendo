@@ -10,6 +10,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class FeedNoteIntoShooterCommand extends Command {
   /** Creates a new FeedNoteIntoShooterCommand. */
   private IntakeSubsystem m_intakeSubsystem;
+  private int m_ticks;
   
   public FeedNoteIntoShooterCommand(IntakeSubsystem intakeSubsystem) {
     m_intakeSubsystem = intakeSubsystem;
@@ -21,12 +22,16 @@ public class FeedNoteIntoShooterCommand extends Command {
   @Override
   public void initialize() 
   {
+    m_ticks = 0;
     m_intakeSubsystem.intakeForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (!m_intakeSubsystem.isNotePresent())
+      m_ticks++;
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -38,7 +43,8 @@ public class FeedNoteIntoShooterCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    return false;//!m_intakeSubsystem.isNotePresent();
+    return m_ticks >= 5;
+    // return !m_intakeSubsystem.isNotePresent();
+    // return false;
   }
 }

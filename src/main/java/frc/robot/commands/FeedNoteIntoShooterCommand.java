@@ -39,6 +39,6 @@ public class FeedNoteIntoShooterCommand extends Command {
   @Override
   public boolean isFinished() {
     
-    return !m_intakeSubsystem.isNotePresent();
+    return false;//!m_intakeSubsystem.isNotePresent();
   }
 }

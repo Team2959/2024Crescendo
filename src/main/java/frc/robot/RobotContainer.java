@@ -45,7 +45,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
-  // private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
+  private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // public final Vision m_vision = new Vision();
 
@@ -157,7 +157,7 @@ public class RobotContainer {
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
       m_wallSpacerSubsystem.smartDashboardInit();
-      //m_AmpAssistSubsystem.smartDashboardInit();
+      m_AmpAssistSubsystem.smartDashboardInit();
       // m_climbSubsystem.smartDashboardInit();
   }
 
@@ -170,7 +170,7 @@ public class RobotContainer {
           m_shooterSubsystem.smartDashboardUpdate();
           m_intakeSubsystem.smartDashboardUpdate();
           m_wallSpacerSubsystem.smartDashboardUpdate();
-         // m_AmpAssistSubsystem.smartDashboardUpdate();
+          m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {

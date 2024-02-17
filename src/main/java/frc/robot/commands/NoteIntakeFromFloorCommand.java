@@ -45,7 +45,6 @@ public class NoteIntakeFromFloorCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_ticks >= 10;
-    // return m_intakeSubsystem.isNotePresent();
+    return m_ticks >= 4;
   }
 }

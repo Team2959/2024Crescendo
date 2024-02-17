@@ -14,12 +14,11 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private PWM m_LeftAmpRampServo; 
   private PWM m_RightAmpRampServo;
 
+  private AnalogPotentiometer m_potentiometer;
+
   private double m_movementSpeed = 0.25;
   private double m_ampAssistRightMotorOffset = -0.008;
   private double m_ampAssistLeftMotorOffset = 0;
-
-
-  private AnalogPotentiometer m_potentiometer;
 
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
@@ -38,13 +37,6 @@ public class AmpAssistSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (SmartDashboard.getBoolean(getName() + "/Stop", false))
-    {
-      stopMotor();
-
-      SmartDashboard.putBoolean(getName() + "/Stop", false);
-    }
-
   }
 
   public void stopMotor()
@@ -65,22 +57,21 @@ public class AmpAssistSubsystem extends SubsystemBase {
   {
     double rightSpeed = speed + m_ampAssistRightMotorOffset;
     double leftSpeed = -(speed - m_ampAssistLeftMotorOffset);
+
     if (rightSpeed > 1.0)
     {
       rightSpeed = 1.0;
     }
-
-     if (rightSpeed < -1.0)
+    else if (rightSpeed < -1.0)
     {
       rightSpeed = -1.0;
     }
 
-     if (leftSpeed > 1.0)
+    if (leftSpeed > 1.0)
     {
       leftSpeed = 1.0;
     }
-
-     if (leftSpeed < -1.0)
+    else if (leftSpeed < -1.0)
     {
       leftSpeed = -1.0;
     }
@@ -114,23 +105,28 @@ public class AmpAssistSubsystem extends SubsystemBase {
      SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
      SmartDashboard.putBoolean(getName() + "/Stop", false);
      SmartDashboard.putNumber(getName() + "/Left Motor Offset", m_ampAssistLeftMotorOffset);
-    SmartDashboard.putNumber(getName() + "/Right Motor Offset", m_ampAssistRightMotorOffset);
-
+     SmartDashboard.putNumber(getName() + "/Right Motor Offset", m_ampAssistRightMotorOffset);
   }
 
   public void smartDashboardUpdate()
   {
      SmartDashboard.putNumber(getName() + "/Position", getPosition());
     
-     if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
-     {
-        m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
-        setSpeed(m_movementSpeed);
+    if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
+    {
+      m_ampAssistLeftMotorOffset = SmartDashboard.getNumber(getName()+ "/Left Motor Offset", m_ampAssistLeftMotorOffset);
+      m_ampAssistRightMotorOffset = SmartDashboard.getNumber(getName()+ "/Right Motor Offset", m_ampAssistRightMotorOffset);
+      m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
+      setSpeed(m_movementSpeed);
 
-        SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
-        SmartDashboard.getNumber(getName()+ "/Left Motor Offset", m_ampAssistLeftMotorOffset);
-        SmartDashboard.getNumber(getName()+ "/Right Motor Offset", m_ampAssistRightMotorOffset);
-     }
-    
+      SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
+    }
+
+    if (SmartDashboard.getBoolean(getName() + "/Stop", false))
+    {
+        stopMotor();
+
+        SmartDashboard.putBoolean(getName() + "/Stop", false);
+    }
   }
 }

@@ -121,9 +121,6 @@ public class RobotContainer {
           () -> m_robot.isTeleopEnabled()));
     m_lockWheeButton.whileTrue(new LockWheelsCommand(m_driveSubsystem));
 
-    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
-    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
-
     // All the Note delivery commands
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
@@ -145,6 +142,10 @@ public class RobotContainer {
     //WallSpacer
     // m_wallSpacerExtendButton.onTrue(new ExtendWallSpacerCommand(m_wallSpacerSubsystem));
     // m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
+
+    // Amp Assist
+    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Pick up Note from Floor
     m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));

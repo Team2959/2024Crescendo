@@ -139,22 +139,12 @@ public class ShooterSubsystem extends SubsystemBase
     m_rightShooterWheel.set(rightVelocity);
   }
 
-  public double getLeftTargetVelocity()
-  {
-    return m_leftTargetVelocity;
-  }
-
-  public double geRightTargetVelocity()
-  {
-    return m_rightTargetVelocity;
-  }
-
   public void smartDashboardInit()
   {
     SmartDashboard.putNumber(getName() + "/left current velocity", m_leftShooterEncoder.getVelocity());
     SmartDashboard.putNumber(getName() + "/right current velocity", m_rightShooterEncoder.getVelocity());
-    SmartDashboard.putNumber(getName() + "/left target velocity", getLeftTargetVelocity());
-    SmartDashboard.putNumber(getName() + "/right target velocity", geRightTargetVelocity());
+    SmartDashboard.putNumber(getName() + "/left target velocity", m_leftTargetVelocity);
+    SmartDashboard.putNumber(getName() + "/right target velocity", m_rightTargetVelocity);
 
     SmartDashboard.putBoolean(getName() + "/Update Values", false);
     SmartDashboard.putNumber(getName() + "/shooter P", kShooterP);
@@ -177,8 +167,8 @@ public class ShooterSubsystem extends SubsystemBase
 
     if (SmartDashboard.getBoolean(getName() + "/Update Values", false))
     {
-      m_leftTargetVelocity = SmartDashboard.getNumber(getName() + "/left target velocity", getLeftTargetVelocity());
-      m_rightTargetVelocity = SmartDashboard.getNumber(getName() + "/right target velocity", geRightTargetVelocity());
+      m_leftTargetVelocity = SmartDashboard.getNumber(getName() + "/left target velocity", m_leftTargetVelocity);
+      m_rightTargetVelocity = SmartDashboard.getNumber(getName() + "/right target velocity", m_rightTargetVelocity);
 
       m_trapVelocity = SmartDashboard.getNumber(getName() + "/trap velocity", m_trapVelocity);
       m_centerSpeakerVelocity = SmartDashboard.getNumber(getName() + "/center speaker velocity", m_centerSpeakerVelocity);

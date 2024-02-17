@@ -52,9 +52,9 @@ public final class RobotMap {
     public static final int kRightTriggerFire = 1;
     public static final int kRightToggleIntakeButton = 2;
     public static final int kRightLockWheels = 3;
-
-    // Right Joystick Test
-    public static final int kResetNavXButton = 10;
+    public static final int kRightResetNavXButton = 10;
+    public static final int kLeftExtendClimbButton = 7;
+    public static final int kLeftRetractClimbButton = 11;
 
     // Co-Piolet Button board
     public static final int kExtendAmpAssistPleaseButton = 1;
@@ -68,6 +68,7 @@ public final class RobotMap {
     public static final int kLoadFromSourceButton = 7;
     public static final int kWallSpacerExtendButton = 2;
     public static final int kWallSpacerRetractButton = 11;
+    
     
 
     // Zeroed values, should be in radians

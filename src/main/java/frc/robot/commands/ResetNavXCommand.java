@@ -5,23 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AmpAssistSubsystem;
 
-public class ExtendAmpAssistCommand extends Command {
-  private AmpAssistSubsystem m_AmpAssistSubsystem; 
-  /** Creates a new ExtendAmpAssistCommand. */
-  public ExtendAmpAssistCommand(AmpAssistSubsystem ampAssistSubsystem) {
-    m_AmpAssistSubsystem = ampAssistSubsystem;
-
+public class ResetNavXCommand extends Command {
+  /** Creates a new ResetNavXCommand. */
+  public ResetNavXCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_AmpAssistSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_AmpAssistSubsystem.startMoving(true);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -29,13 +22,11 @@ public class ExtendAmpAssistCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_AmpAssistSubsystem.stopMotor();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;// m_AmpAssistSubsystem.AtPosition(true);
+    return false;
   }
 }

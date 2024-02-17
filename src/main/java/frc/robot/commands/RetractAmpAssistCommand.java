@@ -35,6 +35,6 @@ public class RetractAmpAssistCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  return m_AmpAssistSubsystem.AtPosition(false);
+  return false;//m_AmpAssistSubsystem.AtPosition(false);
   }
 }

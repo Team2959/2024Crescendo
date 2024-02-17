@@ -9,21 +9,27 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimbExtendCommand;
+import frc.robot.commands.ClimbRetractCommand;
+import frc.robot.commands.ExtendAmpAssistCommand;
 import frc.robot.commands.ExtendWallSpacerCommand;
 import frc.robot.commands.FeedNoteIntoShooterCommand;
 import frc.robot.commands.LockWheelsCommand;
 import frc.robot.commands.NoteIntakeFromFloorCommand;
 import frc.robot.commands.NoteIntakeFromSourceCommand;
+import frc.robot.commands.RetractAmpAssistCommand;
 import frc.robot.commands.RetractWallSpacerCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.subsystems.AmpAssistSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -46,7 +52,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
-  // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // public final Vision m_vision = new Vision();
 
   public final SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
@@ -67,6 +73,9 @@ public class RobotContainer {
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
   JoystickButton m_fireButtonRT = new JoystickButton(m_rightJoystick, RobotMap.kRightTriggerFire);
   JoystickButton m_lockWheeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightLockWheels);
+  JoystickButton m_resetNavX = new JoystickButton(m_rightJoystick, RobotMap.kRightResetNavXButton);
+  JoystickButton m_extendClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftExtendClimbButton);
+  JoystickButton m_retractClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftRetractClimbButton);
 
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -135,21 +144,31 @@ public class RobotContainer {
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
     m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+   
+    m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
+    m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
 
     // Load Note From Source
     m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
     //WallSpacer
-    // m_wallSpacerExtendButton.onTrue(new ExtendWallSpacerCommand(m_wallSpacerSubsystem));
-    // m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
+    m_wallSpacerExtendButton.onTrue(new ExtendWallSpacerCommand(m_wallSpacerSubsystem));
+    m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
 
     // Amp Assist
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
     // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    m_extendAmpAssistButton.whileTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    m_retractAmpAssistButton.whileTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Pick up Note from Floor
     m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
+
+    // Reset NavX
+    m_resetNavX.onTrue(new InstantCommand(() -> {
+            m_driveSubsystem.resetNavX();
+        }));
   }
 
   public void smartDashboardInit() {
@@ -159,7 +178,7 @@ public class RobotContainer {
       m_intakeSubsystem.smartDashboardInit();
       m_wallSpacerSubsystem.smartDashboardInit();
       m_AmpAssistSubsystem.smartDashboardInit();
-      // m_climbSubsystem.smartDashboardInit();
+      m_climbSubsystem.smartDashboardInit();
   }
 
   public void registerSmartDashboardCalls() {
@@ -172,7 +191,7 @@ public class RobotContainer {
           m_intakeSubsystem.smartDashboardUpdate();
           m_wallSpacerSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
-          // m_climbSubsystem.smartDashboardUpdate();
+           m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();

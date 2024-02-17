@@ -16,10 +16,6 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   private AnalogPotentiometer m_potentiometer;
 
-  private double m_movementSpeed = 0.25;
-  private double m_ampAssistRightMotorOffset = -0.008;
-  private double m_ampAssistLeftMotorOffset = 0;
-
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
   {
@@ -41,43 +37,22 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void stopMotor()
   {
-    setSpeed(0.0);
+    m_LeftAmpRampServo.setDisabled();
+    m_RightAmpRampServo.setDisabled();
   }
 
   public void startMoving(boolean extend)
   {
     if (extend)
-      setSpeed(m_movementSpeed);
+    {
+      m_LeftAmpRampServo.setPulseTimeMicroseconds(1000);
+      m_RightAmpRampServo.setPulseTimeMicroseconds(2000);
+    }
     else
-      setSpeed(-m_movementSpeed);
-  }
-
-  //sets speed of ramp thing
-  private void setSpeed(double speed)
-  {
-    double rightSpeed = speed + m_ampAssistRightMotorOffset;
-    double leftSpeed = -(speed - m_ampAssistLeftMotorOffset);
-
-    if (rightSpeed > 1.0)
     {
-      rightSpeed = 1.0;
+      m_LeftAmpRampServo.setPulseTimeMicroseconds(2000);
+      m_RightAmpRampServo.setPulseTimeMicroseconds(1000);
     }
-    else if (rightSpeed < -1.0)
-    {
-      rightSpeed = -1.0;
-    }
-
-    if (leftSpeed > 1.0)
-    {
-      leftSpeed = 1.0;
-    }
-    else if (leftSpeed < -1.0)
-    {
-      leftSpeed = -1.0;
-    }
-
-    m_LeftAmpRampServo.setSpeed(leftSpeed);
-    m_RightAmpRampServo.setSpeed(rightSpeed);
   }
 
   private double getPosition()
@@ -100,12 +75,10 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void smartDashboardInit()
   {
-     SmartDashboard.putNumber(getName() + "/Target Speed", m_movementSpeed);
+     SmartDashboard.putNumber(getName() + "/Target Speed", 1500);
      SmartDashboard.putNumber(getName() + "/Position", getPosition());
      SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
      SmartDashboard.putBoolean(getName() + "/Stop", false);
-     SmartDashboard.putNumber(getName() + "/Left Motor Offset", m_ampAssistLeftMotorOffset);
-     SmartDashboard.putNumber(getName() + "/Right Motor Offset", m_ampAssistRightMotorOffset);
   }
 
   public void smartDashboardUpdate()
@@ -114,10 +87,9 @@ public class AmpAssistSubsystem extends SubsystemBase {
     
     if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
     {
-      m_ampAssistLeftMotorOffset = SmartDashboard.getNumber(getName()+ "/Left Motor Offset", m_ampAssistLeftMotorOffset);
-      m_ampAssistRightMotorOffset = SmartDashboard.getNumber(getName()+ "/Right Motor Offset", m_ampAssistRightMotorOffset);
-      m_movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_movementSpeed);
-      setSpeed(m_movementSpeed);
+      double movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", 1500);
+      m_LeftAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
+      m_RightAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
 
       SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
     }

@@ -112,8 +112,8 @@ public class DriveSubsystem extends SubsystemBase {
             return;
 
         SmartDashboard.putNumber(getName() + "/Angle", getAngle().getDegrees());
-        // SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
-        // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
+        SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
+        SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
         
         // BotPose botpose = Vision.getBotPose();
         // SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());

@@ -23,7 +23,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private SparkRelativeEncoder m_leftClimbEncoder;
   private SparkRelativeEncoder m_rightClimbEncoder;
 
-  private static final double kClimbP = 0.01;
+  private static final double kClimbP = 0.15;
   private static final double kClimbI = 0.0;
   private static final double kClimbD = 0.0;
   private static final double kClimbFF = 0;
@@ -31,11 +31,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private double m_lastLeftTarget = 0;
   private double m_lastRightTarget = 0;
+  private double m_extendDistance = 115;
+  private double m_retractDistance = 40;
 
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
     m_leftClimbMotor = new CANSparkMax(RobotMap.kLeftClimbCANSparkMaxMotor, CANSparkMax.MotorType.kBrushless);
-    m_rightClimbMotor = new CANSparkMax(RobotMap.kRightClimbCANSparkMaxMotor, CANSparkMax.MotorType.kBrushless);
+   m_rightClimbMotor = new CANSparkMax(RobotMap.kRightClimbCANSparkMaxMotor, CANSparkMax.MotorType.kBrushless);
 
     m_leftClimbMotor.restoreFactoryDefaults();
     m_rightClimbMotor.restoreFactoryDefaults();
@@ -43,8 +45,8 @@ public class ClimbSubsystem extends SubsystemBase {
     m_leftClimbEncoder = (SparkRelativeEncoder)m_leftClimbMotor.getEncoder();
     m_rightClimbEncoder = (SparkRelativeEncoder)m_rightClimbMotor.getEncoder();
 
-    m_leftClimbMotor.setIdleMode(IdleMode.kBrake);
-    m_rightClimbMotor.setIdleMode(IdleMode.kBrake);
+    m_leftClimbMotor.setIdleMode(IdleMode.kCoast);
+    m_rightClimbMotor.setIdleMode(IdleMode.kCoast);
 
     m_climbLeftPidController = m_leftClimbMotor.getPIDController();
     m_climbLeftPidController.setP(kClimbP);
@@ -79,19 +81,30 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.putNumber(getName() + "/climb I", kClimbI);
     SmartDashboard.putNumber(getName() + "/climb D", kClimbD);
     SmartDashboard.putNumber(getName() + "/climb FF", kClimbFF);
+
+    SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
+    SmartDashboard.putNumber(getName() + "/Retract Distance", m_retractDistance);
+
+    // SmartDashboard.putNumber(getName() + "/left velocity", 0);
+    // SmartDashboard.putNumber(getName() + "/left motor output", 0);
   }
 
   public void smartDashboardUpdate()
   {
     SmartDashboard.putNumber(getName() + "/left current position", m_leftClimbEncoder.getPosition());
     SmartDashboard.putNumber(getName() + "/right current position", m_rightClimbEncoder.getPosition());
+    // SmartDashboard.putNumber(getName() + "/left velocity", m_leftClimbEncoder.getVelocity());
+    // SmartDashboard.putNumber(getName() + "/left motor output", m_leftClimbMotor.get());
 
     if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
     {
-      double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kClimbP);
-      double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kClimbI);
-      double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kClimbD);
-      double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kClimbFF);
+      m_extendDistance = SmartDashboard.getNumber(getName() + "/Extend Distance", m_extendDistance);
+      m_retractDistance = SmartDashboard.getNumber(getName() + "/Retract Distance", m_retractDistance);
+
+      double pGain = SmartDashboard.getNumber(getName() + "/climb P", kClimbP);
+      double iGain = SmartDashboard.getNumber(getName() + "/climb I", kClimbI);
+      double dGain = SmartDashboard.getNumber(getName() + "/climb D", kClimbD);
+      double ffGain = SmartDashboard.getNumber(getName() + "/climb FF", kClimbFF);
 
       m_climbLeftPidController.setP(pGain); 
       m_climbLeftPidController.setI(iGain); 
@@ -118,15 +131,37 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
-  public void setLeftTargetPosition(double position)
+  private void setLeftTargetPosition(double position)
   {
     m_climbLeftPidController.setReference(position, ControlType.kPosition);
     m_lastLeftTarget = position;
   }
 
-  public void setRightTargetPosition(double position)
+  private void setRightTargetPosition(double position)
   {
     m_climbRightPidController.setReference(position, ControlType.kPosition);
     m_lastRightTarget = position;
+  }
+
+  public void extendClimbArms()
+  {
+    setRightTargetPosition(-m_extendDistance);
+    setLeftTargetPosition(m_extendDistance);
+  }
+
+  public void retractClimbArms()
+  {
+    setRightTargetPosition(-m_retractDistance);
+    setLeftTargetPosition(m_retractDistance);
+  }
+
+  public boolean isAtTargetPosition() {
+    return Math.abs(m_lastLeftTarget - m_leftClimbEncoder.getPosition()) < 5 &&
+           Math.abs(m_lastRightTarget - m_rightClimbEncoder.getPosition()) < 5 ;
+  }
+
+  public void stopAtCurrentPosition() {
+    setRightTargetPosition(m_rightClimbEncoder.getPosition());
+    setLeftTargetPosition(m_leftClimbEncoder.getPosition());
   }
 }

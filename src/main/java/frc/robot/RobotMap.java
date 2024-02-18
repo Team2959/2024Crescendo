@@ -24,14 +24,13 @@ public final class RobotMap {
     public static final int kRightShooterCANSparkMaxWheel = 24;
         // Victor SPX
     public static final int kIntakeVictorSpMotor = 1;
+        // Talon SRX
     public static final int kWallSpacerTalonSrxMotor = 2;
 
     // PWM motor addresses
         // Servos
     public static final int kLeftAmpServo = 9;
     public static final int kRightAmpServo = 8;
-    // public static final int kLeftWallIntake = 2;
-    // public static final int kRightWallIntake = 3;
 
     // Analog Input addresses
     public static final int kAmpStringPotAnalog = 1;
@@ -68,8 +67,6 @@ public final class RobotMap {
     public static final int kLoadFromSourceButton = 7;
     public static final int kWallSpacerExtendButton = 2;
     public static final int kWallSpacerRetractButton = 11;
-    
-    
 
     // Zeroed values, should be in radians
     // source is google document in Electrical for team - module data

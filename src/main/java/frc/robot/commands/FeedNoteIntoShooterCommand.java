@@ -44,7 +44,5 @@ public class FeedNoteIntoShooterCommand extends Command {
   @Override
   public boolean isFinished() {
     return m_ticks >= 5;
-    // return !m_intakeSubsystem.isNotePresent();
-    // return false;
   }
 }

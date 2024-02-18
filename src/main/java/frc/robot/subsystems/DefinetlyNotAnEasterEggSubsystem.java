@@ -11,3 +11,5 @@
 
 //btw eggs are disgusting anyways
 //except if they are made of chocolate
+
+//I like my eggs hard boiled, over easy, scrambled, devlied and with hollendaise sauce

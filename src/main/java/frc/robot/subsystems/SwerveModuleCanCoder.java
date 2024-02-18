@@ -98,8 +98,8 @@ public class SwerveModuleCanCoder {
     }
 
     public void smartDashboardInit() {
-        SmartDashboard.putNumber(m_name + "/Steer Motor Position", m_steerEncoder.getPosition());
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition());
+        SmartDashboard.putNumber(m_name + "/Steer Motor Position", getRelativeEncoderPosition().getDegrees());
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition().getDegrees());
         // SmartDashboard.putNumber(m_name + "/Drive P", m_drivePIDController.getP());
         // SmartDashboard.putNumber(m_name + "/Drive I", m_drivePIDController.getI());
         // SmartDashboard.putNumber(m_name + "/Drive D", m_drivePIDController.getD());
@@ -115,8 +115,8 @@ public class SwerveModuleCanCoder {
     public void smartDashboardUpdate() {
         // SmartDashboard.putNumber(m_name + "/Drive Encoder Velocity", m_driveEncoder.getVelocity());
         // SmartDashboard.putNumber(m_name + "/Drive Encoder Position", m_driveEncoder.getPosition()); 
-        SmartDashboard.putNumber(m_name + "/Steer Motor Position", m_steerEncoder.getPosition());
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition());
+        SmartDashboard.putNumber(m_name + "/Steer Motor Position", getRelativeEncoderPosition().getDegrees());
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition().getDegrees());
 
     //    m_drivePIDController.setP (SmartDashboard.getNumber(m_name + "/Drive P", kDriveP));
     //    m_drivePIDController.setI (SmartDashboard.getNumber(m_name + "/Drive I", kDriveI));
@@ -141,7 +141,7 @@ public class SwerveModuleCanCoder {
         return Rotation2d.fromDegrees(degrees);
     }
 
-    private double getAbsoluteEncoderPosition()
+    private Rotation2d getAbsoluteEncoderPosition()
     {
         double startingAngle = m_steerOffset - getCanCoder().getRadians();
     
@@ -154,7 +154,12 @@ public class SwerveModuleCanCoder {
         //  relative encoder in assembly turning counter-clockwise as positive
         startingAngle = 2 * Math.PI - startingAngle;
 
-        return startingAngle;
+        return Rotation2d.fromRadians(startingAngle);
+    }
+
+    private Rotation2d getRelativeEncoderPosition()
+    {
+        return Rotation2d.fromRadians(m_steerEncoder.getPosition());
     }
 
     public double getVelocity()
@@ -164,7 +169,7 @@ public class SwerveModuleCanCoder {
 
     public SwerveModulePosition getPosition()
     {
-        return new SwerveModulePosition(m_driveEncoder.getPosition(), new Rotation2d(m_steerEncoder.getPosition()));
+        return new SwerveModulePosition(m_driveEncoder.getPosition(), getRelativeEncoderPosition());
     }
 
     /*
@@ -172,7 +177,7 @@ public class SwerveModuleCanCoder {
      */
     public void setDesiredState(SwerveModuleState referenceState)
     {
-        SwerveModuleState state = SwerveModuleState.optimize(referenceState, new Rotation2d(m_steerEncoder.getPosition()));
+        SwerveModuleState state = SwerveModuleState.optimize(referenceState, getRelativeEncoderPosition());
 
         setDriveVelocity(state.speedMetersPerSecond);
 
@@ -196,7 +201,7 @@ public class SwerveModuleCanCoder {
      */
     public void resetAngleEncoderToAbsolute()
     {
-        m_steerEncoder.setPosition(getAbsoluteEncoderPosition());
+        m_steerEncoder.setPosition(getAbsoluteEncoderPosition().getRadians());
     }
 
     public void lockWheelAtAngleInDegrees(double degrees)
@@ -210,7 +215,7 @@ public class SwerveModuleCanCoder {
     {
         //we put that the difference should be less than 0.025 which is approximately 0.5% margin of error
         // 0.025 radians is ~ 1.5 degrees
-        if (Math.abs(getAbsoluteEncoderPosition() - getPosition().angle.getRadians()) > 0.025)
+        if (Math.abs(getAbsoluteEncoderPosition().getRadians() - getRelativeEncoderPosition().getRadians()) > 0.025)
         {
             resetAngleEncoderToAbsolute();
         }

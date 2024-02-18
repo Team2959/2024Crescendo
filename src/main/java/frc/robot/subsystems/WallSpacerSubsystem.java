@@ -25,6 +25,8 @@ public class WallSpacerSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean(getName() + "/Extended", isWallSpacerExtended());
+    SmartDashboard.putBoolean(getName() + "/Retracted", isWallSpacerRetracted());
   }
  
   public void smartDashboardInit(){
@@ -36,8 +38,8 @@ public class WallSpacerSubsystem extends SubsystemBase {
   }
 
   public void smartDashboardUpdate(){
-    SmartDashboard.putBoolean(getName() + "/Extended", isWallSpacerExtended());
-    SmartDashboard.putBoolean(getName() + "/Retracted", isWallSpacerRetracted());
+    // SmartDashboard.putBoolean(getName() + "/Extended", isWallSpacerExtended());
+    // SmartDashboard.putBoolean(getName() + "/Retracted", isWallSpacerRetracted());
 
     m_wallSpacerSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_wallSpacerSpeed);
     if (SmartDashboard.getBoolean(getName() + "/Move Wall Spacer", false))

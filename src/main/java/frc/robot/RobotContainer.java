@@ -129,6 +129,7 @@ public class RobotContainer {
           () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
           () -> m_robot.isTeleopEnabled()));
     m_lockWheeButton.whileTrue(new LockWheelsCommand(m_driveSubsystem));
+    m_resetNavX.onTrue(new InstantCommand(() -> {m_driveSubsystem.resetNavX();}));
 
     // All the Note delivery commands
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
@@ -144,9 +145,10 @@ public class RobotContainer {
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
     m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
-   
-    m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
-    m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
+
+    // Pick up Note from Floor
+    m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));
+    m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Load Note From Source
     m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
@@ -161,14 +163,9 @@ public class RobotContainer {
     m_extendAmpAssistButton.whileTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
     m_retractAmpAssistButton.whileTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
-    // Pick up Note from Floor
-    m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));
-    m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
-
-    // Reset NavX
-    m_resetNavX.onTrue(new InstantCommand(() -> {
-            m_driveSubsystem.resetNavX();
-        }));
+    // Climb
+    m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
+    m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
   }
 
   public void smartDashboardInit() {
@@ -188,10 +185,10 @@ public class RobotContainer {
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
-          m_intakeSubsystem.smartDashboardUpdate();
+          // m_intakeSubsystem.smartDashboardUpdate();
           m_wallSpacerSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
-           m_climbSubsystem.smartDashboardUpdate();
+          m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();

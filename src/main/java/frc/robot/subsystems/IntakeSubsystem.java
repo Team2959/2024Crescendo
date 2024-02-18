@@ -27,6 +27,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
   }
 
   public void smartDashboardInit()
@@ -38,9 +39,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void smartDashboardUpdate()
   {
-    // m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
-    // m_reverseIntakeSpeed = SmartDashboard.getNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
-    SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
+    m_intakeSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", m_intakeSpeed);
+    m_reverseIntakeSpeed = SmartDashboard.getNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
   }
 
   public void intakeForward() 

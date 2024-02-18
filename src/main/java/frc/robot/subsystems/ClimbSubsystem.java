@@ -45,8 +45,8 @@ public class ClimbSubsystem extends SubsystemBase {
     m_leftClimbEncoder = (SparkRelativeEncoder)m_leftClimbMotor.getEncoder();
     m_rightClimbEncoder = (SparkRelativeEncoder)m_rightClimbMotor.getEncoder();
 
-    m_leftClimbMotor.setIdleMode(IdleMode.kCoast);
-    m_rightClimbMotor.setIdleMode(IdleMode.kCoast);
+    m_leftClimbMotor.setIdleMode(IdleMode.kBrake);
+    m_rightClimbMotor.setIdleMode(IdleMode.kBrake);
 
     m_climbLeftPidController = m_leftClimbMotor.getPIDController();
     m_climbLeftPidController.setP(kClimbP);

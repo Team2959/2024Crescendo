@@ -59,12 +59,12 @@ public class WallSpacerSubsystem extends SubsystemBase {
 
   public void extendWallSpacer()
   {
-    m_wallSpacerMotor.set(m_wallSpacerSpeed);
+    m_wallSpacerMotor.set(-m_wallSpacerSpeed);
   }
 
   public void retractWallSpacer()
   {
-    m_wallSpacerMotor.set(-m_wallSpacerSpeed);
+    m_wallSpacerMotor.set(m_wallSpacerSpeed);
   }
 
   public void stopWallSpacer()
@@ -74,11 +74,11 @@ public class WallSpacerSubsystem extends SubsystemBase {
 
   public boolean isWallSpacerExtended()
   {
-    return m_wallSpacerExtended.get(); 
+    return !m_wallSpacerExtended.get(); 
   }
 
   public boolean isWallSpacerRetracted()
   {
-    return m_wallSpacerRetracted.get();
+    return !m_wallSpacerRetracted.get();
   }
 }

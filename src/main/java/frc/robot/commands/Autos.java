@@ -13,19 +13,60 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 
 public final class Autos {
     public static SendableChooser<Command> sendableChooser(RobotContainer container) {
         SendableChooser<Command> sendableChooser = new SendableChooser<>();
-        sendableChooser.addOption("Nothing", new WaitCommand(0));
-        sendableChooser.setDefaultOption("Place And Leave Left", placeAndLeaveLeft(container));
-        sendableChooser.addOption("Place And Leave Right", placeAndLeaveRight(container));
-        sendableChooser.addOption("Place And Leave And Balance", placeAndLeaveAndBalance(container));
-        sendableChooser.addOption("Place And Balance", placeAndBalance(container));
-        sendableChooser.addOption("Place Mid And Balance", placeMidAndBalance(container));
-        sendableChooser.addOption("Drive Only", runPath("Place Game Piece", container.m_driveSubsystem));
-        sendableChooser.addOption("Place And Leave And Locate Cone", placeAndLeaveAndLocateCone(container));
+        sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
+        sendableChooser.addOption("Center Shoot and Leave",
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));
+        sendableChooser.addOption("Two Note Center and Leave",
+            centerShootAndPickUpCenterNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));            
+
+        // sendableChooser.setDefaultOption("Place And Leave Left", placeAndLeaveLeft(container));
+        // sendableChooser.addOption("Place And Leave Right", placeAndLeaveRight(container));
+        // sendableChooser.addOption("Place And Leave And Balance", placeAndLeaveAndBalance(container));
+        // sendableChooser.addOption("Place And Balance", placeAndBalance(container));
+        // sendableChooser.addOption("Place Mid And Balance", placeMidAndBalance(container));
+        // sendableChooser.addOption("Drive Only", runPath("Place Game Piece", container.m_driveSubsystem));
+        // sendableChooser.addOption("Place And Leave And Locate Cone", placeAndLeaveAndLocateCone(container));
         return sendableChooser;
+    }
+
+    private static Command shootNoteAndLeave(RobotContainer container, ShooterLocation speakerLocation) {
+        return Commands.sequence(
+            new InstantCommand(() -> {container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation);}, container.m_shooterSubsystem)
+                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
+                .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
+            new WaitCommand(0.25),
+            new InstantCommand(() -> {container.m_shooterSubsystem.stopShooterMotor();}),
+            new InstantCommand(() -> {container.m_driveSubsystem.drive(2, 0, 0, true);}, container.m_driveSubsystem),
+            new WaitCommand(1),
+            new InstantCommand(() -> {container.m_driveSubsystem.drive(0, 0, 0, true);}, container.m_driveSubsystem)
+            );
+    }
+
+private static Command centerShootAndPickUpCenterNoteAndLeave(RobotContainer container, ShooterLocation speakerLocation) {
+        return Commands.sequence(
+            new InstantCommand(() -> {container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation);}, container.m_shooterSubsystem)
+                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
+                .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
+            new WaitCommand(0.5),
+            new InstantCommand(() -> {container.m_shooterSubsystem.stopShooterMotor();}),
+            new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)
+                .alongWith(new InstantCommand(() -> {container.m_driveSubsystem.drive(2, 0, 0, true);}, container.m_driveSubsystem)
+                    .andThen(new WaitCommand(1.0))
+                    .andThen(new InstantCommand(() -> {container.m_driveSubsystem.drive(-2, 0, 0, true);}, container.m_driveSubsystem))),
+            new WaitCommand(1.0),
+            new InstantCommand(() -> {container.m_driveSubsystem.drive(0, 0, 0, true);}, container.m_driveSubsystem),
+            new InstantCommand(() -> {container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation);}, container.m_shooterSubsystem)
+                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
+                .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
+            new WaitCommand(0.25),
+            new InstantCommand(() -> {container.m_shooterSubsystem.stopShooterMotor();})
+            );
     }
 
     // public static Command placeGamePiece(GamePieceType gamePieceType,

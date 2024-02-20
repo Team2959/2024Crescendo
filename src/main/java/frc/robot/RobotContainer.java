@@ -48,8 +48,8 @@ public class RobotContainer {
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
@@ -67,7 +67,7 @@ public class RobotContainer {
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
   double m_speedMultiplier = 0.70;
-  double m_delayTimeForShooter = 0.5;
+  public double m_delayTimeForShooter = 0.5;
 
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);

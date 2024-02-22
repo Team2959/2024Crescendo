@@ -22,8 +22,12 @@ public final class Autos {
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",
             shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));
+        sendableChooser.addOption("Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
+        sendableChooser.addOption("Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
         sendableChooser.addOption("Two Note Center and Leave",
-            centerShootAndPickUpCenterNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));            
+            centerShootAndPickUpCenterNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));  
 
         // sendableChooser.setDefaultOption("Place And Leave Left", placeAndLeaveLeft(container));
         // sendableChooser.addOption("Place And Leave Right", placeAndLeaveRight(container));
@@ -43,7 +47,7 @@ public final class Autos {
             new WaitCommand(0.25),
             new InstantCommand(() -> {container.m_shooterSubsystem.stopShooterMotor();}),
             new InstantCommand(() -> {container.m_driveSubsystem.drive(2, 0, 0, true);}, container.m_driveSubsystem),
-            new WaitCommand(1),
+            new WaitCommand(0.5),
             new InstantCommand(() -> {container.m_driveSubsystem.drive(0, 0, 0, true);}, container.m_driveSubsystem)
             );
     }

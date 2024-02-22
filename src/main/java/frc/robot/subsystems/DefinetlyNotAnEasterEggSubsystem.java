@@ -13,3 +13,7 @@
 //except if they are made of chocolate
 
 //I like my eggs hard boiled, over easy, scrambled, devlied and with hollendaise sauce
+
+//Seems like there's a new easter bunny in town...
+//There also seem to be over twenty EasterEggs scattered around the programming room.
+//Can the new Easter bunny find them?

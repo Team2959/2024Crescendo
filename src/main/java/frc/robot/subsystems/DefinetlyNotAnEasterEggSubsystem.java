@@ -17,3 +17,6 @@
 //Seems like there's a new easter bunny in town...
 //There also seem to be over twenty EasterEggs scattered around the programming room.
 //Can the new Easter bunny find them?
+
+//The EasterEggs have multiplied, there's over forty now...
+//Who will stop this madness?

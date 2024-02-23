@@ -72,4 +72,23 @@ public class Vision {
         return botpose;
     }
 
+    public double limelight_aim_proportional()
+     {    
+    
+    double kP = .035;
+    double targetingAngularVelocity = 0;//LimelightHelpers.getTX("limelight") * kP;
+    targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
+    targetingAngularVelocity *= -1.0;
+
+    return targetingAngularVelocity;
+     }
+
+    public double limelight_range_proportional()
+    {    
+        double kP = .1;
+        double targetingForwardSpeed = 0; //LimelightHelpers.getTY("limelight") * kP;
+        targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
+        targetingForwardSpeed *= -1.0;
+        return targetingForwardSpeed;
+    }
 }

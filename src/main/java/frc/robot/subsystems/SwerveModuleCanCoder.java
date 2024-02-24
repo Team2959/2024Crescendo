@@ -167,6 +167,12 @@ public class SwerveModuleCanCoder {
         return m_driveEncoder.getVelocity();
     }
 
+    public SwerveModuleState getSwerveModuleState()
+    {
+        // return new SwerveModuleState(getVelocity(), getAbsoluteEncoderPosition());
+        return new SwerveModuleState(getVelocity(), getRelativeEncoderPosition());
+    }
+
     public SwerveModulePosition getPosition()
     {
         return new SwerveModulePosition(m_driveEncoder.getPosition(), getRelativeEncoderPosition());

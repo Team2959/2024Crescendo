@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -55,7 +58,9 @@ public class RobotContainer {
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // public final Vision m_vision = new Vision();
 
-  public final SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
+  private SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
+  // Path Planner
+  // private final SendableChooser<Command> m_autoChooser;
 
   Robot m_robot;
 
@@ -102,6 +107,8 @@ public class RobotContainer {
     m_turnConditioning.setDeadband(0.2);
     m_turnConditioning.setExponent(1.4);
 
+    configurePathPlannerAutoOptions();
+    registerPathPlannerNamedCommands();
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
     // Configure the trigger bindings
@@ -109,6 +116,23 @@ public class RobotContainer {
 
     smartDashboardInit();
     registerSmartDashboardCalls();
+  }
+  
+  private void configurePathPlannerAutoOptions()
+  {
+    // Next three are links to PathPlanner auto choosing
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    // autoChooser = AutoBuilder.buildAutoChooser("Shoot and Leave");
+    // autoChooser = AutoBuilder.buildAutoChooser("Center two note");
+  }
+
+  private void registerPathPlannerNamedCommands()
+  {
+    // Register Named Commands - things to do at marked points, e.g. start intake, shoot, etc
+    // Must match names in PathPlanner!
+    NamedCommands.registerCommand("grabNote", new NoteIntakeFromFloorCommand(m_intakeSubsystem));
+    // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
   }
 
   /**

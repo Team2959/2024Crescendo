@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.RobotMap;
 
@@ -71,6 +76,32 @@ public class DriveSubsystem extends SubsystemBase {
                 RobotMap.kZeroedBackRight, "Back Right");
 
         m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
+
+        // For PathPlanner!
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            this::resetOdometry,
+            this::getChassisSpeeds,
+            this::driveBotRelative,
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    4.5, // Max module speed, in m/s
+                    0.4041, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            ),
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this);
     }
 
     public void initalize() {
@@ -135,14 +166,13 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.smartDashboardUpdate();
     }
 
-    public void drive(double xMetersPerSecond, double yMetersPerSecond,
-            double rotationRadiansPerSecond, boolean fieldRelative)
+    private void driveBotRelative(ChassisSpeeds chassisSpeeds)
     {
-        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond,
-                        getAngle())
-                : new ChassisSpeeds(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond));
+        drive(m_kinematics.toSwerveModuleStates(chassisSpeeds));
+    }
 
+    private void drive(SwerveModuleState[] states)
+    {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, kMaxSpeedMetersPerSecond);
 
         m_frontLeft.setDesiredState(states[0]);
@@ -151,8 +181,28 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.setDesiredState(states[3]);
     }
 
+    public void drive(double xMetersPerSecond, double yMetersPerSecond,
+            double rotationRadiansPerSecond, boolean fieldRelative)
+    {
+        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond,
+                        getAngle())
+                : new ChassisSpeeds(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond));
+
+        drive(states);
+    }
+
     public SwerveDriveKinematics getKinematics() {
         return m_kinematics;
+    }
+
+    public ChassisSpeeds getChassisSpeeds()
+    {
+        return m_kinematics.toChassisSpeeds(
+            m_frontLeft.getSwerveModuleState(),
+            m_frontRight.getSwerveModuleState(),
+            m_backLeft.getSwerveModuleState(),
+            m_backRight.getSwerveModuleState());
     }
 
     public Pose2d getPose() {

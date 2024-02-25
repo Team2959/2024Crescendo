@@ -20,3 +20,5 @@
 
 //The EasterEggs have multiplied, there's over forty now...
 //Who will stop this madness?
+
+//Nom, nom, nom - those eggs are disappearing

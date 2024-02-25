@@ -10,7 +10,6 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -45,17 +44,6 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d kFrontRightLocation = new Translation2d(kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kBackRightLocation = new Translation2d(-kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
-    private static final double kRotationP = 0.1;
-    private static final double kRotationI = 0.0;
-    private static final double kRotationD = 0.0;
-
-    final PIDController m_rotationController = new PIDController(kRotationP, kRotationI, kRotationD);
-    double m_angleToRotateTo = 0.0;
-    boolean m_rotationAlignmentOn = false;
-    
-    double autoRotateValue = 0.0;
-    double autoXValue = 0.0;
-    double autoYValue = 0.0;
 
     private int m_ticks = 0;
 
@@ -84,8 +72,8 @@ public class DriveSubsystem extends SubsystemBase {
             this::getChassisSpeeds,
             this::driveBotRelative,
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    new PIDConstants(0.7, 0.0001, 0.0), // Translation PID constants
+                    new PIDConstants(0.1, 0.0001, 0.0), // Rotation PID constants
                     4.5, // Max module speed, in m/s
                     0.4041, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -119,21 +107,6 @@ public class DriveSubsystem extends SubsystemBase {
         m_navX.setAngleAdjustment(offset.getDegrees());
     }
 
-    public void turnOnRotate() {
-        double diff180 = Math.abs(180 - getAngle().getDegrees());
-        double diff0 = Math.abs(getAngle().getDegrees());
-        if(diff0 > diff180) {
-            m_angleToRotateTo = 180;
-        } else {
-            m_angleToRotateTo = 0;
-        }
-        m_rotationAlignmentOn = true;
-    }
-
-    public void turnOffRotate() {
-        m_rotationAlignmentOn = false;
-    }
-
     @Override
     public void periodic() {
         m_odometry.update(getAngle(), getPositions());
@@ -143,8 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
             return;
 
         SmartDashboard.putNumber(getName() + "/Angle", getAngle().getDegrees());
-        SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
-        SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
+        // SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
+        // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
         
         // BotPose botpose = Vision.getBotPose();
         // SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());

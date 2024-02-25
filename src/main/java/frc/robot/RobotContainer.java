@@ -59,9 +59,9 @@ public class RobotContainer {
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // public final Vision m_vision = new Vision();
 
-  private SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
+  // private SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
   // Path Planner
-  // private final SendableChooser<Command> m_autoChooser;
+  private SendableChooser<Command> m_autoChooser;
 
   Robot m_robot;
 
@@ -105,8 +105,9 @@ public class RobotContainer {
     m_turnConditioning.setDeadband(0.2);
     m_turnConditioning.setExponent(1.4);
 
-    configurePathPlannerAutoOptions();
     registerPathPlannerNamedCommands();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    // m_autoChooser = AutoBuilder.buildAutoChooser("Center two note");
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
     // Configure the trigger bindings
@@ -114,14 +115,6 @@ public class RobotContainer {
 
     smartDashboardInit();
     registerSmartDashboardCalls();
-  }
-  
-  private void configurePathPlannerAutoOptions()
-  {
-    // Next three are links to PathPlanner auto choosing
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
-    // autoChooser = AutoBuilder.buildAutoChooser("Shoot and Leave");
-    // autoChooser = AutoBuilder.buildAutoChooser("Center two note");
   }
 
   private void registerPathPlannerNamedCommands()

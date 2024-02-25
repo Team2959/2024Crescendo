@@ -71,7 +71,7 @@ public class RobotContainer {
   Conditioning m_driveXConditioning = new Conditioning();
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
-  double m_speedMultiplier = 0.70;
+  double m_speedMultiplier = 0.80;
   public double m_delayTimeForShooter = 0.5;
 
   // Driver Buttons
@@ -92,8 +92,8 @@ public class RobotContainer {
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
   JoystickButton m_sourceLoadButton = new JoystickButton(m_buttonBox, RobotMap.kLoadFromSourceButton);
   JoystickButton m_reverseIntakeButton = new JoystickButton(m_buttonBox, RobotMap.kReverseIntake);
-  JoystickButton m_wallSpacerExtendButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerExtendButton);
-  JoystickButton m_wallSpacerRetractButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerRetractButton);
+  // JoystickButton m_wallSpacerExtendButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerExtendButton);
+  // JoystickButton m_wallSpacerRetractButton = new JoystickButton(m_buttonBox, RobotMap.kWallSpacerRetractButton);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -175,17 +175,17 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Load Note From Source
-    m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
-
-    //WallSpacer
-    m_wallSpacerExtendButton.onTrue(new ExtendWallSpacerCommand(m_wallSpacerSubsystem));
-    m_wallSpacerRetractButton.onTrue(new RetractWallSpacerCommand(m_wallSpacerSubsystem));
+    m_sourceLoadButton.onTrue(
+        new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem)
+        .alongWith(new ExtendWallSpacerCommand(m_wallSpacerSubsystem)));
 
     // Amp Assist
-    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
-    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
-    m_extendAmpAssistButton.whileTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
-    m_retractAmpAssistButton.whileTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    m_retractAmpAssistButton.onTrue(
+      new RetractAmpAssistCommand(m_AmpAssistSubsystem)
+      .alongWith(new RetractWallSpacerCommand(m_wallSpacerSubsystem)));
+    // m_extendAmpAssistButton.whileTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    // m_retractAmpAssistButton.whileTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));

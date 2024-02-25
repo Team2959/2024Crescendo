@@ -16,7 +16,7 @@ public class WallSpacerSubsystem extends SubsystemBase {
   private final DigitalInput m_wallSpacerExtended = new DigitalInput(RobotMap.kWallSpacerExtendedDigitalInput);
   private final DigitalInput m_wallSpacerRetracted = new DigitalInput(RobotMap.kWallSpacerRetractedDigitalInput);
 
-  double m_wallSpacerSpeed = 0.75;
+  double m_wallSpacerSpeed = 0.8;
 
   /** Creates a new WallSpacerSubsystem. */
   public WallSpacerSubsystem() {

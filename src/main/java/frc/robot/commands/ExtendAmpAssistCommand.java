@@ -36,6 +36,6 @@ public class ExtendAmpAssistCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;// m_AmpAssistSubsystem.AtPosition(true);
+    return m_AmpAssistSubsystem.AtPosition(true);
   }
 }

@@ -65,11 +65,11 @@ public class AmpAssistSubsystem extends SubsystemBase {
   {
     if (extended)
     {
-      return getPosition() >= 5.5; // in inches
+      return getPosition() >= 0.7;
     }
     else
     {
-      return getPosition() <= 0.25; // in inches
+      return getPosition() <= 0.07;
     }
   }
 

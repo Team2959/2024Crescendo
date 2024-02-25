@@ -31,7 +31,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private double m_lastLeftTarget = 0;
   private double m_lastRightTarget = 0;
-  private double m_extendDistance = 115;
+  private double m_extendDistance = 142;
   private double m_retractDistance = 05;
 
   /** Creates a new ClimbSubsystem. */

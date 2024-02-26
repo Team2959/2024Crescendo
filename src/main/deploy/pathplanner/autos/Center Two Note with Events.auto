@@ -8,13 +8,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Leave From Center"
+            "pathName": "Leave From Center with Events"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Return to Center"
+            "pathName": "Return to Center with Events"
           }
         }
       ]

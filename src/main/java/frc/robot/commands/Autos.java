@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,8 +17,10 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 
-public final class Autos {
-    public static SendableChooser<Command> sendableChooser(RobotContainer container) {
+public final class Autos
+{
+    public static SendableChooser<Command> sendableChooser(RobotContainer container)
+    {
         SendableChooser<Command> sendableChooser = new SendableChooser<>();
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",
@@ -29,6 +32,30 @@ public final class Autos {
         sendableChooser.addOption("Two Note Center and Leave",
             centerShootAndPickUpCenterNoteAndLeave(container));  
         return sendableChooser;
+    }
+
+    public static void registerPathPlannerNamedCommands(RobotContainer container)
+    {
+        // Register Named Commands - things to do at marked points, e.g. start intake, shoot, etc
+        // Must match names in PathPlanner!
+        NamedCommands.registerCommand("grabNoteFromFloor", new NoteIntakeFromFloorCommand(container.m_intakeSubsystem));
+
+        NamedCommands.registerCommand("startShooterCenter", new InstantCommand(() ->
+            container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), container.m_shooterSubsystem));
+        // NamedCommands.registerCommand("startShooterLeft", new InstantCommand(() ->
+        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), container.m_shooterSubsystem));
+        // NamedCommands.registerCommand("startShooterRight", new InstantCommand(() ->
+        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), container.m_shooterSubsystem));
+        // NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
+        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), container.m_shooterSubsystem));
+
+        NamedCommands.registerCommand("waitAndFeedNoteIntoShooter",
+            new WaitCommand(container.m_delayTimeForShooter)
+            .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem)));
+        NamedCommands.registerCommand("feedNoteIntoShooter", new FeedNoteIntoShooterCommand(container.m_intakeSubsystem));
+
+        NamedCommands.registerCommand("stopShooter", new InstantCommand(() ->
+            container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem));
     }
 
     private static Command runPathFromPathPlanner(String name)
@@ -96,7 +123,8 @@ public final class Autos {
             new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor()));
     }
 
-    private Autos() {
+    private Autos()
+    {
         throw new UnsupportedOperationException("This is a utility class!");
     }
 }

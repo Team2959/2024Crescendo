@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
@@ -103,9 +102,9 @@ public class RobotContainer {
     m_turnConditioning.setDeadband(0.2);
     m_turnConditioning.setExponent(1.4);
 
-    registerPathPlannerNamedCommands();
+    Autos.registerPathPlannerNamedCommands(this);
     // m_autoChooser = AutoBuilder.buildAutoChooser();
-    // m_autoChooser = AutoBuilder.buildAutoChooser("Center two note");
+    // m_autoChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
     m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
@@ -114,30 +113,6 @@ public class RobotContainer {
 
     smartDashboardInit();
     registerSmartDashboardCalls();
-  }
-
-  private void registerPathPlannerNamedCommands()
-  {
-    // Register Named Commands - things to do at marked points, e.g. start intake, shoot, etc
-    // Must match names in PathPlanner!
-    NamedCommands.registerCommand("grabNoteFromFloor", new NoteIntakeFromFloorCommand(m_intakeSubsystem));
-
-    NamedCommands.registerCommand("startShooterCenter", new InstantCommand(() ->
-        m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), m_shooterSubsystem));
-    // NamedCommands.registerCommand("startShooterLeft", new InstantCommand(() ->
-    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), m_shooterSubsystem));
-    // NamedCommands.registerCommand("startShooterRight", new InstantCommand(() ->
-    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), m_shooterSubsystem));
-    // NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
-    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), m_shooterSubsystem));
-
-    NamedCommands.registerCommand("waitAndFeedNoteIntoShooter",
-        new WaitCommand(m_delayTimeForShooter)
-        .andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem)));
-    NamedCommands.registerCommand("feedNoteIntoShooter", new FeedNoteIntoShooterCommand(m_intakeSubsystem));
-
-    NamedCommands.registerCommand("stopShooter", new InstantCommand(() ->
-        m_shooterSubsystem.stopShooterMotor(), m_shooterSubsystem));
   }
 
   /**

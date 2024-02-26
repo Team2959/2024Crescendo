@@ -8,13 +8,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center Shot to Center Note"
+            "pathName": "Leave From Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Return to Center Shot"
+            "pathName": "Return to Center"
           }
         }
       ]

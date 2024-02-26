@@ -59,8 +59,6 @@ public class RobotContainer {
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // public final Vision m_vision = new Vision();
 
-  // private SendableChooser<Command> m_autoChooser = Autos.sendableChooser(this);
-  // Path Planner
   private SendableChooser<Command> m_autoChooser;
 
   Robot m_robot;
@@ -106,8 +104,9 @@ public class RobotContainer {
     m_turnConditioning.setExponent(1.4);
 
     registerPathPlannerNamedCommands();
-    m_autoChooser = AutoBuilder.buildAutoChooser();
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
     // m_autoChooser = AutoBuilder.buildAutoChooser("Center two note");
+    m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
     // Configure the trigger bindings
@@ -125,12 +124,12 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("startShooterCenter", new InstantCommand(() ->
         m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), m_shooterSubsystem));
-    NamedCommands.registerCommand("startShooterLeft", new InstantCommand(() ->
-        m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), m_shooterSubsystem));
-    NamedCommands.registerCommand("startShooterRight", new InstantCommand(() ->
-        m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), m_shooterSubsystem));
-    NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
-        m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), m_shooterSubsystem));
+    // NamedCommands.registerCommand("startShooterLeft", new InstantCommand(() ->
+    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), m_shooterSubsystem));
+    // NamedCommands.registerCommand("startShooterRight", new InstantCommand(() ->
+    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), m_shooterSubsystem));
+    // NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
+    //     m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), m_shooterSubsystem));
 
     NamedCommands.registerCommand("waitAndFeedNoteIntoShooter",
         new WaitCommand(m_delayTimeForShooter)

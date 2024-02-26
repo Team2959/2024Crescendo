@@ -10,6 +10,12 @@
           "data": {
             "pathName": "Center Shot to Center Note"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Return to Center Shot"
+          }
         }
       ]
     }

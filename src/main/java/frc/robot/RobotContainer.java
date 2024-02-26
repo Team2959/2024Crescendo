@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import cwtech.util.Conditioning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -102,15 +100,15 @@ public class RobotContainer {
     m_turnConditioning.setDeadband(0.2);
     m_turnConditioning.setExponent(1.4);
 
+    // Autonomous set up
     Autos.registerPathPlannerNamedCommands(this);
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
-    // m_autoChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
     m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
     // Configure the trigger bindings
     configureBindings();
 
+    // Smart Dashboard
     smartDashboardInit();
     registerSmartDashboardCalls();
   }

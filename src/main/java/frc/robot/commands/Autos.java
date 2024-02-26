@@ -21,6 +21,8 @@ public final class Autos
 {
     public static SendableChooser<Command> sendableChooser(RobotContainer container)
     {
+        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
+        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
         SendableChooser<Command> sendableChooser = new SendableChooser<>();
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",

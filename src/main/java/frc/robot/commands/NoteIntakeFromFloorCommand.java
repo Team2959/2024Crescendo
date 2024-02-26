@@ -22,6 +22,7 @@ public class NoteIntakeFromFloorCommand extends Command {
   @Override
   public void initialize() {
     m_intakeSubsystem.intakeForward();
+    m_intakeSubsystem.setPickingUpNote();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

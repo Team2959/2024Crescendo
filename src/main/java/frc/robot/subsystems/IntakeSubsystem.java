@@ -18,6 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   double m_intakeSpeed = 1.0;
   double m_reverseIntakeSpeed = -0.25;
+  boolean m_isPickingUpNote;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -50,14 +51,25 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void reverseIntake() {
     m_intakeMotor.set(m_reverseIntakeSpeed);
+    m_isPickingUpNote = false;
   }
 
   public void stopMotor() {
     m_intakeMotor.set(0);
+    m_isPickingUpNote = false;
   }
 
   public boolean isNotePresent()
   {
     return m_noteDetect.get() == false;
+  }
+
+  public boolean isNotePickedUp()
+  {
+    return m_isPickingUpNote && isNotePresent();
+  }
+
+  public void setPickingUpNote() {
+      m_isPickingUpNote = true;
   }
 }

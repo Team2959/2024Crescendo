@@ -27,7 +27,7 @@ public final class Autos {
         sendableChooser.addOption("Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
             shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
         sendableChooser.addOption("Two Note Center and Leave",
-            centerShootAndPickUpCenterNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));  
+            centerShootAndPickUpCenterNoteAndLeave(container));  
         return sendableChooser;
     }
 
@@ -36,32 +36,33 @@ public final class Autos {
         return AutoBuilder.followPath(PathPlannerPath.fromPathFile(name));
     }
 
-    private static Command shootNoteAndLeave(RobotContainer container, ShooterLocation speakerLocation) {
+    private static Command shootNoteAndLeave(
+        RobotContainer container,
+        ShooterLocation speakerLocation)
+    {
         return Commands.sequence(
-            new InstantCommand(() -> container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)
-                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
-                .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
-            new WaitCommand(0.25),
-            new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor()),
+            initialSpeakerNoteShot(container, speakerLocation),
             runPathFromPathPlanner("Leave From Center")
+                .alongWith(stopShooterAfterNoteDelivery(container))
             // new InstantCommand(() -> container.m_driveSubsystem.drive(2, 0, 0, true), container.m_driveSubsystem),
             // new WaitCommand(0.5),
             // new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem)
             );
     }
 
-private static Command centerShootAndPickUpCenterNoteAndLeave(RobotContainer container, ShooterLocation speakerLocation) {
+    private static Command centerShootAndPickUpCenterNoteAndLeave(
+        RobotContainer container)
+    {
+        var speakerLocation = ShooterLocation.CenterSpeaker;
         return Commands.sequence(
-            new InstantCommand(() -> container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)
-                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
-                .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
-            new WaitCommand(0.5),
-            new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor()),
+            initialSpeakerNoteShot(container, speakerLocation),
             runPathFromPathPlanner("Leave From Center")
-                .alongWith(new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),
+                .alongWith(
+                    stopShooterAfterNoteDelivery(container),
+                    new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),
             runPathFromPathPlanner("Return to Center")
                 .alongWith(new InstantCommand(() ->
-                    container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), container.m_shooterSubsystem)),
+                    container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)),
             new FeedNoteIntoShooterCommand(container.m_intakeSubsystem),
             // new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)
             //     .alongWith(new InstantCommand(() -> container.m_driveSubsystem.drive(2, 0, 0, true), container.m_driveSubsystem)
@@ -72,9 +73,27 @@ private static Command centerShootAndPickUpCenterNoteAndLeave(RobotContainer con
             // new InstantCommand(() -> container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)
             //     .alongWith(new WaitCommand(container.m_delayTimeForShooter)
             //     .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
-            new WaitCommand(0.25),
-            new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor())
+            stopShooterAfterNoteDelivery(container)
             );
+    }
+
+    private static Command initialSpeakerNoteShot(
+        RobotContainer container,
+        ShooterLocation speakerLocation)
+    {
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)
+                .alongWith(new WaitCommand(container.m_delayTimeForShooter)
+                    .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem)))
+            );
+    }
+
+    private static Command stopShooterAfterNoteDelivery(
+        RobotContainer container)
+    {
+        return Commands.sequence(
+            new WaitCommand(0.25),
+            new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor()));
     }
 
     private Autos() {

@@ -193,7 +193,7 @@ public class RobotContainer {
     m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
 
     // Autonomous Trigger to stop finish floor intake
-    new Trigger(m_intakeSubsystem::isNotePresent)
+    new Trigger(m_intakeSubsystem::isNotePickedUp)
       .and(m_robot::isAutonomousEnabled)
       .onTrue(new DetectNoteIntakeFromFloorCommand(m_intakeSubsystem));
   }

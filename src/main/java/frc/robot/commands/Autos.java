@@ -33,6 +33,8 @@ public final class Autos
             shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
         sendableChooser.addOption("Two Note Center and Leave",
             centerShootAndPickUpCenterNoteAndLeave(container));  
+        sendableChooser.addOption("Three Note Center",
+            threeNoteCenter(container));  
         return sendableChooser;
     }
 
@@ -60,6 +62,13 @@ public final class Autos
             container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem));
     }
 
+    private static Command runFirstPathFromPathPlanner(RobotContainer container, String name)
+    {
+        var path = PathPlannerPath.fromPathFile(name);
+        container.m_driveSubsystem.setInitialPose(path.getPathPoses().get(0));
+        return runPathFromPathPlanner(name);
+    }
+
     private static Command runPathFromPathPlanner(String name)
     {
         return AutoBuilder.followPath(PathPlannerPath.fromPathFile(name));
@@ -70,12 +79,38 @@ public final class Autos
         ShooterLocation speakerLocation)
     {
         return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
             initialSpeakerNoteShot(container, speakerLocation),
-            runPathFromPathPlanner("Leave From Center")
+            runFirstPathFromPathPlanner(container, "Leave From Center")
                 .alongWith(stopShooterAfterNoteDelivery(container))
             // new InstantCommand(() -> container.m_driveSubsystem.drive(2, 0, 0, true), container.m_driveSubsystem),
             // new WaitCommand(0.5),
             // new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem)
+            ); //why is this code sad?
+    }
+
+    private static Command threeNoteCenter(RobotContainer container)
+    {
+        var speakerLocation = ShooterLocation.CenterSpeaker;
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
+            initialSpeakerNoteShot(container, speakerLocation),
+            runFirstPathFromPathPlanner(container, "Leave From Center")
+                .alongWith(
+                    stopShooterAfterNoteDelivery(container),
+                    new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),
+            runPathFromPathPlanner("Return to Center")
+                .alongWith(new InstantCommand(() ->
+                    container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)),
+            new FeedNoteIntoShooterCommand(container.m_intakeSubsystem),
+            stopShooterAfterNoteDelivery(container),
+            runPathFromPathPlanner("CenterLine Note 1 Pick")
+                .alongWith(new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),
+            runPathFromPathPlanner("CenterLine Note 1 Shoot")
+                .alongWith(new InstantCommand(() ->
+                    container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)),
+            new FeedNoteIntoShooterCommand(container.m_intakeSubsystem),
+            stopShooterAfterNoteDelivery(container)
             );
     }
 
@@ -84,8 +119,9 @@ public final class Autos
     {
         var speakerLocation = ShooterLocation.CenterSpeaker;
         return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
             initialSpeakerNoteShot(container, speakerLocation),
-            runPathFromPathPlanner("Leave From Center")
+            runFirstPathFromPathPlanner(container, "Leave From Center")
                 .alongWith(
                     stopShooterAfterNoteDelivery(container),
                     new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),

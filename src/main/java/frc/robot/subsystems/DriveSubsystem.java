@@ -72,8 +72,8 @@ public class DriveSubsystem extends SubsystemBase {
             this::getChassisSpeeds,
             this::driveBotRelative,
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(0.7, 0.0001, 0.0), // Translation PID constants
-                    new PIDConstants(0.1, 0.0001, 0.0), // Rotation PID constants
+                    new PIDConstants(5, 0.000, 0.0), // Translation PID constants
+                    new PIDConstants(5, 0.000, 0.0), // Rotation PID constants
                     4.5, // Max module speed, in m/s
                     0.4041, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -93,14 +93,19 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void initalize() {
+        resetSteeringMotorsToAbsolute();
         if (m_initalized)
             return;
         m_navX.reset();
+        m_initalized = true;
+    }
+
+    private void resetSteeringMotorsToAbsolute()
+    {
         m_frontLeft.resetAngleEncoderToAbsolute();
         m_frontRight.resetAngleEncoderToAbsolute();
         m_backLeft.resetAngleEncoderToAbsolute();
         m_backRight.resetAngleEncoderToAbsolute();
-        m_initalized = true;
     }
 
     public void offsetNavX(Rotation2d offset) {
@@ -220,5 +225,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetNavX() {
         m_navX.reset();
+        resetSteeringMotorsToAbsolute();
+    }
+
+    public void setInitialPose(Pose2d pose2d) {
+        m_odometry.resetPosition(getAngle(), getPositions(), pose2d);
     }
 }

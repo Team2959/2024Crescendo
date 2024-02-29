@@ -1,7 +1,7 @@
 package cwtech.util;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.SerialPort.WriteBufferMode;
 
 public class Bling
 {
@@ -19,7 +19,7 @@ public class Bling
 	public Bling()
 	{
 		m_serialPort.reset();
-		m_serialPort.WriteBufferMode(SerialPort.WriteBufferMode.kFlushOnAccess);
+		m_serialPort.setWriteBufferMode(WriteBufferMode.kFlushOnAccess);
 		setBlingMessage(BlingMessage.Start);
 	}
 	
@@ -28,22 +28,23 @@ public class Bling
 		if (message == m_lastMessage)
 			return;
 		
-		string command;
+		String command;
 		switch (message)
 		{
-			case Off:
-				message = "O";
-				break;
 			case Start:
-				message = "S";
+				command = "S";
 				break;
 			case Red:
-				message = "R";
+				command = "R";
 				break;
 			case Green:
-				message = "G";
+				command = "G";
 				break;
-		}
+			case Off:
+			default:
+				command = "O";
+				break;
+	}
 		
 		m_serialPort.writeString(command);
 	}

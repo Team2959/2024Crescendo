@@ -48,13 +48,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
-  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private final Vision m_vision = new Vision();
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_vision);
   public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
-  // public final Vision m_vision = new Vision();
 
   private SendableChooser<Command> m_autoChooser;
 

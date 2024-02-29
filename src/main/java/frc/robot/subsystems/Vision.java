@@ -74,13 +74,12 @@ public class Vision {
 
     public double limelight_aim_proportional()
      {    
-    
-    double kP = .035;
-    double targetingAngularVelocity = 0;//LimelightHelpers.getTX("limelight") * kP;
-    targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
-    targetingAngularVelocity *= -1.0;
+        double kP = .035;
+        double targetingAngularVelocity = 0;//LimelightHelpers.getTX("limelight") * kP;
+        targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
+        targetingAngularVelocity *= -1.0;
 
-    return targetingAngularVelocity;
+        return targetingAngularVelocity;
      }
 
     public double limelight_range_proportional()

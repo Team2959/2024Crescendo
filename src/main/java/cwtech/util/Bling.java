@@ -10,7 +10,8 @@ public class Bling
 		Off,
 		Start,
 		Red,
-		Green
+		Green,
+		Blue
 	};
 
 	private final SerialPort m_serialPort = new SerialPort(9600, SerialPort.Port.kOnboard);
@@ -27,6 +28,7 @@ public class Bling
 	{
 		if (message == m_lastMessage)
 			return;
+		m_lastMessage = message;
 		
 		String command;
 		switch (message)
@@ -40,12 +42,20 @@ public class Bling
 			case Green:
 				command = "G";
 				break;
+			case Blue:
+				command = "B";
+				break;
 			case Off:
 			default:
 				command = "O";
 				break;
-	}
+		}
 		
 		m_serialPort.writeString(command);
+	}
+	
+	public void setFlashState(boolean flash)
+	{
+		m_serialPort.writeString(flash ? "F" : "N");
 	}
 }

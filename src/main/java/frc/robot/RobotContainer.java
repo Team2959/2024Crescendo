@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClimbExtendCommand;
 import frc.robot.commands.ClimbRetractCommand;
-import frc.robot.commands.DetectNoteIntakeFromFloorCommand;
+import frc.robot.commands.DetectNoteIntakeFromFloorCommandForAutonomous;
 import frc.robot.commands.ExtendAmpAssistCommand;
 import frc.robot.commands.ExtendWallSpacerCommand;
 import frc.robot.commands.FeedNoteIntoShooterCommand;
@@ -38,7 +38,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.WallSpacerSubsystem;
 
 /**
@@ -51,8 +50,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static double kDriveYExponent = 2;
   private static double kDriveXExponent = 2;
-  private final Vision m_vision = new Vision();
-  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_vision);
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
@@ -151,7 +149,7 @@ public class RobotContainer {
 
     // Pick up Note from Floor
     m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem)
-        .andThen(new DetectNoteIntakeFromFloorCommand(m_intakeSubsystem)));
+        .andThen(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Load Note From Source
@@ -170,9 +168,10 @@ public class RobotContainer {
     m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
 
     // Autonomous Trigger to stop finish floor intake
+    // BEWARE!! Can stop drive auto! If has Intake Subsystem req
     new Trigger(m_intakeSubsystem::isNotePickedUp)
       .and(m_robot::isAutonomousEnabled)
-      .onTrue(new DetectNoteIntakeFromFloorCommand(m_intakeSubsystem));
+      .onTrue(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem));
 
     // Lights
     new Trigger(m_intakeSubsystem::isNotePickedUp)
@@ -197,11 +196,11 @@ public class RobotContainer {
           smartDashboardUpdate();
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {
-          m_shooterSubsystem.smartDashboardUpdate();
+          // m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
-          m_wallSpacerSubsystem.smartDashboardUpdate();
+          // m_wallSpacerSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
-          m_climbSubsystem.smartDashboardUpdate();
+          // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();

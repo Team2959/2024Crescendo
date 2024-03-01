@@ -7,15 +7,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class DetectNoteIntakeFromFloorCommand extends Command {
+public class DetectNoteIntakeFromFloorCommandForAutonomous extends Command {
   private IntakeSubsystem m_intakeSubsystem;
   private int m_ticks;
 
   /** Creates a new DetectNoteIntakeFromFloorCommand. */
-  public DetectNoteIntakeFromFloorCommand(IntakeSubsystem intakeSubsystem)
+  public DetectNoteIntakeFromFloorCommandForAutonomous(IntakeSubsystem intakeSubsystem)
   {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakeSubsystem);
+    // INTENTIONALLY not adding to requirements, to not interfere with auto pathing
+    // addRequirements(intakeSubsystem);
     m_intakeSubsystem = intakeSubsystem;
   }
 

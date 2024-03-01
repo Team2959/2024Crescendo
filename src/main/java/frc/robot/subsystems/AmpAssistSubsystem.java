@@ -75,30 +75,30 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void smartDashboardInit()
   {
-     SmartDashboard.putNumber(getName() + "/Target Speed", 1500);
      SmartDashboard.putNumber(getName() + "/Position", getPosition());
-     SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
-     SmartDashboard.putBoolean(getName() + "/Stop", false);
+    //  SmartDashboard.putNumber(getName() + "/Target Speed", 1500);
+    //  SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
+    //  SmartDashboard.putBoolean(getName() + "/Stop", false);
   }
 
   public void smartDashboardUpdate()
   {
      SmartDashboard.putNumber(getName() + "/Position", getPosition());
     
-    if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
-    {
-      double movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", 1500);
-      m_LeftAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
-      m_RightAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
+  //   if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
+  //   {
+  //     double movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", 1500);
+  //     m_LeftAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
+  //     m_RightAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
 
-      SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
-    }
+  //     SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
+  //   }
 
-    if (SmartDashboard.getBoolean(getName() + "/Stop", false))
-    {
-        stopMotor();
+  //   if (SmartDashboard.getBoolean(getName() + "/Stop", false))
+  //   {
+  //       stopMotor();
 
-        SmartDashboard.putBoolean(getName() + "/Stop", false);
-    }
+  //       SmartDashboard.putBoolean(getName() + "/Stop", false);
+  //   }
   }
 }

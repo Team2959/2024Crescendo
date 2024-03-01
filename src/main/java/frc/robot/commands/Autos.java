@@ -11,6 +11,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -31,9 +33,9 @@ public final class Autos
         sendableChooser.addOption("Center Shoot and Leave",
             shootNoteAndPathLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker, "Leave From Center"));
         sendableChooser.addOption("Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
-            rightShootAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
         sendableChooser.addOption("Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
-            leftShootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
         sendableChooser.addOption("Two Note Center and Leave",
             centerShootAndPickUpCenterNoteAndLeave(container));  
         sendableChooser.addOption("Three Note Center",
@@ -90,20 +92,43 @@ public final class Autos
             ); //why is this code sad?
     }
 
-    private static Command leftShootNoteAndLeave(
+    private static Command shootNoteAndLeave(
         RobotContainer container,
         ShooterLocation speakerLocation)
+    {
+        var isRedAlliance = DriverStation.getAlliance().get() == Alliance.Red;
+        var isRightSide = speakerLocation == ShooterLocation.RightSpeaker;
+        if (isRedAlliance)
+        {
+            if (isRightSide)
+                return shootNoteAndLeaveAtAngle(container, speakerLocation, false);
+            else
+                return shootAndLeaveStraight(container, speakerLocation);
+        }
+        else
+        {
+            if (isRightSide)
+                return shootAndLeaveStraight(container, speakerLocation);
+            else
+                return shootNoteAndLeaveAtAngle(container, speakerLocation, true);
+        }
+    }
+
+    private static Command shootNoteAndLeaveAtAngle(
+        RobotContainer container,
+        ShooterLocation speakerLocation,
+        boolean goRight)
     {
         return Commands.sequence(
             new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
             initialSpeakerNoteShot(container, speakerLocation),
-            new InstantCommand(() -> container.m_driveSubsystem.drive(2, -2, 0, true), container.m_driveSubsystem),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(2, goRight ? -2 : 2, 0, true), container.m_driveSubsystem),
             new WaitCommand(1.0),
             new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem)
             ); //why is this code sad?
     }
 
-    private static Command rightShootAndLeave(
+    private static Command shootAndLeaveStraight(
         RobotContainer container,
         ShooterLocation speakerLocation)
     {
@@ -169,7 +194,8 @@ public final class Autos
             // new InstantCommand(() -> container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)
             //     .alongWith(new WaitCommand(container.m_delayTimeForShooter)
             //     .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
-            stopShooterAfterNoteDelivery(container)
+            stopShooterAfterNoteDelivery(container),
+            runPathFromPathPlanner("Leave From Center")
             );
     }
 

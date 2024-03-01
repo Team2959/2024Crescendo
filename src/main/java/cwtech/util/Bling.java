@@ -52,12 +52,10 @@ public class Bling
 		}
 		
 		m_serialPort.writeString(command);
-		m_serialPort.flush();
 	}
 	
 	public void setFlashState(boolean flash)
 	{
 		m_serialPort.writeString(flash ? "F" : "N");
-		m_serialPort.flush();
 	}
 }

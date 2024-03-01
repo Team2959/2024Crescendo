@@ -71,19 +71,19 @@ public class ClimbSubsystem extends SubsystemBase {
   public void smartDashboardInit()
   {
     SmartDashboard.putNumber(getName() + "/left current position", m_leftClimbEncoder.getPosition());
-    SmartDashboard.putNumber(getName() + "/left target position", 0);
+    // SmartDashboard.putNumber(getName() + "/left target position", 0);
     SmartDashboard.putNumber(getName() + "/right current position", m_rightClimbEncoder.getPosition());
-    SmartDashboard.putNumber(getName() + "/right target position", 0);
-    SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
+    // SmartDashboard.putNumber(getName() + "/right target position", 0);
+    // SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
 
-    SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
-    SmartDashboard.putNumber(getName() + "/climb P", kClimbP);
-    SmartDashboard.putNumber(getName() + "/climb I", kClimbI);
-    SmartDashboard.putNumber(getName() + "/climb D", kClimbD);
-    SmartDashboard.putNumber(getName() + "/climb FF", kClimbFF);
+    // SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    // SmartDashboard.putNumber(getName() + "/climb P", kClimbP);
+    // SmartDashboard.putNumber(getName() + "/climb I", kClimbI);
+    // SmartDashboard.putNumber(getName() + "/climb D", kClimbD);
+    // SmartDashboard.putNumber(getName() + "/climb FF", kClimbFF);
 
-    SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
-    SmartDashboard.putNumber(getName() + "/Retract Distance", m_retractDistance);
+    // SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
+    // SmartDashboard.putNumber(getName() + "/Retract Distance", m_retractDistance);
 
     // SmartDashboard.putNumber(getName() + "/left velocity", 0);
     // SmartDashboard.putNumber(getName() + "/left motor output", 0);
@@ -96,39 +96,39 @@ public class ClimbSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber(getName() + "/left velocity", m_leftClimbEncoder.getVelocity());
     // SmartDashboard.putNumber(getName() + "/left motor output", m_leftClimbMotor.get());
 
-    if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
-    {
-      m_extendDistance = SmartDashboard.getNumber(getName() + "/Extend Distance", m_extendDistance);
-      m_retractDistance = SmartDashboard.getNumber(getName() + "/Retract Distance", m_retractDistance);
+    // if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
+    // {
+    //   m_extendDistance = SmartDashboard.getNumber(getName() + "/Extend Distance", m_extendDistance);
+    //   m_retractDistance = SmartDashboard.getNumber(getName() + "/Retract Distance", m_retractDistance);
 
-      double pGain = SmartDashboard.getNumber(getName() + "/climb P", kClimbP);
-      double iGain = SmartDashboard.getNumber(getName() + "/climb I", kClimbI);
-      double dGain = SmartDashboard.getNumber(getName() + "/climb D", kClimbD);
-      double ffGain = SmartDashboard.getNumber(getName() + "/climb FF", kClimbFF);
+    //   double pGain = SmartDashboard.getNumber(getName() + "/climb P", kClimbP);
+    //   double iGain = SmartDashboard.getNumber(getName() + "/climb I", kClimbI);
+    //   double dGain = SmartDashboard.getNumber(getName() + "/climb D", kClimbD);
+    //   double ffGain = SmartDashboard.getNumber(getName() + "/climb FF", kClimbFF);
 
-      m_climbLeftPidController.setP(pGain); 
-      m_climbLeftPidController.setI(iGain); 
-      m_climbLeftPidController.setD(dGain); 
-      m_climbLeftPidController.setFF(ffGain); 
+    //   m_climbLeftPidController.setP(pGain); 
+    //   m_climbLeftPidController.setI(iGain); 
+    //   m_climbLeftPidController.setD(dGain); 
+    //   m_climbLeftPidController.setFF(ffGain); 
 
-      m_climbRightPidController.setP(pGain); 
-      m_climbRightPidController.setI(iGain); 
-      m_climbRightPidController.setD(dGain); 
-      m_climbRightPidController.setFF(ffGain); 
+    //   m_climbRightPidController.setP(pGain); 
+    //   m_climbRightPidController.setI(iGain); 
+    //   m_climbRightPidController.setD(dGain); 
+    //   m_climbRightPidController.setFF(ffGain); 
 
-      SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
-    }
+    //   SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    // }
 
-    if (SmartDashboard.getBoolean(getName() + "/Test Go To Targets", false))
-    {
-      double leftTarget = SmartDashboard.getNumber(getName() + "/left target position", m_lastLeftTarget);
-      double rightTarget = SmartDashboard.getNumber(getName() + "/right target position", m_lastRightTarget);
+    // if (SmartDashboard.getBoolean(getName() + "/Test Go To Targets", false))
+    // {
+    //   double leftTarget = SmartDashboard.getNumber(getName() + "/left target position", m_lastLeftTarget);
+    //   double rightTarget = SmartDashboard.getNumber(getName() + "/right target position", m_lastRightTarget);
 
-      setLeftTargetPosition(leftTarget);
-      setRightTargetPosition(rightTarget);
+    //   setLeftTargetPosition(leftTarget);
+    //   setRightTargetPosition(rightTarget);
 
-      SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
-    }
+    //   SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
+    // }
   }
 
   private void setLeftTargetPosition(double position)

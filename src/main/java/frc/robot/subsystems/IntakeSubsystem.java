@@ -34,7 +34,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public void smartDashboardInit()
   {
     SmartDashboard.putNumber(getName() + "/Target Speed", m_intakeSpeed);
-    SmartDashboard.putBoolean(getName() + "/Note Detect", isNotePresent());
     SmartDashboard.putNumber(getName() + "/Reverse Speed", m_reverseIntakeSpeed);
   }
 

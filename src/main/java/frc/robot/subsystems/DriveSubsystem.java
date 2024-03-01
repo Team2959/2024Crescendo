@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.RobotMap;
-import frc.robot.subsystems.Vision.BotPose;
 
 public class DriveSubsystem extends SubsystemBase {
     private SwerveModuleCanCoder m_frontLeft;
@@ -31,7 +30,6 @@ public class DriveSubsystem extends SubsystemBase {
     private SwerveModuleCanCoder m_backLeft;
     private SwerveModuleCanCoder m_backRight;
     private AHRS m_navX;
-    private Vision m_vision;
 
     private boolean m_initalized = false;
 
@@ -50,9 +48,8 @@ public class DriveSubsystem extends SubsystemBase {
     private int m_ticks = 0;
 
     /** Creates a new DriveSubsystem. */
-    public DriveSubsystem(Vision vision)
+    public DriveSubsystem()
     {
-        m_vision = vision;
         m_navX = new AHRS(Port.kMXP);
 
         m_kinematics = new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
@@ -128,11 +125,11 @@ public class DriveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
         // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
         
-        BotPose botpose = m_vision.getBotPose();
-        SmartDashboard.putNumber(getName() + "/April Tag ID", botpose.getAprilTag());
-        SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());
-        SmartDashboard.putNumber(getName() + "/Distance Y", botpose.getY());
-        SmartDashboard.putNumber(getName() + "/Distance Z", botpose.getZ());
+        // var botPose = LimelightHelpers.getBotPose2d("limelight-swtech");
+        // SmartDashboard.putNumber(getName() + "/April Tag ID", botpose);
+        // SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());
+        // SmartDashboard.putNumber(getName() + "/Distance Y", botpose.getY());
+        // SmartDashboard.putNumber(getName() + "/Distance Z", botpose.getZ());
     }
 
     public void smartDashboardInit() {

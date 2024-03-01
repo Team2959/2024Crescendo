@@ -29,11 +29,11 @@ public final class Autos
         SendableChooser<Command> sendableChooser = new SendableChooser<>();
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",
-            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker));
+            shootNoteAndPathLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker, "Leave From Center"));
         sendableChooser.addOption("Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
-            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
+            rightShootAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
         sendableChooser.addOption("Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
-            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
+            leftShootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
         sendableChooser.addOption("Two Note Center and Leave",
             centerShootAndPickUpCenterNoteAndLeave(container));  
         sendableChooser.addOption("Three Note Center",
@@ -77,18 +77,42 @@ public final class Autos
         return AutoBuilder.followPath(PathPlannerPath.fromPathFile(name));
     }
 
-    private static Command shootNoteAndLeave(
+    private static Command shootNoteAndPathLeave(
         RobotContainer container,
-        ShooterLocation speakerLocation)
+        ShooterLocation speakerLocation,
+        String autoPathName)
     {
         return Commands.sequence(
             new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
             initialSpeakerNoteShot(container, speakerLocation),
             runFirstPathFromPathPlanner(container, "Leave From Center")
                 .alongWith(stopShooterAfterNoteDelivery(container))
-            // new InstantCommand(() -> container.m_driveSubsystem.drive(2, 0, 0, true), container.m_driveSubsystem),
-            // new WaitCommand(0.5),
-            // new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem)
+            ); //why is this code sad?
+    }
+
+    private static Command leftShootNoteAndLeave(
+        RobotContainer container,
+        ShooterLocation speakerLocation)
+    {
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
+            initialSpeakerNoteShot(container, speakerLocation),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(2, -2, 0, true), container.m_driveSubsystem),
+            new WaitCommand(1.0),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem)
+            ); //why is this code sad?
+    }
+
+    private static Command rightShootAndLeave(
+        RobotContainer container,
+        ShooterLocation speakerLocation)
+    {
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
+            initialSpeakerNoteShot(container, speakerLocation),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(2, 0, 0, false), container.m_driveSubsystem),
+            new WaitCommand(1.75),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem)
             ); //why is this code sad?
     }
 

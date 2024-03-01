@@ -16,15 +16,18 @@ public class Vision {
     }
 
     public static class BotPose {
-        double m_x, m_y, m_z, m_roll, m_pitch, m_yaw;
+        double m_x, m_y, m_z, m_roll, m_pitch, m_yaw, m_tid;
 
-        BotPose(double x, double y, double z, double roll, double pitch, double yaw) {
+        BotPose(double x, double y, double z, double roll, double pitch, double yaw,
+            double tid)
+        {
             m_x = x;
             m_y = y;
             m_z = z;
             m_roll = roll;
             m_pitch = pitch;
             m_yaw = yaw;
+            m_tid = tid;
         }
 
         public Pose2d toPose2d(Rotation2d currentRotation) {
@@ -42,6 +45,10 @@ public class Vision {
         public double getZ() {
             return m_z;
         }
+
+        public double getAprilTag() {
+            return m_tid;
+        }
     }
 
     static BotPose[] botposeSamples = new BotPose[2];
@@ -51,11 +58,13 @@ public class Vision {
         botposeSamples[index] = getBotPose();
     }
 
-    static NetworkTableEntry m_botposeEntry = NetworkTableInstance.getDefault().getTable("limelight")
+    static NetworkTableEntry m_botposeEntry = NetworkTableInstance.getDefault().getTable("limelight-cwtech")
             .getEntry("botpose");
     // TODO correct pipeline id
-    static NetworkTableEntry m_pipelineEntry = NetworkTableInstance.getDefault().getTable("limelight")
+    static NetworkTableEntry m_pipelineEntry = NetworkTableInstance.getDefault().getTable("limelight-cwtech")
             .getEntry("pipeline");
+    static NetworkTableEntry m_closestAprilTag = NetworkTableInstance.getDefault().getTable("limelight-cwtech")
+            .getEntry("tid");
 
     public Vision() {
         try {
@@ -68,7 +77,8 @@ public class Vision {
 
     public BotPose getBotPose() {
         double[] botposeRaw = m_botposeEntry.getDoubleArray(new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 });
-        var botpose = new BotPose(botposeRaw[0], botposeRaw[1], botposeRaw[2], botposeRaw[3], botposeRaw[4], botposeRaw[5]);
+        double tid = m_closestAprilTag.getDouble(-1);
+        var botpose = new BotPose(botposeRaw[0], botposeRaw[1], botposeRaw[2], botposeRaw[3], botposeRaw[4], botposeRaw[5], tid);
         return botpose;
     }
 

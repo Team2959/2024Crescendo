@@ -6,8 +6,11 @@ package frc.robot.commands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -121,6 +124,10 @@ public final class Autos
         return Commands.sequence(
             new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
             initialSpeakerNoteShot(container, speakerLocation),
+            // runFirstPathFromPathPlanner(container, "Center and Back with Events")
+            //     .alongWith(
+            //         stopShooterAfterNoteDelivery(container),
+            //         new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)),
             runFirstPathFromPathPlanner(container, "Leave From Center")
                 .alongWith(
                     stopShooterAfterNoteDelivery(container),
@@ -159,6 +166,17 @@ public final class Autos
         return Commands.sequence(
             new WaitCommand(0.25),
             new InstantCommand(() -> container.m_shooterSubsystem.stopShooterMotor()));
+    }
+
+    private static Command driveToPose(RobotContainer container)
+    {
+        PathConstraints constraints = new PathConstraints(
+                3.0, 4.0,
+                Units.degreesToRadians(540), Units.degreesToRadians(720));
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.resetPoseFromLimelight())
+            .andThen(AutoBuilder.pathfindToPose(container.m_driveSubsystem.m_targetDriveToPose2d, constraints))
+        );
     }
 
     private Autos()

@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import cwtech.util.Bling;
 import cwtech.util.Conditioning;
+import cwtech.util.Bling.BlingMessage;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,6 +58,7 @@ public class RobotContainer {
   private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  private final Bling m_bling = new Bling();
 
   private SendableChooser<Command> m_autoChooser;
 
@@ -169,6 +173,12 @@ public class RobotContainer {
     new Trigger(m_intakeSubsystem::isNotePickedUp)
       .and(m_robot::isAutonomousEnabled)
       .onTrue(new DetectNoteIntakeFromFloorCommand(m_intakeSubsystem));
+
+    // Lights
+    new Trigger(m_intakeSubsystem::isNotePickedUp)
+      .onTrue(new InstantCommand(() -> m_bling.setBlingMessage(BlingMessage.Green)));
+    new Trigger(m_intakeSubsystem::isNotePickedUp)
+      .onFalse(new InstantCommand(() -> m_bling.setBlingMessage(getAllianceColor())));
   }
 
   public void smartDashboardInit() {
@@ -232,6 +242,16 @@ public class RobotContainer {
     return m_turnConditioning.condition(-m_rightJoystick.getX())
             * DriveSubsystem.kMaxAngularSpeedRadiansPerSecond
             * m_speedMultiplier;
+  }
+
+  private BlingMessage getAllianceColor()
+  {
+      var alliance = DriverStation.getAlliance();
+      if (alliance.isPresent()) {
+        return alliance.get() == DriverStation.Alliance.Red ? BlingMessage.Red : BlingMessage.Blue;
+      }
+
+      return BlingMessage.Blue;
   }
 }
 // example decorator pattern for commands

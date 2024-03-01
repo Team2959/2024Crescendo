@@ -129,6 +129,7 @@ public class DriveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
         
         BotPose botpose = m_vision.getBotPose();
+        SmartDashboard.putNumber(getName() + "/April Tag ID", botpose.getAprilTag());
         SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());
         SmartDashboard.putNumber(getName() + "/Distance Y", botpose.getY());
         SmartDashboard.putNumber(getName() + "/Distance Z", botpose.getZ());
@@ -234,5 +235,22 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setInitialPose(Pose2d pose2d) {
         m_odometry.resetPosition(getAngle(), getPositions(), pose2d);
+    }
+
+    public Pose2d m_targetDriveToPose2d;
+    public void resetPoseFromLimelight()
+    {
+        // setInitialPose(new Pose2d( ));   // from lime light
+
+        // switch based on april tag # for target position
+        int targetAprilTag = 8;
+        switch (targetAprilTag) {
+            case 8:
+                m_targetDriveToPose2d = new Pose2d(1.5, 5.52, Rotation2d.fromDegrees(0));
+                break;
+        
+            default:
+                break;
+        }
     }
 }

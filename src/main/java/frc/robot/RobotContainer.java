@@ -70,7 +70,7 @@ public class RobotContainer {
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
   double m_speedMultiplier = 0.80;
-  public double m_delayTimeForShooter = 0.5;
+  public double m_delayTimeForShooter = 0.75;
 
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
@@ -196,7 +196,7 @@ public class RobotContainer {
           smartDashboardUpdate();
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {
-          // m_shooterSubsystem.smartDashboardUpdate();
+          m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
           // m_wallSpacerSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();

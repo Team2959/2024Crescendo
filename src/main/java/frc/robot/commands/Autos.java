@@ -32,14 +32,24 @@ public final class Autos
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",
             shootNoteAndPathLeave(container, ShooterSubsystem.ShooterLocation.CenterSpeaker, "Leave From Center"));
-        sendableChooser.addOption("Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
-            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker));
-        sendableChooser.addOption("Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
-            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker));
-        sendableChooser.addOption("Two Note Center and Leave",
+        sendableChooser.addOption("Red Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker, true));
+        sendableChooser.addOption("Red Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker,true ));
+        sendableChooser.addOption("Blue Right Shoot and Leave", //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.RightSpeaker, false));
+        sendableChooser.addOption("Blue Left Shoot and Leave",  //this will just shoot and go straight out, without rotating the robot
+            shootNoteAndLeave(container, ShooterSubsystem.ShooterLocation.LeftSpeaker,false ));
+        sendableChooser.addOption("Blue Two Note Center and Leave",
             centerShootAndPickUpCenterNoteAndLeave(container));  
+        sendableChooser.addOption("Red Two Note Center and Leave",
+            redCenterShootAndPickUpCenterNoteAndLeave(container));  
         sendableChooser.addOption("Three Note Center",
             threeNoteCenter(container));  
+        sendableChooser.addOption("Shoot Only Right",
+          initialSpeakerNoteShot(container, ShooterLocation.RightSpeaker));
+        sendableChooser.addOption("Shoot Only Left",
+          initialSpeakerNoteShot(container, ShooterLocation.LeftSpeaker));
         return sendableChooser;
     }
 
@@ -69,9 +79,23 @@ public final class Autos
 
     private static Command runFirstPathFromPathPlanner(RobotContainer container, String name)
     {
-        var path = PathPlannerPath.fromPathFile(name);
-        container.m_driveSubsystem.setInitialPose(path.getPathPoses().get(0));
-        return runPathFromPathPlanner(name);
+        return Commands.sequence(
+            new InstantCommand(() -> {
+                var path = PathPlannerPath.fromPathFile(name);
+                // path.getPreviewStartingHolonomicPose()
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent())
+                {
+                    if (alliance.get() == DriverStation.Alliance.Red)
+                    {
+                        var newPath = path.flipPath();
+                        container.m_driveSubsystem.setInitialPose(newPath.getPathPoses().get(0));
+                        return;
+                    }
+                }
+                container.m_driveSubsystem.setInitialPose(path.getPathPoses().get(0));
+            }),
+            runPathFromPathPlanner(name));
     }
 
     private static Command runPathFromPathPlanner(String name)
@@ -94,9 +118,10 @@ public final class Autos
 
     private static Command shootNoteAndLeave(
         RobotContainer container,
-        ShooterLocation speakerLocation)
+        ShooterLocation speakerLocation,
+        boolean isRedAlliance)
     {
-        var isRedAlliance = DriverStation.getAlliance().get() == Alliance.Red;
+        // var isRedAlliance = DriverStation.getAlliance().get() == Alliance.Red;
         var isRightSide = speakerLocation == ShooterLocation.RightSpeaker;
         if (isRedAlliance)
         {
@@ -196,6 +221,26 @@ public final class Autos
             //     .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem))),
             stopShooterAfterNoteDelivery(container),
             runPathFromPathPlanner("Leave From Center")
+            );
+    }
+
+    private static Command redCenterShootAndPickUpCenterNoteAndLeave(
+        RobotContainer container)
+    {
+        var speakerLocation = ShooterLocation.CenterSpeaker;
+        return Commands.sequence(
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, false), container.m_driveSubsystem),
+            initialSpeakerNoteShot(container, speakerLocation),
+            new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)
+                .alongWith(new InstantCommand(() -> container.m_driveSubsystem.drive(1.5, 0, 0, true), container.m_driveSubsystem)
+                    .andThen(new WaitCommand(1.5))
+                    .andThen(new InstantCommand(() -> container.m_driveSubsystem.drive(-2, 0, 0, true), container.m_driveSubsystem))),
+            new WaitCommand(1.0)
+                .alongWith(new InstantCommand(() ->
+                    container.m_shooterSubsystem.controlShooterToVelocity(speakerLocation), container.m_shooterSubsystem)),
+            new InstantCommand(() -> container.m_driveSubsystem.drive(0, 0, 0, true), container.m_driveSubsystem),
+            new FeedNoteIntoShooterCommand(container.m_intakeSubsystem),
+            stopShooterAfterNoteDelivery(container)
             );
     }
 

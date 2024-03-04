@@ -57,7 +57,7 @@ public final class RobotMap {
 
     // Co-Piolet Button board
     public static final int kExtendAmpAssistPleaseButton = 1;
-    public static final int kRetractAmpAssistPleaseButton = 10;
+    public static final int kRetractAmpAssistPleaseButton = 11;
     public static final int kAmpShooterVelocityControl = 3;
     public static final int kTrapShooterVelocityControl = 5;
     public static final int kReverseIntake = 6;

@@ -156,8 +156,8 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTargetPosition() {
-    return Math.abs(m_lastLeftTarget - m_leftClimbEncoder.getPosition()) < 5 &&
-           Math.abs(m_lastRightTarget - m_rightClimbEncoder.getPosition()) < 5 ;
+    return Math.abs(m_lastLeftTarget - m_leftClimbEncoder.getPosition()) < 2 &&
+           Math.abs(m_lastRightTarget - m_rightClimbEncoder.getPosition()) < 2 ;
   }
 
   public void stopAtCurrentPosition() {

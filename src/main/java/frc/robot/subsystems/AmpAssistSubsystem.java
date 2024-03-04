@@ -69,7 +69,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
     }
     else
     {
-      return getPosition() <= 0.07;
+      return getPosition() <= 0.15;
     }
   }
 

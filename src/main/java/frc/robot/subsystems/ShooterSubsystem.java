@@ -42,11 +42,11 @@ public class ShooterSubsystem extends SubsystemBase
 
   private double m_leftTargetVelocity = 1.0;
   private double m_rightTargetVelocity = 1.0;
-  private double m_trapVelocity = 0.75; // distance of 27 inches
+  private double m_trapVelocity = 0.9; // distance of 27 inches
   private double m_centerSpeakerVelocity = 0.85;
   private double m_sideSlowMotorSpeakerVelocity = 0.8;
   private double m_sideFastMotorSpeakerVelocity = 0.9; 
-  private double m_ampVelocity = 0.3;
+  private double m_ampVelocity = 0.15;
   private double m_sourceVelocity = -0.25;
 
   /** Creates a new ShooterSubsystem. */

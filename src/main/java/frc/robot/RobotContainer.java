@@ -178,6 +178,8 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> m_bling.setBlingMessage(BlingMessage.Green)));
     new Trigger(m_intakeSubsystem::isNotePickedUp)
       .onFalse(new InstantCommand(() -> m_bling.setBlingMessage(getAllianceColor())));
+    new Trigger(this::inLastTwentySeconds)
+      .onTrue(new InstantCommand(() -> m_bling.setFlashState(true)));
   }
 
   public void smartDashboardInit() {
@@ -251,6 +253,17 @@ public class RobotContainer {
       }
 
       return BlingMessage.Blue;
+  }
+
+  private boolean inLastTwentySeconds()
+  {
+    return DriverStation.getMatchTime() <= 20.2;
+  }
+
+  public void setOnInitBlingState()
+  {
+    m_bling.setFlashState(false);
+    m_bling.setBlingMessage(getAllianceColor());
   }
 }
 // example decorator pattern for commands

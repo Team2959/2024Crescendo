@@ -55,7 +55,7 @@ public final class RobotMap {
     public static final int kLeftExtendClimbButton = 7;
     public static final int kLeftRetractClimbButton = 11;
 
-    // Co-Piolet Button board
+    // Co-Piolt Button board
     public static final int kExtendAmpAssistPleaseButton = 1;
     public static final int kRetractAmpAssistPleaseButton = 11;
     public static final int kAmpShooterVelocityControl = 3;
@@ -65,6 +65,7 @@ public final class RobotMap {
     public static final int kLeftSpeakerShooterVelocityControl = 12;
     public static final int kRightSpeakerShooterVelocityControl = 9;
     public static final int kLoadFromSourceButton = 7;
+
     // public static final int kWallSpacerExtendButton = 2;
     // public static final int kWallSpacerRetractButton = 11;
 

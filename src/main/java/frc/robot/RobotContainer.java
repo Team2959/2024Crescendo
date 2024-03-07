@@ -104,7 +104,8 @@ public class RobotContainer {
 
     // Autonomous set up
     Autos.registerPathPlannerNamedCommands(this);
-    m_autoChooser = Autos.sendableChooser(this);
+    m_autoChooser = Autos.sendableChooserFullPathPlanner(this);
+    // m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
 
     // Configure the trigger bindings
@@ -171,7 +172,9 @@ public class RobotContainer {
     // BEWARE!! Can stop drive auto! If has Intake Subsystem req
     new Trigger(m_intakeSubsystem::isNotePickedUp)
       .and(m_robot::isAutonomousEnabled)
-      .onTrue(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem));
+      .onTrue(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)
+          .andThen(new InstantCommand(() ->
+              m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), m_shooterSubsystem)));
 
     // Lights
     new Trigger(m_intakeSubsystem::isNotePickedUp)

@@ -24,6 +24,13 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 
 public final class Autos
 {
+    public static SendableChooser<Command> sendableChooserFullPathPlanner(RobotContainer container)
+    {
+        SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
+        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
+        return sendableChooser;
+    }
+
     public static SendableChooser<Command> sendableChooser(RobotContainer container)
     {
         // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
@@ -57,21 +64,23 @@ public final class Autos
     {
         // Register Named Commands - things to do at marked points, e.g. start intake, shoot, etc
         // Must match names in PathPlanner!
-        NamedCommands.registerCommand("grabNoteFromFloor", new NoteIntakeFromFloorCommand(container.m_intakeSubsystem));
+        NamedCommands.registerCommand("startIntake", new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)
+            .alongWith(new InstantCommand(() ->
+            container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem)));
 
-        NamedCommands.registerCommand("startShooterCenter", new InstantCommand(() ->
+        NamedCommands.registerCommand("setShooterCenter", new InstantCommand(() ->
             container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), container.m_shooterSubsystem));
-        // NamedCommands.registerCommand("startShooterLeft", new InstantCommand(() ->
-        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), container.m_shooterSubsystem));
-        // NamedCommands.registerCommand("startShooterRight", new InstantCommand(() ->
-        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), container.m_shooterSubsystem));
+        NamedCommands.registerCommand("setShooterLeft", new InstantCommand(() ->
+            container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), container.m_shooterSubsystem));
+        NamedCommands.registerCommand("setShooterRight", new InstantCommand(() ->
+            container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), container.m_shooterSubsystem));
         // NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
         //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), container.m_shooterSubsystem));
 
-        NamedCommands.registerCommand("waitAndFeedNoteIntoShooter",
+        NamedCommands.registerCommand("delayedShootNote",
             new WaitCommand(container.m_delayTimeForShooter)
             .andThen(new FeedNoteIntoShooterCommand(container.m_intakeSubsystem)));
-        NamedCommands.registerCommand("feedNoteIntoShooter", new FeedNoteIntoShooterCommand(container.m_intakeSubsystem));
+        NamedCommands.registerCommand("shootNote", new FeedNoteIntoShooterCommand(container.m_intakeSubsystem));
 
         NamedCommands.registerCommand("stopShooter", new InstantCommand(() ->
             container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem));

@@ -5,6 +5,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
@@ -34,20 +35,20 @@ public class ShooterSubsystem extends SubsystemBase
   private SparkPIDController m_leftShooterPidController;
   private SparkPIDController m_rightShooterPidController;
 
-  private static final double kShooterP = 0.01;
-  private static final double kShooterI = 0.0;
+  private static final double kShooterP = 0.00005;
+  private static final double kShooterI = 0.0000005;
   private static final double kShooterD = 0.0;
   private static final double kShooterFF = 0;
   private static final double kShooterIZone = 0;
 
-  private double m_leftTargetVelocity = 1.0;
-  private double m_rightTargetVelocity = 1.0;
-  private double m_trapVelocity = 0.9; // distance of 27 inches
-  private double m_centerSpeakerVelocity = 0.85;
-  private double m_sideSlowMotorSpeakerVelocity = 0.8;
-  private double m_sideFastMotorSpeakerVelocity = 0.9; 
-  private double m_ampVelocity = 0.15;
-  private double m_sourceVelocity = -0.25;
+  private double m_leftTargetVelocity = 4000.0;
+  private double m_rightTargetVelocity = 4000.0;
+  private double m_trapVelocity = 4900.0; // distance of 27 inches
+  private double m_centerSpeakerVelocity = 4500.0;
+  private double m_sideSlowMotorSpeakerVelocity = 4250.0;
+  private double m_sideFastMotorSpeakerVelocity = 4900.0; 
+  private double m_ampVelocity = 800.0;
+  private double m_sourceVelocity = -1300.0;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() 
@@ -83,7 +84,7 @@ public class ShooterSubsystem extends SubsystemBase
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
+      }
 
   public void controlShooterToVelocity(ShooterLocation location)
   {
@@ -133,10 +134,10 @@ public class ShooterSubsystem extends SubsystemBase
 
   private void controlShooterToVelocity(double leftVelocity, double rightVelocity)
   {
-    // m_leftShooterPidController.setReference(leftVelocity, ControlType.kVelocity);
-    // m_rightShooterPidController.setReference(rightVelocity, ControlType.kVelocity);
-    m_leftShooterWheel.set(leftVelocity);
-    m_rightShooterWheel.set(rightVelocity);
+    m_leftShooterPidController.setReference(leftVelocity, ControlType.kVelocity);
+    m_rightShooterPidController.setReference(rightVelocity, ControlType.kVelocity);
+    // m_leftShooterWheel.set(leftVelocity);
+    // m_rightShooterWheel.set(rightVelocity);
   }
 
   public void smartDashboardInit()
@@ -158,12 +159,16 @@ public class ShooterSubsystem extends SubsystemBase
     SmartDashboard.putNumber(getName() + "/side speaker fast velocity", m_sideFastMotorSpeakerVelocity);
     SmartDashboard.putNumber(getName() + "/amp velocity", m_ampVelocity);
     SmartDashboard.putNumber(getName() + "/source velocity", m_sourceVelocity);
+    SmartDashboard.putNumber(getName() + "/Applied Output Left", 0);
+    SmartDashboard.putNumber(getName() + "/Applied Output Right", 0);
   }
 
   public void smartDashboardUpdate()
   {
     SmartDashboard.putNumber(getName() + "/left current velocity", m_leftShooterEncoder.getVelocity());
     SmartDashboard.putNumber(getName() + "/right current velocity", m_rightShooterEncoder.getVelocity());
+    // SmartDashboard.putNumber(getName() + "/Applied Output Left", m_leftShooterWheel.getAppliedOutput());
+    // SmartDashboard.putNumber(getName() + "/Applied Output Right", m_rightShooterWheel.getAppliedOutput());
 
     if (SmartDashboard.getBoolean(getName() + "/Update Values", false))
     {
@@ -177,20 +182,20 @@ public class ShooterSubsystem extends SubsystemBase
       m_ampVelocity = SmartDashboard.getNumber(getName() + "/amp velocity", m_ampVelocity);
       m_sourceVelocity = SmartDashboard.getNumber(getName() + "/source velocity", m_sourceVelocity);
 
-    //   double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
-    //   double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
-    //   double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
-    //   double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kShooterFF);
+      double pGain = SmartDashboard.getNumber(getName() + "/shooter P", kShooterP);
+      double iGain = SmartDashboard.getNumber(getName() + "/shooter I", kShooterI);
+      double dGain = SmartDashboard.getNumber(getName() + "/shooter D", kShooterD);
+      double ffGain = SmartDashboard.getNumber(getName() + "/shooter FF", kShooterFF);
 
-    //   m_leftShooterPidController.setP(pGain);
-    //   m_leftShooterPidController.setI(iGain);
-    //   m_leftShooterPidController.setD(dGain);
-    //   m_leftShooterPidController.setFF(ffGain);
+      m_leftShooterPidController.setP(pGain);
+      m_leftShooterPidController.setI(iGain);
+      m_leftShooterPidController.setD(dGain);
+      m_leftShooterPidController.setFF(ffGain);
 
-    //   m_rightShooterPidController.setP(pGain);
-    //   m_rightShooterPidController.setI(iGain);
-    //   m_rightShooterPidController.setD(dGain);
-    //   m_rightShooterPidController.setFF(ffGain);
+      m_rightShooterPidController.setP(pGain);
+      m_rightShooterPidController.setI(iGain);
+      m_rightShooterPidController.setD(dGain);
+      m_rightShooterPidController.setFF(ffGain);
 
       SmartDashboard.putBoolean(getName() + "/Update Values", false);
     }

@@ -53,7 +53,6 @@ public class RobotContainer {
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final WallSpacerSubsystem m_wallSpacerSubsystem = new WallSpacerSubsystem();
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   private final Bling m_bling = new Bling();
@@ -69,7 +68,7 @@ public class RobotContainer {
   Conditioning m_driveXConditioning = new Conditioning();
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
-  double m_speedMultiplier = 0.80;
+  double m_speedMultiplier = 0.85;
   public double m_delayTimeForShooter = 0.75;
 
   // Driver Buttons
@@ -154,15 +153,11 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Load Note From Source
-    m_sourceLoadButton.onTrue(
-        new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem)
-        .alongWith(new ExtendWallSpacerCommand(m_wallSpacerSubsystem)));
+    m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
 
     // Amp Assist
     m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
-    m_retractAmpAssistButton.onTrue(
-      new RetractAmpAssistCommand(m_AmpAssistSubsystem)
-      .alongWith(new RetractWallSpacerCommand(m_wallSpacerSubsystem)));
+    m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
@@ -190,7 +185,6 @@ public class RobotContainer {
       m_driveSubsystem.smartDashboardInit();
       m_shooterSubsystem.smartDashboardInit();
       m_intakeSubsystem.smartDashboardInit();
-      m_wallSpacerSubsystem.smartDashboardInit();
       m_AmpAssistSubsystem.smartDashboardInit();
       m_climbSubsystem.smartDashboardInit();
   }
@@ -201,9 +195,8 @@ public class RobotContainer {
           smartDashboardUpdate();
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {
-          m_shooterSubsystem.smartDashboardUpdate();
+          // m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
-          // m_wallSpacerSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);

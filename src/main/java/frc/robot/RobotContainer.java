@@ -30,6 +30,7 @@ import frc.robot.commands.RetractAmpAssistCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.Autos.autoStartPosition;
 import frc.robot.subsystems.AmpAssistSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -55,6 +56,7 @@ public class RobotContainer {
   private final Bling m_bling = new Bling();
 
   private SendableChooser<Command> m_autoChooser;
+  private SendableChooser<autoStartPosition> m_angleStartChooser;
 
   Robot m_robot;
 
@@ -103,6 +105,8 @@ public class RobotContainer {
     m_autoChooser = Autos.sendableChooserFullPathPlanner(this);
     // m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
+    m_angleStartChooser = Autos.sendableChooserAngleStart(this);
+    SmartDashboard.putData("Auto/StartLocation", m_angleStartChooser);
 
     // Configure the trigger bindings
     configureBindings();
@@ -212,6 +216,26 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    var startLocation = m_angleStartChooser.getSelected();
+
+    switch (startLocation) {
+      case BlueAmp:
+        m_driveSubsystem.setStartAngle(-60);
+        break;
+      case BlueSource:
+        m_driveSubsystem.setStartAngle(60);
+        break;
+      case RedAmp:
+        m_driveSubsystem.setStartAngle(60);
+        break;
+      case RedSource:
+        m_driveSubsystem.setStartAngle(-60);
+        break;
+      case Center:
+      default:
+        break;
+    }
+
     return m_autoChooser.getSelected();
   }
 

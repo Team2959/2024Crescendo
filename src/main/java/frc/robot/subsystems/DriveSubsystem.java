@@ -109,10 +109,6 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.resetAngleEncoderToAbsolute();
     }
 
-    public void offsetNavX(Rotation2d offset) {
-        m_navX.setAngleAdjustment(offset.getDegrees());
-    }
-
     @Override
     public void periodic() {
         m_odometry.update(getAngle(), getPositions());
@@ -227,6 +223,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetNavX() {
         m_navX.reset();
+        setStartAngle(0);
         resetSteeringMotorsToAbsolute();
     }
 
@@ -245,5 +242,9 @@ public class DriveSubsystem extends SubsystemBase {
             default:
                 break;
         }
+    }
+
+    public void setStartAngle(double angle) {
+        m_navX.setAngleAdjustment(angle);
     }
 }

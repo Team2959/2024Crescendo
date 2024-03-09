@@ -24,10 +24,32 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
 
 public final class Autos
 {
+    public enum autoStartPosition
+    {
+        Center,
+        RedAmp,
+        BlueAmp,
+        RedSource,
+        BlueSource,
+        Nowhere,
+    };
+    
     public static SendableChooser<Command> sendableChooserFullPathPlanner(RobotContainer container)
     {
         SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
         // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note");
+        return sendableChooser;
+    }
+
+    public static SendableChooser<autoStartPosition> sendableChooserAngleStart(RobotContainer container)
+    {
+        SendableChooser<autoStartPosition> sendableChooser = new SendableChooser<>();
+        sendableChooser.setDefaultOption("Center", autoStartPosition.Center);
+        sendableChooser.addOption("RedAmpSide", autoStartPosition.RedAmp);
+        sendableChooser.addOption("BlueAmpSide", autoStartPosition.BlueAmp);
+        sendableChooser.addOption("RedSourceSide", autoStartPosition.RedSource);
+        sendableChooser.addOption("BlueSourceSide", autoStartPosition.BlueSource);
+        sendableChooser.addOption("The Bot Ain't Even On The Field", autoStartPosition.Nowhere);
         return sendableChooser;
     }
 

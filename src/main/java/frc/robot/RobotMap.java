@@ -12,9 +12,9 @@ public final class RobotMap {
     // CAN coder CAN == module #
     public static final int kFrontLeftModule = 4;
     public static final int kBackLeftModule = 2;
-    public static final int kBackRigvhtModule = 5;
+    public static final int kBackRigvhtModule = 3;
     public static final int kFrontRightModule = 1;
-    // unused module - 3
+    // unused module - 5
 
     // CAN motor addresses
         // SparkMax
@@ -71,5 +71,5 @@ public final class RobotMap {
     public static final double kZeroedFrontLeft = 5.171;    // for FL module 4
     public static final double kZeroedFrontRight = 2.668;   // for FR module 1
     public static final double kZeroedBackLeft = 5.429;     // for BL module 2
-    public static final double kZeroedBackRight = 3.731;    // for BR module 5
+    public static final double kZeroedBackRight = 5.976;    // for BR module 3
 };

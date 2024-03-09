@@ -71,5 +71,5 @@ public final class RobotMap {
     public static final double kZeroedFrontLeft = 5.171;    // for FL module 4
     public static final double kZeroedFrontRight = 2.668;   // for FR module 1
     public static final double kZeroedBackLeft = 5.429;     // for BL module 2
-    public static final double kZeroedBackRight = 5.976;    // for BR module 3
+    public static final double kZeroedBackRight = 1.340;    // for BR module 3
 };

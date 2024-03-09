@@ -148,6 +148,9 @@ public class RobotContainer {
     m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
 
+   // new Trigger(m_intakeSubsystem::isNotePickedUp)
+    //  .onTrue()new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker);
+
     // Pick up Note from Floor
     m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem)
         .andThen(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)));
@@ -175,7 +178,7 @@ public class RobotContainer {
     // Lights
     new Trigger(m_intakeSubsystem::isNotePickedUp)
       .onTrue(new InstantCommand(() -> m_bling.setBlingMessage(BlingMessage.Green)));
-    new Trigger(m_intakeSubsystem::isNotePickedUp)
+    new Trigger(m_intakeSubsystem::isNotePresent)
       .onFalse(new InstantCommand(() -> m_bling.setBlingMessage(getAllianceColor())));
     new Trigger(this::inLastTwentySeconds)
       .onTrue(new InstantCommand(() -> m_bling.setFlashState(true)));

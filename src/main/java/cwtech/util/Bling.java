@@ -34,20 +34,20 @@ public class Bling
 		switch (message)
 		{
 			case Start:
-				command = "S";
+				command = "S!";
 				break;
 			case Red:
-				command = "R";
+				command = "R!";
 				break;
 			case Green:
-				command = "G";
+				command = "G!";
 				break;
 			case Blue:
-				command = "B";
+				command = "B!";
 				break;
 			case Off:
 			default:
-				command = "O";
+				command = "O!";
 				break;
 		}
 		
@@ -56,6 +56,6 @@ public class Bling
 	
 	public void setFlashState(boolean flash)
 	{
-		m_serialPort.writeString(flash ? "F" : "N");
+		m_serialPort.writeString(flash ? "F!" : "N!");
 	}
 }

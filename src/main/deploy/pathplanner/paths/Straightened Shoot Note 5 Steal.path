@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.8795509328954146,
+        "y": 4.502249460338654
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.6279768172115707,
+        "y": 3.800600193792257
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.980362925096398,
+        "y": 2.3984405213466022
+      },
+      "prevControl": {
+        "x": 3.330963086269217,
+        "y": 2.6708002521060212
+      },
+      "nextControl": {
+        "x": 4.680151126688394,
+        "y": 2.1049477996384662
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.135623969258011,
+        "y": 1.5202400775164695
+      },
+      "prevControl": {
+        "x": 8.317033158287215,
+        "y": 1.625487467498429
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Straight Steal Test",
+  "previewStartingState": {
+    "rotation": -46.468800714385885,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

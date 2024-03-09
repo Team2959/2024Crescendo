@@ -129,7 +129,9 @@ public class ShooterSubsystem extends SubsystemBase
 
   public void stopShooterMotor()
   {
-    controlShooterToVelocity(0, 0);
+    m_leftShooterWheel.set(0);
+    m_rightShooterWheel.set(0);
+    // controlShooterToVelocity(0, 0);
   }
 
   private void controlShooterToVelocity(double leftVelocity, double rightVelocity)

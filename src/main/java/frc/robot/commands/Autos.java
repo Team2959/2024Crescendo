@@ -27,14 +27,12 @@ public final class Autos
     public static SendableChooser<Command> sendableChooserFullPathPlanner(RobotContainer container)
     {
         SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
-        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
+        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note");
         return sendableChooser;
     }
 
     public static SendableChooser<Command> sendableChooser(RobotContainer container)
     {
-        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser();
-        // SendableChooser<Command> sendableChooser = AutoBuilder.buildAutoChooser("Center Two Note with Events");
         SendableChooser<Command> sendableChooser = new SendableChooser<>();
         sendableChooser.setDefaultOption("Nothing", new WaitCommand(0));
         sendableChooser.addOption("Center Shoot and Leave",
@@ -66,7 +64,7 @@ public final class Autos
         // Must match names in PathPlanner!
         NamedCommands.registerCommand("startIntake", new NoteIntakeFromFloorCommand(container.m_intakeSubsystem)
             .alongWith(new InstantCommand(() ->
-            container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem)));
+                container.m_shooterSubsystem.stopShooterMotor(), container.m_shooterSubsystem)));
 
         NamedCommands.registerCommand("setShooterCenter", new InstantCommand(() ->
             container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), container.m_shooterSubsystem));
@@ -74,8 +72,8 @@ public final class Autos
             container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.LeftSpeaker), container.m_shooterSubsystem));
         NamedCommands.registerCommand("setShooterRight", new InstantCommand(() ->
             container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.RightSpeaker), container.m_shooterSubsystem));
-        // NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
-        //     container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), container.m_shooterSubsystem));
+        NamedCommands.registerCommand("startShooterTrap", new InstantCommand(() ->
+            container.m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.Trap), container.m_shooterSubsystem));
 
         NamedCommands.registerCommand("delayedShootNote",
             new WaitCommand(container.m_delayTimeForShooter)
@@ -98,11 +96,11 @@ public final class Autos
                     if (alliance.get() == DriverStation.Alliance.Red)
                     {
                         var newPath = path.flipPath();
-                        container.m_driveSubsystem.setInitialPose(newPath.getPathPoses().get(0));
+                        container.m_driveSubsystem.resetOdometry(newPath.getPathPoses().get(0));
                         return;
                     }
                 }
-                container.m_driveSubsystem.setInitialPose(path.getPathPoses().get(0));
+                container.m_driveSubsystem.resetOdometry(path.getPathPoses().get(0));
             }),
             runPathFromPathPlanner(name));
     }

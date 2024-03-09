@@ -230,14 +230,10 @@ public class DriveSubsystem extends SubsystemBase {
         resetSteeringMotorsToAbsolute();
     }
 
-    public void setInitialPose(Pose2d pose2d) {
-        m_odometry.resetPosition(getAngle(), getPositions(), pose2d);
-    }
-
     public Pose2d m_targetDriveToPose2d;
     public void resetPoseFromLimelight()
     {
-        // setInitialPose(new Pose2d( ));   // from lime light
+        // resetOdometry(new Pose2d( ));   // from lime light
 
         // switch based on april tag # for target position
         int targetAprilTag = 8;

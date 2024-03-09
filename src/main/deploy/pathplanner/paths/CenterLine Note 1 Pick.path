@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.417113363743722,
-        "y": 7.460326620116567
+        "x": 8.12516432050408,
+        "y": 7.378291423249514
       },
       "prevControl": {
-        "x": 7.446436301323307,
-        "y": 7.139775406311377
+        "x": 7.147594891109708,
+        "y": 7.079418455427618
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,7 +36,25 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Start Intake",
+      "waypointRelativePos": 0.6,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "startIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 3.0,

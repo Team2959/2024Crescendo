@@ -22,13 +22,11 @@ import frc.robot.commands.ClimbExtendCommand;
 import frc.robot.commands.ClimbRetractCommand;
 import frc.robot.commands.DetectNoteIntakeFromFloorCommandForAutonomous;
 import frc.robot.commands.ExtendAmpAssistCommand;
-import frc.robot.commands.ExtendWallSpacerCommand;
 import frc.robot.commands.FeedNoteIntoShooterCommand;
 import frc.robot.commands.LockWheelsCommand;
 import frc.robot.commands.NoteIntakeFromFloorCommand;
 import frc.robot.commands.NoteIntakeFromSourceCommand;
 import frc.robot.commands.RetractAmpAssistCommand;
-import frc.robot.commands.RetractWallSpacerCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;
 import frc.robot.commands.TeleOpDriveCommand;
@@ -38,7 +36,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterLocation;
-import frc.robot.subsystems.WallSpacerSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -169,7 +166,7 @@ public class RobotContainer {
       .and(m_robot::isAutonomousEnabled)
       .onTrue(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)
           .andThen(new InstantCommand(() ->
-              m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker), m_shooterSubsystem)));
+              m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker))));
 
     // Lights
     new Trigger(m_intakeSubsystem::isNotePickedUp)
@@ -194,15 +191,15 @@ public class RobotContainer {
           m_driveSubsystem.smartDashboardUpdate();
           smartDashboardUpdate();
       }, 2, 0.502);
-      m_robot.addPeriodic(() -> {
+      // m_robot.addPeriodic(() -> {
           // m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
-          m_AmpAssistSubsystem.smartDashboardUpdate();
+          // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
-      }, 1, 0.303);
+      // }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
-      // }, 1, 0.107);
+      // }, 0.5, 0.107);
   }
 
   public void smartDashboardUpdate() {
@@ -262,14 +259,3 @@ public class RobotContainer {
     m_bling.setBlingMessage(getAllianceColor());
   }
 }
-// example decorator pattern for commands
-    // m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
-    //   .alongWith(
-    //     new WaitCommand(0.25)
-    //     .andThen(new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
-    //     .until(m_intakeSubsystem::isNotePresent)
-    //     .finallyDo(() -> m_intakeSubsystem.stopMotor())));
-
-    // new Trigger(m_intakeSubsystem::isNotePresent)
-    //   .and(m_intakeSubsystem::isPickingUpNote)
-    //   .onTrue(new InstantCommand(() -> m_intakeSubsystem.stopMotor()));

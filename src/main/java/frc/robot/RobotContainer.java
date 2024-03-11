@@ -25,7 +25,6 @@ import frc.robot.commands.ExtendAmpAssistCommand;
 import frc.robot.commands.FeedNoteIntoShooterCommand;
 import frc.robot.commands.LockWheelsCommand;
 import frc.robot.commands.NoteIntakeFromFloorCommand;
-import frc.robot.commands.NoteIntakeFromSourceCommand;
 import frc.robot.commands.RetractAmpAssistCommand;
 import frc.robot.commands.ReverseIntakeCommand;
 import frc.robot.commands.ShooterVelocityCommand;

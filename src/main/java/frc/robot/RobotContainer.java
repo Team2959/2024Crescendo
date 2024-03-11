@@ -81,13 +81,13 @@ public class RobotContainer {
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
   JoystickButton m_retractAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kRetractAmpAssistPleaseButton);
-  JoystickButton m_ampShootButton =new JoystickButton(m_buttonBox, RobotMap.kAmpShooterVelocityControl);
   JoystickButton m_trapShootButton =new JoystickButton(m_buttonBox, RobotMap.kTrapShooterVelocityControl);
   JoystickButton m_centerSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kCenterSpeakerShooterVelocityControl);
   JoystickButton m_rightSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kRightSpeakerShooterVelocityControl);
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
-  JoystickButton m_sourceLoadButton = new JoystickButton(m_buttonBox, RobotMap.kLoadFromSourceButton);
   JoystickButton m_reverseIntakeButton = new JoystickButton(m_buttonBox, RobotMap.kReverseIntake);
+  JoystickButton m_fireNoteButton = new JoystickButton(m_buttonBox, RobotMap.kFireNote);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -137,30 +137,25 @@ public class RobotContainer {
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
       .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
 
-    m_centerSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker)
-      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
-    m_leftSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker)
-      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
-    m_rightSpeakerShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker)
-      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
-    m_ampShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)
-      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
-    m_trapShootButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
-      .alongWith(new WaitCommand(m_delayTimeForShooter).andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem))));
+    m_centerSpeakerShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker)
+      .alongWith(new RetractAmpAssistCommand(m_AmpAssistSubsystem)));
+    m_leftSpeakerShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.LeftSpeaker)
+      .alongWith(new RetractAmpAssistCommand(m_AmpAssistSubsystem)));
+    m_rightSpeakerShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker)
+      .alongWith(new RetractAmpAssistCommand(m_AmpAssistSubsystem)));
+    m_trapShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
 
-   // new Trigger(m_intakeSubsystem::isNotePickedUp)
-    //  .onTrue()new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.CenterSpeaker);
+    m_fireNoteButton.onTrue(new FeedNoteIntoShooterCommand(m_intakeSubsystem)
+      .andThen(new WaitCommand (0.5),
+        new InstantCommand(() -> {m_shooterSubsystem.stopShooterMotor(); }, m_shooterSubsystem)));
 
     // Pick up Note from Floor
-    m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem)
-        .andThen(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)));
+    m_intakeButton.onTrue(new NoteIntakeFromFloorCommand(m_intakeSubsystem));
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
-    // Load Note From Source
-    m_sourceLoadButton.onTrue(new NoteIntakeFromSourceCommand(m_shooterSubsystem, m_intakeSubsystem));
-
     // Amp Assist
-    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem));
+    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
+      .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
     m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Climb
@@ -170,7 +165,6 @@ public class RobotContainer {
     // Autonomous Trigger to stop finish floor intake
     // BEWARE!! Can stop drive auto! If has Intake Subsystem req
     new Trigger(m_intakeSubsystem::isNotePickedUp)
-      .and(m_robot::isAutonomousEnabled)
       .onTrue(new DetectNoteIntakeFromFloorCommandForAutonomous(m_intakeSubsystem)
           .andThen(new InstantCommand(() ->
               m_shooterSubsystem.controlShooterToVelocity(ShooterLocation.CenterSpeaker))));
@@ -198,12 +192,12 @@ public class RobotContainer {
           m_driveSubsystem.smartDashboardUpdate();
           smartDashboardUpdate();
       }, 2, 0.502);
-      // m_robot.addPeriodic(() -> {
+      m_robot.addPeriodic(() -> {
           // m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
           // m_AmpAssistSubsystem.smartDashboardUpdate();
-          // m_climbSubsystem.smartDashboardUpdate();
-      // }, 1, 0.303);
+            m_climbSubsystem.smartDashboardUpdate();
+      }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
       // }, 0.5, 0.107);

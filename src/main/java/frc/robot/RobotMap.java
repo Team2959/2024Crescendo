@@ -57,14 +57,14 @@ public final class RobotMap {
 
     // Co-Piolt Button board
     public static final int kExtendAmpAssistPleaseButton = 1;
-    public static final int kRetractAmpAssistPleaseButton = 11;
+    public static final int kRetractAmpAssistPleaseButton = 3;
     public static final int kAmpShooterVelocityControl = 3;
-    public static final int kTrapShooterVelocityControl = 5;
+    public static final int kTrapShooterVelocityControl = 11;
     public static final int kReverseIntake = 6;
     public static final int kCenterSpeakerShooterVelocityControl = 8;
     public static final int kLeftSpeakerShooterVelocityControl = 12;
     public static final int kRightSpeakerShooterVelocityControl = 9;
-    public static final int kLoadFromSourceButton = 7;
+    public static final int kFireNote = 5;
 
     // Zeroed values, should be in radians
     // source is google document in Electrical for team - module data

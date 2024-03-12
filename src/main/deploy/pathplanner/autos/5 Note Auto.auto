@@ -28,6 +28,51 @@
                 }
               },
               {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Leave From Center"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "startIntake"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Return to Center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
                 "type": "named",
                 "data": {
                   "name": "startIntake"
@@ -36,7 +81,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Note Center Grab"
+                  "pathName": "Close Right Note Grab"
                 }
               }
             ]
@@ -49,58 +94,20 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Center Return"
+                  "pathName": "Close Right Note Return"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "delayedShootNote"
+                  "name": "shootNote"
                 }
               }
             ]
           }
         },
         {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "startIntake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Close Post Note Grab"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Close Left Note Return"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "delayedShootNote"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -131,14 +138,14 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "delayedShootNote"
+                  "name": "shootNote"
                 }
               }
             ]
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {

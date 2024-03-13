@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClimbExtendCommand;
+import frc.robot.commands.ClimbLatchCommand;
 import frc.robot.commands.ClimbRetractCommand;
 import frc.robot.commands.DetectNoteIntakeFromFloorCommandForAutonomous;
 import frc.robot.commands.ExtendAmpAssistCommand;
@@ -76,6 +77,7 @@ public class RobotContainer {
   JoystickButton m_resetNavX = new JoystickButton(m_rightJoystick, RobotMap.kRightResetNavXButton);
   JoystickButton m_extendClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftExtendClimbButton);
   JoystickButton m_retractClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftRetractClimbButton);
+  JoystickButton m_latchClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftLatchClimbButton);
 
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -160,6 +162,7 @@ public class RobotContainer {
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
     m_retractClimbButton.onTrue(new ClimbRetractCommand(m_climbSubsystem));
+    m_latchClimbButton.onTrue(new ClimbLatchCommand(m_climbSubsystem));
 
     // Autonomous Trigger to stop finish floor intake
     // BEWARE!! Can stop drive auto! If has Intake Subsystem req

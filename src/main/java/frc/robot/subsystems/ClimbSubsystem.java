@@ -32,7 +32,8 @@ public class ClimbSubsystem extends SubsystemBase {
   private double m_lastLeftTarget = 0;
   private double m_lastRightTarget = 0;
   private double m_extendDistance = 142;
-  private double m_retractDistance = 2;
+  private double m_retractDistance = 12;
+  private double m_latchDistance = 2;
 
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
@@ -155,9 +156,15 @@ public class ClimbSubsystem extends SubsystemBase {
     setLeftTargetPosition(m_retractDistance);
   }
 
+  public void latchClimbArms()
+  {
+    setRightTargetPosition(-m_latchDistance);
+    setLeftTargetPosition(m_latchDistance);
+  }
+
   public boolean isAtTargetPosition() {
-    return Math.abs(m_lastLeftTarget - m_leftClimbEncoder.getPosition()) < 1 &&
-           Math.abs(m_lastRightTarget - m_rightClimbEncoder.getPosition()) < 1;
+    return Math.abs(m_lastLeftTarget - m_leftClimbEncoder.getPosition()) < 2 &&
+           Math.abs(m_lastRightTarget - m_rightClimbEncoder.getPosition()) < 2;
   }
 
   public void stopAtCurrentPosition() {

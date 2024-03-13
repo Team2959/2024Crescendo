@@ -15,6 +15,7 @@ public class AlignWithTrapCommand extends Command {
   private DriveSubsystem m_driveSubsystem;
   private double m_lastRotation;
   private double m_lastDriveSpeed;
+  private double m_targetTy = 27;
   public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
@@ -23,11 +24,14 @@ public class AlignWithTrapCommand extends Command {
 
     SmartDashboard.putNumber("AprilTag\tx", 0);
     SmartDashboard.putNumber("AprilTag\ty", 0);
+    SmartDashboard.putNumber("AprilTag\ty delta", 0);
+    SmartDashboard.putNumber("AprilTag\target ty", m_targetTy);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_targetTy = SmartDashboard.getNumber("AprilTag\target ty", 27);
     m_lastRotation = 5;
     m_lastDriveSpeed = 5;
   }
@@ -37,7 +41,7 @@ public class AlignWithTrapCommand extends Command {
   public void execute() {
       m_lastRotation = Vision.limelight_aim_proportional();
 
-      m_lastDriveSpeed = Vision.limelight_range_proportional();
+      m_lastDriveSpeed = Vision.limelight_range_proportional(m_targetTy);
 
       //while using Limelight, turn off field-relative driving.
       m_driveSubsystem.drive(-m_lastDriveSpeed, 0, m_lastRotation, false);

@@ -55,6 +55,7 @@ public final class RobotMap {
     public static final int kLeftExtendClimbButton = 7;
     public static final int kLeftRetractClimbButton = 11;
     public static final int kLeftLatchClimbButton = 9;
+    public static final int kTrapAlignButton = 8;
 
     // Co-Piolt Button board
     public static final int kExtendAmpAssistPleaseButton = 1;

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignWithTrapCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClimbExtendCommand;
 import frc.robot.commands.ClimbLatchCommand;
@@ -78,6 +79,7 @@ public class RobotContainer {
   JoystickButton m_extendClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftExtendClimbButton);
   JoystickButton m_retractClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftRetractClimbButton);
   JoystickButton m_latchClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftLatchClimbButton);
+  JoystickButton m_trapAlignButton = new JoystickButton(m_leftJoystick, RobotMap.kTrapAlignButton);
 
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -133,6 +135,8 @@ public class RobotContainer {
           () -> m_robot.isTeleopEnabled()));
     m_lockWheeButton.whileTrue(new LockWheelsCommand(m_driveSubsystem));
     m_resetNavX.onTrue(new InstantCommand(() -> {m_driveSubsystem.resetNavX();}));
+
+    m_trapAlignButton.whileTrue(new AlignWithTrapCommand(m_driveSubsystem));
 
     // All the Note delivery commands
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)

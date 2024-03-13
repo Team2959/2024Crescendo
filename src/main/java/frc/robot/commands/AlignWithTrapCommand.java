@@ -5,6 +5,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Vision;
@@ -12,42 +13,45 @@ import frc.robot.subsystems.Vision;
 public class AlignWithTrapCommand extends Command {
   /** Creates a new AlignWithTrapCommand. */
   private DriveSubsystem m_driveSubsystem;
-  private Vision m_vision;
-  public AlignWithTrapCommand(DriveSubsystem driveSubsystem, Vision vision) {
+  private double m_lastRotation;
+  private double m_lastDriveSpeed;
+  public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
-    m_vision = vision;
 
     addRequirements(driveSubsystem);
+
+    SmartDashboard.putNumber("AprilTag\tx", 0);
+    SmartDashboard.putNumber("AprilTag\ty", 0);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_lastRotation = 5;
+    m_lastDriveSpeed = 5;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var rot_limelight = m_vision.limelight_aim_proportional();
+      m_lastRotation = Vision.limelight_aim_proportional();
 
-    var forward_limelight = m_vision.limelight_range_proportional();
+      m_lastDriveSpeed = Vision.limelight_range_proportional();
 
       //while using Limelight, turn off field-relative driving.
-      m_driveSubsystem.drive(-forward_limelight, 0, rot_limelight, false);
+      m_driveSubsystem.drive(-m_lastDriveSpeed, 0, m_lastRotation, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
        m_driveSubsystem.drive(0, 0, 0, true);
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      return false;
-  }
-
-  
+      return m_lastRotation < 0.5 && m_lastDriveSpeed < 0.5;
+  }  
 }

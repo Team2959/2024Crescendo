@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7805585557503859,
-      "y": 4.346961967626977
+      "x": 0.855874387805114,
+      "y": 6.662826846780455
     },
-    "rotation": -60.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -18,19 +18,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "setShooterRight"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Shoot Position"
+                  "name": "setShooterLeft"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "delayedShootNote"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Shooting Position"
                 }
               }
             ]
@@ -41,15 +41,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Far PickUp from Right"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left PickUp"
                 }
               }
             ]
@@ -62,7 +62,45 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Shoot"
+                  "pathName": "Left Close Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Far Pick Up from Left"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Far Shoot from Left"
                 }
               },
               {

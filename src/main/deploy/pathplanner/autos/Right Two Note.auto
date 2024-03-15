@@ -43,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Far PickUp from Right"
+                  "pathName": "Right PickUp"
                 }
               },
               {
@@ -78,6 +78,12 @@
           "type": "named",
           "data": {
             "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right PickUp"
           }
         }
       ]

@@ -117,6 +117,12 @@
           "data": {
             "name": "stopShooter"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left PickUp"
+          }
         }
       ]
     }

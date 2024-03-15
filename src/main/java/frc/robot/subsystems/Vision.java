@@ -30,7 +30,7 @@ public class Vision {
      {    
         double kP = .035;
         var tx = LimelightHelpers.getTX("limelight-cwtech");
-        SmartDashboard.putNumber("AprilTag\tx", tx);
+        SmartDashboard.putNumber("AprilTag\\tx", tx);
         double targetingAngularVelocity = tx  * kP;
         targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
         targetingAngularVelocity *= -1.0;
@@ -42,9 +42,9 @@ public class Vision {
     {    
         double kP = .1;
         var ty = LimelightHelpers.getTY("limelight-cwtech");
-        SmartDashboard.putNumber("AprilTag\ty", ty);
+        SmartDashboard.putNumber("AprilTag\\ty", ty);
         double deltaTy = targetTy - ty;
-        SmartDashboard.putNumber("AprilTag\ty delta", deltaTy);
+        SmartDashboard.putNumber("AprilTag\\ty delta", deltaTy);
         double targetingForwardSpeed = deltaTy * kP;
         targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
         targetingForwardSpeed *= -1.0;

@@ -22,16 +22,16 @@ public class AlignWithTrapCommand extends Command {
 
     addRequirements(driveSubsystem);
 
-    SmartDashboard.putNumber("AprilTag\tx", 0);
-    SmartDashboard.putNumber("AprilTag\ty", 0);
-    SmartDashboard.putNumber("AprilTag\ty delta", 0);
-    SmartDashboard.putNumber("AprilTag\target ty", m_targetTy);
+    SmartDashboard.putNumber("AprilTag\\tx", 0);
+    SmartDashboard.putNumber("AprilTag\\ty", 0);
+    SmartDashboard.putNumber("AprilTag\\ty delta", 0);
+    SmartDashboard.putNumber("AprilTag\\target ty", m_targetTy);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_targetTy = SmartDashboard.getNumber("AprilTag\target ty", 27);
+    m_targetTy = SmartDashboard.getNumber("AprilTag\\target ty", 27);
     m_lastRotation = 5;
     m_lastDriveSpeed = 5;
   }

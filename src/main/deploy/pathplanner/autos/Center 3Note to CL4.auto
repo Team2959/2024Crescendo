@@ -2,38 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.855874387805114,
-      "y": 6.662826846780455
+      "x": 1.43,
+      "y": 5.52
     },
-    "rotation": 60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "setShooterLeft"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "delayedShootNote"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Shooting Position"
-                }
-              }
-            ]
+            "name": "setShooterCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "delayedShootNote"
           }
         },
         {
@@ -49,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Far Note Grab Around Left Close NOte"
+                  "pathName": "Leave From Center"
                 }
               }
             ]
@@ -62,7 +49,32 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Far Note Shoot Around Left Close NOte"
+                  "pathName": "Return to Center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLine Note 4 Pick"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterLine Note 4 Shoot"
                 }
               },
               {
@@ -78,12 +90,6 @@
           "type": "named",
           "data": {
             "name": "stopShooter"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Leave"
           }
         }
       ]

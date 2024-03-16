@@ -20,10 +20,10 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private SparkPIDController m_ampPidController;
   
   private double m_lastTarget = 0;
-  private double m_extendDistance = 0.7; //no idea what this is
-  private double m_retractDistance = 0.15; //no idea what this is
+  private double m_extendDistance = -2.3; 
+  private double m_retractDistance = -0.2;
 
-  private static final double kAmpP = 0.15;   //guess
+  private static final double kAmpP = 0.2;   //guess
   private static final double kAmpI = 0.0;   //guess
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
@@ -36,7 +36,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     m_AmpRampNEO.restoreFactoryDefaults();
 
-    m_AmpRampNEO.setIdleMode(IdleMode.kBrake);
+    m_AmpRampNEO.setIdleMode(IdleMode.kCoast);
  
     m_AmpRampEncoder = (SparkRelativeEncoder)m_AmpRampNEO.getEncoder();
 
@@ -72,31 +72,57 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void smartDashboardInit()
   {
-     SmartDashboard.putNumber(getName() + "/Position", getAmpPosition());
-    //  SmartDashboard.putNumber(getName() + "/Target Speed", 1500);
-    //  SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
-    //  SmartDashboard.putBoolean(getName() + "/Stop", false);
+    SmartDashboard.putNumber(getName() + "/Position", getAmpPosition());
+    SmartDashboard.putNumber(getName() + "/velocity", 0);
+    SmartDashboard.putNumber(getName() + "/motor output", 0);
+
+    SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    SmartDashboard.putNumber(getName() + "/amp P", kAmpP);
+    SmartDashboard.putNumber(getName() + "/amp I", kAmpI);
+    SmartDashboard.putNumber(getName() + "/amp D", kAmpD);
+    SmartDashboard.putNumber(getName() + "/amp FF", kAmpFF);
+
+    SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
+    SmartDashboard.putNumber(getName() + "/Retract Distance", m_retractDistance);
+
+    SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
+    SmartDashboard.putNumber(getName() + "/target position", 0);
   }
 
   public void smartDashboardUpdate()
   {
      SmartDashboard.putNumber(getName() + "/Position", getAmpPosition());
     
-  //   if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
-  //   {
-  //     double movementSpeed = SmartDashboard.getNumber(getName() + "/Target Speed", 1500);
-  //     m_LeftAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
-  //     m_RightAmpRampServo.setPulseTimeMicroseconds((int)movementSpeed);
+    SmartDashboard.putNumber(getName() + "/Position", m_AmpRampEncoder.getPosition());
+    SmartDashboard.putNumber(getName() + "/velocity", m_AmpRampEncoder.getVelocity());
+    SmartDashboard.putNumber(getName() + "/motor output", m_AmpRampNEO.getAppliedOutput());
 
-  //     SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
-  //   }
+    if (SmartDashboard.getBoolean(getName() + "/Update PIDs", false))
+    {
+      m_extendDistance = SmartDashboard.getNumber(getName() + "/Extend Distance", m_extendDistance);
+      m_retractDistance = SmartDashboard.getNumber(getName() + "/Retract Distance", m_retractDistance);
 
-  //   if (SmartDashboard.getBoolean(getName() + "/Stop", false))
-  //   {
-  //       stopMotor();
+      double pGain = SmartDashboard.getNumber(getName() + "/amp P", kAmpP);
+      double iGain = SmartDashboard.getNumber(getName() + "/amp I", kAmpI);
+      double dGain = SmartDashboard.getNumber(getName() + "/amp D", kAmpD);
+      double ffGain = SmartDashboard.getNumber(getName() + "/amp FF", kAmpFF);
 
-  //       SmartDashboard.putBoolean(getName() + "/Stop", false);
-  //   }
+      m_ampPidController.setP(pGain); 
+      m_ampPidController.setI(iGain); 
+      m_ampPidController.setD(dGain); 
+      m_ampPidController.setFF(ffGain); 
+
+      SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
+    }
+
+    if (SmartDashboard.getBoolean(getName() + "/Test Go To Targets", false))
+    {
+      double Target = SmartDashboard.getNumber(getName() + "/target position", m_lastTarget);
+
+      setTargetPosition(Target);
+
+      SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
+    }
   }
 
   private void setTargetPosition(double position)

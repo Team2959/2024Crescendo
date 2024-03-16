@@ -201,8 +201,8 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           // m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
-          // m_AmpAssistSubsystem.smartDashboardUpdate();
-            m_climbSubsystem.smartDashboardUpdate();
+          m_AmpAssistSubsystem.smartDashboardUpdate();
+          // m_climbSubsystem.smartDashboardUpdate();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();

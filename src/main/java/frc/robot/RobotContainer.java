@@ -223,16 +223,16 @@ public class RobotContainer {
 
     switch (startLocation) {
       case BlueAmp:
-        m_driveSubsystem.setStartAngle(-60);
+        m_driveSubsystem.setStartAngle(-30);
         break;
       case BlueSource:
-        m_driveSubsystem.setStartAngle(60);
+        m_driveSubsystem.setStartAngle(30);
         break;
       case RedAmp:
-        m_driveSubsystem.setStartAngle(60);
+        m_driveSubsystem.setStartAngle(30);
         break;
       case RedSource:
-        m_driveSubsystem.setStartAngle(-60);
+        m_driveSubsystem.setStartAngle(-30);
         break;
       case Center:
       default:

@@ -20,7 +20,7 @@ public class ExtendAmpAssistCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_AmpAssistSubsystem.startMoving(true);
+    m_AmpAssistSubsystem.extendAmpRamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +36,6 @@ public class ExtendAmpAssistCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_AmpAssistSubsystem.AtPosition(true);
+    return m_AmpAssistSubsystem.isAtPosition();
   }
 }

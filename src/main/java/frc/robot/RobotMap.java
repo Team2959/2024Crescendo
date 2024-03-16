@@ -26,11 +26,11 @@ public final class RobotMap {
     public static final int kIntakeVictorSpMotor = 1;
         // Talon SRX
     public static final int kWallSpacerTalonSrxMotor = 2;
+        // Amp
+    public static final int kAmpNEO = 25;
 
     // PWM motor addresses
         // Servos
-    public static final int kLeftAmpServo = 9;
-    public static final int kRightAmpServo = 8;
 
     // Analog Input addresses
     public static final int kAmpStringPotAnalog = 1;

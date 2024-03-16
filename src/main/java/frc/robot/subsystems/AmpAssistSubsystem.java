@@ -4,30 +4,50 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.PWM;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkRelativeEncoder;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class AmpAssistSubsystem extends SubsystemBase {
-  private PWM m_LeftAmpRampServo; 
-  private PWM m_RightAmpRampServo;
+  private CANSparkMax m_AmpRampNEO; 
+  private SparkRelativeEncoder m_AmpRampEncoder;
+  private SparkPIDController m_ampPidController;
+  
+  private double m_lastTarget = 0;
+  private double m_extendDistance = 0.7; //no idea what this is
+  private double m_retractDistance = 0.15; //no idea what this is
 
-  private AnalogPotentiometer m_potentiometer;
+  private static final double kAmpP = 0.15;   //guess
+  private static final double kAmpI = 0.0;   //guess
+  private static final double kAmpD = 0.0;   //guess
+  private static final double kAmpFF = 0;   //guess
+  private static final double kAmpIZone = 0;   //guess
 
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
   {
-    m_LeftAmpRampServo = new PWM(RobotMap.kLeftAmpServo); 
-    m_RightAmpRampServo = new PWM(RobotMap.kRightAmpServo);
+    m_AmpRampNEO = new CANSparkMax(RobotMap.kAmpNEO, CANSparkMax.MotorType.kBrushless);
 
-    m_potentiometer = new AnalogPotentiometer(RobotMap.kAmpStringPotAnalog);
+    m_AmpRampNEO.restoreFactoryDefaults();
 
-    m_LeftAmpRampServo.setPeriodMultiplier(PWM.PeriodMultiplier.k4X);
-    m_RightAmpRampServo.setPeriodMultiplier(PWM.PeriodMultiplier.k4X);
+    m_AmpRampNEO.setIdleMode(IdleMode.kBrake);
  
+    m_AmpRampEncoder = (SparkRelativeEncoder)m_AmpRampNEO.getEncoder();
+
     stopMotor();
+
+    m_ampPidController = m_AmpRampNEO.getPIDController();
+    m_ampPidController.setP(kAmpP);
+    m_ampPidController.setI(kAmpI);
+    m_ampPidController.setD(kAmpD);
+    m_ampPidController.setFF(kAmpFF);
+    m_ampPidController.setIZone(kAmpIZone);
   }
 
   @Override
@@ -37,45 +57,22 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void stopMotor()
   {
-    m_LeftAmpRampServo.setDisabled();
-    m_RightAmpRampServo.setDisabled();
+    m_AmpRampNEO.set(0);
   }
 
-  public void startMoving(boolean extend)
+  public double getAmpPosition()
   {
-    if (extend)
-    {
-      m_LeftAmpRampServo.setPulseTimeMicroseconds(1000);
-      m_RightAmpRampServo.setPulseTimeMicroseconds(2000);
-    }
-    else
-    {
-      m_LeftAmpRampServo.setPulseTimeMicroseconds(2000);
-      m_RightAmpRampServo.setPulseTimeMicroseconds(1000);
-    }
+    return m_AmpRampEncoder.getPosition();
   }
 
-  private double getPosition()
+  public boolean isAtPosition()
   {
-    // ToDo: convert to inches!!
-    return m_potentiometer.get();
-  }
-
-  public boolean AtPosition(boolean extended)
-  {
-    if (extended)
-    {
-      return getPosition() >= 0.7;
-    }
-    else
-    {
-      return getPosition() <= 0.15;
-    }
+    return Math.abs(m_lastTarget - getAmpPosition()) < 0.5;
   }
 
   public void smartDashboardInit()
   {
-     SmartDashboard.putNumber(getName() + "/Position", getPosition());
+     SmartDashboard.putNumber(getName() + "/Position", getAmpPosition());
     //  SmartDashboard.putNumber(getName() + "/Target Speed", 1500);
     //  SmartDashboard.putBoolean(getName() + "/Drive At Speed", false);
     //  SmartDashboard.putBoolean(getName() + "/Stop", false);
@@ -83,7 +80,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void smartDashboardUpdate()
   {
-     SmartDashboard.putNumber(getName() + "/Position", getPosition());
+     SmartDashboard.putNumber(getName() + "/Position", getAmpPosition());
     
   //   if (SmartDashboard.getBoolean(getName() + "/Drive At Speed", false))
   //   {
@@ -100,5 +97,21 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   //       SmartDashboard.putBoolean(getName() + "/Stop", false);
   //   }
+  }
+
+  private void setTargetPosition(double position)
+  {
+    m_ampPidController.setReference(position, ControlType.kPosition);
+    m_lastTarget = position;
+  }
+
+  public void extendAmpRamp()
+  {
+    setTargetPosition(m_extendDistance); 
+  }
+
+  public void retractAmpRamp()
+  {
+    setTargetPosition(m_retractDistance);
   }
 }

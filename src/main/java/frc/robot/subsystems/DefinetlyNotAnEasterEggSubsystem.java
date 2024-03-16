@@ -24,3 +24,14 @@
 //Nom, nom, nom - those eggs are disappearing
 
 //Good Competition, time for EasterEggs
+
+//The Easter Eggs RETURN 
+//PREPARE YOURSELVES
+
+//private boolean happiness = false;
+// private void m_youAreHappy (boolean happiness) {
+//if (m_youAreHappy && m_youKnowIt){
+//    m_clapYourHands = true;
+//}};
+
+//We know it's wrong, don't judge us, we may have serious mental issues.

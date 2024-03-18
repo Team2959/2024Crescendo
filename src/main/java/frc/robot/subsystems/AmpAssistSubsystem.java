@@ -20,6 +20,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private SparkPIDController m_ampPidController;
   
   private double m_lastTarget = 0;
+  private static final double kMaxMeasuredExtension = -2.42;
+  private static final double kMinMeasuredRetraction = 0;
   private double m_extendDistance = -2.3; 
   private double m_retractDistance = -0.2;
 
@@ -28,6 +30,12 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
+
+  private static final int kSmartMotionSlot = 0;
+  private static final double kAmpMinVelocity = 0.0065;
+  private static final double kAmpMaxVelocity = 0.026;
+  private static final double kAmpMaxAcceleration = 0.104;
+  private static final double kAmpClosedLoopError = 0.0;
 
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
@@ -48,6 +56,11 @@ public class AmpAssistSubsystem extends SubsystemBase {
     m_ampPidController.setD(kAmpD);
     m_ampPidController.setFF(kAmpFF);
     m_ampPidController.setIZone(kAmpIZone);
+
+    m_ampPidController.setSmartMotionMinOutputVelocity(kAmpMinVelocity, kSmartMotionSlot);
+    m_ampPidController.setSmartMotionMaxVelocity(kAmpMaxVelocity, kSmartMotionSlot);
+    m_ampPidController.setSmartMotionMaxAccel(kAmpMaxAcceleration, kSmartMotionSlot);
+    // m_ampPidController.setSmartMotionAllowedClosedLoopError(kAmpClosedLoopError, kSmartMotionSlot);
   }
 
   @Override
@@ -82,6 +95,11 @@ public class AmpAssistSubsystem extends SubsystemBase {
     SmartDashboard.putNumber(getName() + "/amp D", kAmpD);
     SmartDashboard.putNumber(getName() + "/amp FF", kAmpFF);
 
+    SmartDashboard.putNumber(getName() + "/Min Vel", kAmpMinVelocity);
+    SmartDashboard.putNumber(getName() + "/Max Vel", kAmpMaxVelocity);
+    SmartDashboard.putNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
+    // SmartDashboard.putNumber(getName() + "/Closed Loop Error", kAmpClosedLoopError);
+
     SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
     SmartDashboard.putNumber(getName() + "/Retract Distance", m_retractDistance);
 
@@ -112,14 +130,26 @@ public class AmpAssistSubsystem extends SubsystemBase {
       m_ampPidController.setD(dGain); 
       m_ampPidController.setFF(ffGain); 
 
+      var minVel = SmartDashboard.getNumber(getName() + "/Min Vel", kAmpMinVelocity);
+      var maxVel = SmartDashboard.getNumber(getName() + "/Max Vel", kAmpMaxVelocity);
+      var maxAccel = SmartDashboard.getNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
+      // var loopError = SmartDashboard.getNumber(getName() + "/Closed Loop Error", kAmpClosedLoopError);
+
+      m_ampPidController.setSmartMotionMinOutputVelocity(minVel, kSmartMotionSlot);
+      m_ampPidController.setSmartMotionMaxVelocity(maxVel, kSmartMotionSlot);
+      m_ampPidController.setSmartMotionMaxAccel(maxAccel, kSmartMotionSlot);
+      // m_ampPidController.setSmartMotionAllowedClosedLoopError(loopError, kSmartMotionSlot);
+
       SmartDashboard.putBoolean(getName() + "/Update PIDs", false);
     }
 
     if (SmartDashboard.getBoolean(getName() + "/Test Go To Targets", false))
     {
-      double Target = SmartDashboard.getNumber(getName() + "/target position", m_lastTarget);
+      double target = SmartDashboard.getNumber(getName() + "/target position", m_lastTarget);
 
-      setTargetPosition(Target);
+      // limit operator input
+      target = Math.min(kMinMeasuredRetraction, Math.max(kMaxMeasuredExtension, target));
+      setTargetPosition(target);
 
       SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     }
@@ -127,7 +157,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   private void setTargetPosition(double position)
   {
-    m_ampPidController.setReference(position, ControlType.kPosition);
+    // m_ampPidController.setReference(position, ControlType.kPosition);
+    m_ampPidController.setReference(position, ControlType.kSmartMotion);
     m_lastTarget = position;
   }
 

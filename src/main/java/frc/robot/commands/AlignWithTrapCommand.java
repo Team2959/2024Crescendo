@@ -19,6 +19,9 @@ public class AlignWithTrapCommand extends Command {
   private double m_lastDeltaZ;
   private double m_targetZ = 1.5;
   private double m_targetRotaion = 0;
+  private double kSpeedKp = 0.1;
+  private double kRotationKp = 0.35;
+
   public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
@@ -30,6 +33,8 @@ public class AlignWithTrapCommand extends Command {
     SmartDashboard.putNumber("AprilTag\\tx delta", 0);
     SmartDashboard.putNumber("AprilTag\\tz delta", 0);
     SmartDashboard.putNumber("AprilTag\\target Z", m_targetZ);
+    SmartDashboard.putNumber("AprilTag\\kP Speed", kSpeedKp);
+    SmartDashboard.putNumber("AprilTag\\kP Rotation", kRotationKp);
   }
 
   // Called when the command is initially scheduled.
@@ -44,6 +49,8 @@ public class AlignWithTrapCommand extends Command {
       m_targetRotaion = 0;
 
     m_targetZ = SmartDashboard.getNumber("AprilTag\\target Z", m_targetZ);
+    kSpeedKp = SmartDashboard.getNumber("AprilTag\\kP Speed", kSpeedKp);
+    kRotationKp = SmartDashboard.getNumber("AprilTag\\kP Rotation", kRotationKp);
     m_lastRotation = 5;
     m_lastDeltaX = 5;
     m_lastDeltaZ = 5;
@@ -72,9 +79,8 @@ public class AlignWithTrapCommand extends Command {
 
   private double xSpeed()
   {
-    double kP = .1;
     var tx = LimelightHelpers.getTargetPose_RobotSpace(Vision.kLimeLightName)[0];
-    double targetingForwardSpeed = m_lastDeltaX = tx * kP;
+    double targetingForwardSpeed = m_lastDeltaX = tx * kSpeedKp;
     SmartDashboard.putNumber("AprilTag\\tx", tx);
     SmartDashboard.putNumber("AprilTag\\tx delta", m_lastDeltaX);
     targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
@@ -84,12 +90,11 @@ public class AlignWithTrapCommand extends Command {
 
   private double ySpeed()
   {
-    double kP = .1;
     var tz = LimelightHelpers.getTargetPose_RobotSpace(Vision.kLimeLightName)[2];
     m_lastDeltaZ = m_targetZ - tz;
     SmartDashboard.putNumber("AprilTag\\tz", tz);
     SmartDashboard.putNumber("AprilTag\\tz delta", m_lastDeltaZ);
-    double targetingForwardSpeed = m_lastDeltaZ * kP;
+    double targetingForwardSpeed = m_lastDeltaZ * kSpeedKp;
     targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
     targetingForwardSpeed *= -1.0;
     return targetingForwardSpeed;
@@ -97,8 +102,7 @@ public class AlignWithTrapCommand extends Command {
 
   private double rotationTarget()
   {
-    double kP = .035;
-    double targetingAngularVelocity = m_targetRotaion - m_driveSubsystem.getAngle().getDegrees()  * kP;
+    double targetingAngularVelocity = m_targetRotaion - m_driveSubsystem.getAngle().getDegrees()  * kRotationKp;
     targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
     targetingAngularVelocity *= -1.0;
 

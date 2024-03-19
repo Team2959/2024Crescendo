@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase
   private double m_centerSpeakerVelocity = 4500.0;
   private double m_sideSlowMotorSpeakerVelocity = 4250.0;
   private double m_sideFastMotorSpeakerVelocity = 4900.0; 
-  private double m_ampVelocity = 800.0;
+  private double m_ampVelocity = 1000.0;
   private double m_sourceVelocity = -1300.0;
 
   /** Creates a new ShooterSubsystem. */

@@ -26,10 +26,12 @@ public class Vision {
         }
     }
 
+    public static final String kLimeLightName = "limelight-cwtech";
+
     public static double limelight_aim_proportional()
      {    
         double kP = .035;
-        var tx = LimelightHelpers.getTX("limelight-cwtech");
+        var tx = LimelightHelpers.getTX(kLimeLightName);
         SmartDashboard.putNumber("AprilTag\\tx", tx);
         double targetingAngularVelocity = tx  * kP;
         targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
@@ -41,7 +43,7 @@ public class Vision {
     public static double limelight_range_proportional(double targetTy)
     {    
         double kP = .1;
-        var ty = LimelightHelpers.getTY("limelight-cwtech");
+        var ty = LimelightHelpers.getTY(kLimeLightName);
         SmartDashboard.putNumber("AprilTag\\ty", ty);
         double deltaTy = targetTy - ty;
         SmartDashboard.putNumber("AprilTag\\ty delta", deltaTy);

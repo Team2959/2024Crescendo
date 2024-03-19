@@ -159,9 +159,10 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Amp Assist
-    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
-      .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
-    m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
+    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
+    //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
+    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
@@ -199,7 +200,7 @@ public class RobotContainer {
           smartDashboardUpdate();
       }, 2, 0.502);
       m_robot.addPeriodic(() -> {
-          // m_shooterSubsystem.smartDashboardUpdate();
+          m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();

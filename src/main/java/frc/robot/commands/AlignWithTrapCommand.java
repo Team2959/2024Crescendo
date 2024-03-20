@@ -6,6 +6,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,6 +27,16 @@ public class AlignWithTrapCommand extends Command {
   PIDController m_rotationController = new PIDController(kRotationKp, 0, 0);
   PIDController m_xSpeedController = new PIDController(kSpeedKp, 0, 0);
   PIDController m_ySpeedController = new PIDController(kSpeedKp, 0, 0);
+  // from 2023 arm rotation subsystem
+  // private ProfiledPIDController m_armRotatorMotorProfiledPidController = new ProfiledPIDController(kArmRotatorP,
+  //     kArmRotatorI, kArmRotatorD,
+  //     new Constraints(kArmRotatorMaxVelocity, kArmRotatorMaxAccel));
+
+  // double rawProfiled = m_armRotatorMotorProfiledPidController.calculate(getArmAngle());
+  //     m_armRotatorMotor.set(rawProfiled);
+
+  // // profiled PID control
+  //   m_armRotatorMotorProfiledPidController.setGoal(degrees);
 
   public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.

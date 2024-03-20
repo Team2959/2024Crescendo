@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8444684695637196,
-      "y": 6.712444649960525
+      "x": 0.7402504945854966,
+      "y": 6.662826846780455
     },
-    "rotation": 45.707319369091984
+    "rotation": 58.86102756302113
   },
   "command": {
     "type": "sequential",
@@ -19,6 +19,12 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Left Shooting Position"
+                      }
+                    },
                     {
                       "type": "named",
                       "data": {
@@ -40,7 +46,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Center Note 1"
+                        "pathName": "Left Far Note Pickup Around Left Close Note"
                       }
                     }
                   ]

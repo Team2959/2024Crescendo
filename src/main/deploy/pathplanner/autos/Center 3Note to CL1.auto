@@ -62,9 +62,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "CenterLine Note 1 Pick"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterLine Note 1 Pick"
+                }
+              }
+            ]
           }
         },
         {

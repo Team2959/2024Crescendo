@@ -26,7 +26,7 @@ public class Vision {
         }
     }
 
-    public static final String kLimeLightName = "limelight-cwtech";
+    public static final String kLimeLightName = "limelight";
 
     public static double limelight_aim_proportional()
      {    

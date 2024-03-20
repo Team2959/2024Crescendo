@@ -73,6 +73,20 @@ public class AmpAssistSubsystem extends SubsystemBase {
     m_AmpRampNEO.set(0);
   }
 
+  public void directDrivePower()
+  {
+    var position = getAmpPosition();
+    if (position > -0.1 || position < -2.4)
+    {
+      stopMotor();
+      return;
+    }
+
+    var power = SmartDashboard.getNumber(getName() + "/direct power", 0);
+    power = Math.max(-1, Math.min(1, power));
+    m_AmpRampNEO.set(power);
+  }
+
   public double getAmpPosition()
   {
     return m_AmpRampEncoder.getPosition();
@@ -105,6 +119,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     SmartDashboard.putNumber(getName() + "/target position", 0);
+
+    SmartDashboard.putNumber(getName() + "/direct power", 0);
   }
 
   public void smartDashboardUpdate()

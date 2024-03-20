@@ -159,10 +159,12 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Amp Assist
-    m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
     //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
     // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
+    m_retractAmpAssistButton.whileTrue(new InstantCommand(() -> m_AmpAssistSubsystem.directDrivePower()))
+      .onFalse(new InstantCommand(() -> m_AmpAssistSubsystem.stopMotor()));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));

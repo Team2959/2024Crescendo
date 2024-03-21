@@ -30,7 +30,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
-  private static final double kExtendPower = -0.2;
+  private static final double kMaxExtendPower = -0.22;
+  private static final double kMaxRetractPower = 0.5;
 
   private static final int kSmartMotionSlot = 0;
   private static final double kAmpMinVelocity = 50;
@@ -57,6 +58,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
     m_ampPidController.setD(kAmpD);
     m_ampPidController.setFF(kAmpFF);
     m_ampPidController.setIZone(kAmpIZone);
+
+    m_ampPidController.setOutputRange(kMaxExtendPower, kMaxRetractPower);
 
     m_ampPidController.setSmartMotionMinOutputVelocity(kAmpMinVelocity, kSmartMotionSlot);
     m_ampPidController.setSmartMotionMaxVelocity(kAmpMaxVelocity, kSmartMotionSlot);
@@ -85,7 +88,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     // var power = SmartDashboard.getNumber(getName() + "/direct power", kAmpIZone);
     // power = Math.max(-1, Math.min(1, power));
-    m_AmpRampNEO.set(kExtendPower);
+    m_AmpRampNEO.set(kMaxExtendPower);
   }
 
   public double getAmpPosition()
@@ -109,6 +112,9 @@ public class AmpAssistSubsystem extends SubsystemBase {
     SmartDashboard.putNumber(getName() + "/amp I", kAmpI);
     SmartDashboard.putNumber(getName() + "/amp D", kAmpD);
     SmartDashboard.putNumber(getName() + "/amp FF", kAmpFF);
+
+    SmartDashboard.putNumber(getName() + "/Min Output", kMaxExtendPower);
+    SmartDashboard.putNumber(getName() + "/Max Output", kMaxRetractPower);
 
     SmartDashboard.putNumber(getName() + "/Min Vel", kAmpMinVelocity);
     SmartDashboard.putNumber(getName() + "/Max Vel", kAmpMaxVelocity);
@@ -146,6 +152,10 @@ public class AmpAssistSubsystem extends SubsystemBase {
       m_ampPidController.setI(iGain); 
       m_ampPidController.setD(dGain); 
       m_ampPidController.setFF(ffGain); 
+
+      var minOutput = SmartDashboard.getNumber(getName() + "/Min Output", kMaxExtendPower);
+      var maxOutput = SmartDashboard.getNumber(getName() + "/Max Output", kMaxRetractPower);
+      m_ampPidController.setOutputRange(minOutput, maxOutput);
 
       var minVel = SmartDashboard.getNumber(getName() + "/Min Vel", kAmpMinVelocity);
       var maxVel = SmartDashboard.getNumber(getName() + "/Max Vel", kAmpMaxVelocity);

@@ -161,7 +161,8 @@ public class RobotContainer {
 
     // Amp Assist
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
-    //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
+    //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp))
+    //   .andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem)));
     m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
     // m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
     m_extendAmpAssistButton.onTrue(new AmpDirectDrive(m_AmpAssistSubsystem, m_shooterSubsystem));

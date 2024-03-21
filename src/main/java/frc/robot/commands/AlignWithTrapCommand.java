@@ -83,8 +83,8 @@ kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-      // return m_lastRotation < 0.5 && m_lastDeltaX < 0.1 && m_lastDeltaZ < 0.1;
+    // return false;
+      return m_lastRotation < 0.5 && m_lastDeltaX < 0.05 && m_lastDeltaZ < 0.05;
   }
 
   private double ySpeed()
@@ -120,7 +120,7 @@ kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
   private double remapAngle(double fromNavX)
   {
     double remapAngle = fromNavX % 360;
-    if (remapAngle <= 0) 
+    if (remapAngle <= -45) 
     {
       remapAngle = remapAngle + 360;
     }

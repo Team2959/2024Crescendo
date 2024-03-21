@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignWithTrapCommand;
+import frc.robot.commands.AmpDirectDrive;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClimbExtendCommand;
 import frc.robot.commands.ClimbLatchCommand;
@@ -161,10 +162,9 @@ public class RobotContainer {
     // Amp Assist
     // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
     //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
-    // m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
-    m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
-    m_retractAmpAssistButton.whileTrue(new InstantCommand(() -> m_AmpAssistSubsystem.directDrivePower()))
-      .onFalse(new InstantCommand(() -> m_AmpAssistSubsystem.stopMotor()));
+    m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
+    // m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
+    m_extendAmpAssistButton.onTrue(new AmpDirectDrive(m_AmpAssistSubsystem, m_shooterSubsystem));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));

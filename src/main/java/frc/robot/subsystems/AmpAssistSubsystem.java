@@ -20,21 +20,22 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private SparkPIDController m_ampPidController;
   
   private double m_lastTarget = 0;
-  private static final double kMaxMeasuredExtension = -2.42;
+  private static final double kMaxMeasuredExtension = -2.45;
   private static final double kMinMeasuredRetraction = 0;
-  private double m_extendDistance = -2.3; 
-  private double m_retractDistance = -0.2;
+  public double m_extendDistance = -2.41; 
+  private double m_retractDistance = -0.02;
 
   private static final double kAmpP = 0.2;   //guess
   private static final double kAmpI = 0.0;   //guess
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
+  private static final double kExtendPower = -0.2;
 
   private static final int kSmartMotionSlot = 0;
-  private static final double kAmpMinVelocity = 0.0065;
-  private static final double kAmpMaxVelocity = 0.026;
-  private static final double kAmpMaxAcceleration = 0.104;
+  private static final double kAmpMinVelocity = 50;
+  private static final double kAmpMaxVelocity = 145;
+  private static final double kAmpMaxAcceleration = 70;
   private static final double kAmpClosedLoopError = 0.0;
 
   /** Creates a new AmpShooterSubsystem. */
@@ -44,7 +45,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     m_AmpRampNEO.restoreFactoryDefaults();
 
-    m_AmpRampNEO.setIdleMode(IdleMode.kCoast);
+    m_AmpRampNEO.setIdleMode(IdleMode.kBrake);
  
     m_AmpRampEncoder = (SparkRelativeEncoder)m_AmpRampNEO.getEncoder();
 
@@ -75,16 +76,16 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void directDrivePower()
   {
-    var position = getAmpPosition();
-    if (position > -0.1 || position < -2.4)
-    {
-      stopMotor();
-      return;
-    }
+    // var position = getAmpPosition();
+    // if (position < -2.3)
+    // {
+    //   setTargetPosition(m_extendDistance);
+    //   return;
+    // }
 
-    var power = SmartDashboard.getNumber(getName() + "/direct power", 0);
-    power = Math.max(-1, Math.min(1, power));
-    m_AmpRampNEO.set(power);
+    // var power = SmartDashboard.getNumber(getName() + "/direct power", kAmpIZone);
+    // power = Math.max(-1, Math.min(1, power));
+    m_AmpRampNEO.set(kExtendPower);
   }
 
   public double getAmpPosition()
@@ -120,7 +121,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     SmartDashboard.putNumber(getName() + "/target position", 0);
 
-    SmartDashboard.putNumber(getName() + "/direct power", 0);
+    SmartDashboard.putNumber(getName() + "/direct power", kAmpIZone);
   }
 
   public void smartDashboardUpdate()
@@ -173,8 +174,8 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   private void setTargetPosition(double position)
   {
-    // m_ampPidController.setReference(position, ControlType.kPosition);
-    m_ampPidController.setReference(position, ControlType.kSmartMotion);
+    m_ampPidController.setReference(position, ControlType.kPosition);
+    // m_ampPidController.setReference(position, ControlType.kSmartMotion);
     m_lastTarget = position;
   }
 

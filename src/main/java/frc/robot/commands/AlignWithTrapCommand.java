@@ -24,20 +24,6 @@ public class AlignWithTrapCommand extends Command {
   private double kSpeedKp = 0.38;
   private double kRotationKp = 0.035;
 
-  PIDController m_rotationController = new PIDController(kRotationKp, 0, 0);
-  PIDController m_xSpeedController = new PIDController(kSpeedKp, 0, 0);
-  PIDController m_ySpeedController = new PIDController(kSpeedKp, 0, 0);
-  // from 2023 arm rotation subsystem
-  // private ProfiledPIDController m_armRotatorMotorProfiledPidController = new ProfiledPIDController(kArmRotatorP,
-  //     kArmRotatorI, kArmRotatorD,
-  //     new Constraints(kArmRotatorMaxVelocity, kArmRotatorMaxAccel));
-
-  // double rawProfiled = m_armRotatorMotorProfiledPidController.calculate(getArmAngle());
-  //     m_armRotatorMotor.set(rawProfiled);
-
-  // // profiled PID control
-  //   m_armRotatorMotorProfiledPidController.setGoal(degrees);
-
   public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
@@ -61,7 +47,7 @@ public class AlignWithTrapCommand extends Command {
       m_targetRotaion = 0;
 
     m_targetZ = SmartDashboard.getNumber("AprilTag/target Z", m_targetZ);
-    kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
+kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
     kRotationKp = SmartDashboard.getNumber("AprilTag/kP Rotation", kRotationKp);
     m_lastRotation = 5;
     m_lastDeltaX = 5;

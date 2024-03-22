@@ -36,7 +36,7 @@ public class AmpDirectDrive extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_amp.extendAmpRamp();
+    m_amp.extendAmpRamp(AmpAssistSubsystem.kDefaultSlot);
   }
 
   // Returns true when the command should end.

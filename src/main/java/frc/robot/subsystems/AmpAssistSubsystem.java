@@ -31,13 +31,16 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
   private static final double kMaxExtendPower = -0.22;
-  private static final double kMaxRetractPower = 0.5;
+  private static final double kMaxRetractPower = 1.0;
 
   private static final int kSmartMotionSlot = 0;
   private static final double kAmpMinVelocity = 50;
   private static final double kAmpMaxVelocity = 145;
   private static final double kAmpMaxAcceleration = 70;
   private static final double kAmpClosedLoopError = 0.0;
+
+  public static final int kDefaultSlot = 0;
+  public static final int kExtendSlot = 1;
 
   /** Creates a new AmpShooterSubsystem. */
   public AmpAssistSubsystem() 
@@ -53,13 +56,19 @@ public class AmpAssistSubsystem extends SubsystemBase {
     stopMotor();
 
     m_ampPidController = m_AmpRampNEO.getPIDController();
-    m_ampPidController.setP(kAmpP);
-    m_ampPidController.setI(kAmpI);
-    m_ampPidController.setD(kAmpD);
-    m_ampPidController.setFF(kAmpFF);
-    m_ampPidController.setIZone(kAmpIZone);
+    m_ampPidController.setOutputRange(-1.0, kMaxRetractPower, kDefaultSlot);
+    m_ampPidController.setP(kAmpP, kDefaultSlot);
+    m_ampPidController.setI(kAmpI, kDefaultSlot);
+    m_ampPidController.setD(kAmpD, kDefaultSlot);
+    m_ampPidController.setFF(kAmpFF, kDefaultSlot);
+    m_ampPidController.setIZone(kAmpIZone, kDefaultSlot);
 
-    m_ampPidController.setOutputRange(kMaxExtendPower, kMaxRetractPower);
+    m_ampPidController.setOutputRange(kMaxExtendPower, kMaxRetractPower, kExtendSlot);
+    m_ampPidController.setP(kAmpP, kExtendSlot);
+    m_ampPidController.setI(kAmpI, kExtendSlot);
+    m_ampPidController.setD(kAmpD, kExtendSlot);
+    m_ampPidController.setFF(kAmpFF, kExtendSlot);
+    m_ampPidController.setIZone(kAmpIZone, kExtendSlot);
 
     m_ampPidController.setSmartMotionMinOutputVelocity(kAmpMinVelocity, kSmartMotionSlot);
     m_ampPidController.setSmartMotionMaxVelocity(kAmpMaxVelocity, kSmartMotionSlot);
@@ -148,14 +157,19 @@ public class AmpAssistSubsystem extends SubsystemBase {
       double dGain = SmartDashboard.getNumber(getName() + "/amp D", kAmpD);
       double ffGain = SmartDashboard.getNumber(getName() + "/amp FF", kAmpFF);
 
-      m_ampPidController.setP(pGain); 
-      m_ampPidController.setI(iGain); 
-      m_ampPidController.setD(dGain); 
-      m_ampPidController.setFF(ffGain); 
+      m_ampPidController.setP(pGain, kDefaultSlot); 
+      m_ampPidController.setI(iGain, kDefaultSlot); 
+      m_ampPidController.setD(dGain, kDefaultSlot); 
+      m_ampPidController.setFF(ffGain, kDefaultSlot);
 
-      var minOutput = SmartDashboard.getNumber(getName() + "/Min Output", kMaxExtendPower);
-      var maxOutput = SmartDashboard.getNumber(getName() + "/Max Output", kMaxRetractPower);
-      m_ampPidController.setOutputRange(minOutput, maxOutput);
+      m_ampPidController.setP(pGain, kExtendSlot); 
+      m_ampPidController.setI(iGain, kExtendSlot); 
+      m_ampPidController.setD(dGain, kExtendSlot); 
+      m_ampPidController.setFF(ffGain, kExtendSlot); 
+
+      // var minOutput = SmartDashboard.getNumber(getName() + "/Min Output", kMaxExtendPower);
+      // var maxOutput = SmartDashboard.getNumber(getName() + "/Max Output", kMaxRetractPower);
+      // m_ampPidController.setOutputRange(minOutput, maxOutput);
 
       var minVel = SmartDashboard.getNumber(getName() + "/Min Vel", kAmpMinVelocity);
       var maxVel = SmartDashboard.getNumber(getName() + "/Max Vel", kAmpMaxVelocity);
@@ -176,26 +190,26 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
       // limit operator input
       target = Math.min(kMinMeasuredRetraction, Math.max(kMaxMeasuredExtension, target));
-      setTargetPosition(target);
+      setTargetPosition(target, kDefaultSlot);
 
       SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     }
   }
 
-  private void setTargetPosition(double position)
+  private void setTargetPosition(double position, int slotId)
   {
-    m_ampPidController.setReference(position, ControlType.kPosition);
+    m_ampPidController.setReference(position, ControlType.kPosition, slotId);
     // m_ampPidController.setReference(position, ControlType.kSmartMotion);
     m_lastTarget = position;
   }
 
-  public void extendAmpRamp()
+  public void extendAmpRamp(int slotId)
   {
-    setTargetPosition(m_extendDistance); 
+    setTargetPosition(m_extendDistance, slotId); 
   }
 
   public void retractAmpRamp()
   {
-    setTargetPosition(m_retractDistance);
+    setTargetPosition(m_retractDistance, kDefaultSlot);
   }
 }

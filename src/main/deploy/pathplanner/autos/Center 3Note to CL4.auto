@@ -18,9 +18,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "delayedShootNote"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Start To Center Shoot Position"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "delayedShootNote"
+                }
+              }
+            ]
           }
         },
         {

@@ -94,9 +94,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void initalize() {
-        resetSteeringMotorsToAbsolute();
         if (m_initalized)
             return;
+        resetSteeringMotorsToAbsolute();
         m_navX.reset();
         m_initalized = true;
     }

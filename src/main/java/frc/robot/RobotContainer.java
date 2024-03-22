@@ -7,6 +7,7 @@ package frc.robot;
 import cwtech.util.Bling;
 import cwtech.util.Conditioning;
 import cwtech.util.Bling.BlingMessage;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -80,7 +81,7 @@ public class RobotContainer {
   JoystickButton m_extendClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftExtendClimbButton);
   JoystickButton m_retractClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftRetractClimbButton);
   JoystickButton m_latchClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftLatchClimbButton);
-  JoystickButton m_trapAlignButton = new JoystickButton(m_leftJoystick, RobotMap.kTrapAlignButton);
+  JoystickButton m_trapAlignButton = new JoystickButton(m_rightJoystick, RobotMap.kTrapAlignButton);
 
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -91,7 +92,10 @@ public class RobotContainer {
   JoystickButton m_leftSpeakerShootButton =new JoystickButton(m_buttonBox, RobotMap.kLeftSpeakerShooterVelocityControl);
   JoystickButton m_reverseIntakeButton = new JoystickButton(m_buttonBox, RobotMap.kReverseIntake);
   JoystickButton m_fireNoteButton = new JoystickButton(m_buttonBox, RobotMap.kFireNote);
+  JoystickButton m_setAmpVelocityButton = new JoystickButton(m_buttonBox, RobotMap.kAmpShootVelocity);
 
+
+  private final DigitalOutput m_beastEyes = new DigitalOutput(RobotMap.kbeastEyesDigitalOutput);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
@@ -137,7 +141,8 @@ public class RobotContainer {
     m_lockWheeButton.whileTrue(new LockWheelsCommand(m_driveSubsystem));
     m_resetNavX.onTrue(new InstantCommand(() -> {m_driveSubsystem.resetNavX();}));
 
-    m_trapAlignButton.whileTrue(new AlignWithTrapCommand(m_driveSubsystem));
+    m_trapAlignButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
+      .andThen(new AlignWithTrapCommand(m_driveSubsystem)));
 
     // All the Note delivery commands
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
@@ -150,6 +155,8 @@ public class RobotContainer {
     m_rightSpeakerShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker)
       .alongWith(new RetractAmpAssistCommand(m_AmpAssistSubsystem)));
     m_trapShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
+    m_setAmpVelocityButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
+
 
     m_fireNoteButton.onTrue(new FeedNoteIntoShooterCommand(m_intakeSubsystem)
       .andThen(new WaitCommand (0.5),
@@ -160,12 +167,12 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Amp Assist
-    // m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
-    //   .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp))
+    m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
+      .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
     //   .andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem)));
     m_retractAmpAssistButton.onTrue(new RetractAmpAssistCommand(m_AmpAssistSubsystem));
     // m_extendAmpAssistButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
-    m_extendAmpAssistButton.onTrue(new AmpDirectDrive(m_AmpAssistSubsystem, m_shooterSubsystem));
+    // m_extendAmpAssistButton.onTrue(new AmpDirectDrive(m_AmpAssistSubsystem, m_shooterSubsystem));
 
     // Climb
     m_extendClimbButton.onTrue(new ClimbExtendCommand(m_climbSubsystem));
@@ -288,5 +295,10 @@ public class RobotContainer {
   {
     m_bling.setFlashState(false);
     m_bling.setBlingMessage(getAllianceColor());
+  }
+
+  public void setBeastEyes(boolean beastEyesOn)
+  {
+    m_beastEyes.set(beastEyesOn);
   }
 }

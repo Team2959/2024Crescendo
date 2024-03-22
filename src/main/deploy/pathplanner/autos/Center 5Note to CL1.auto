@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3707054194735169,
+      "x": 1.37,
       "y": 5.55472336015897
     },
     "rotation": 0
@@ -22,9 +22,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "delayedShootNote"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Center Start To Center Shoot Position"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "delayedShootNote"
+                      }
+                    }
+                  ]
                 }
               },
               {

@@ -14,11 +14,13 @@ public class AprilTagPID
     private double kRotationKp = 0.035;
     private double kSpeedKi = 0;
     private double kRotationKi = 0;
+    private double kSpeedKd = 0;
+    private double kRotationKd = 0;
  
 
-    PIDController m_rotationController = new PIDController(kRotationKp, kRotationKi, 0);
-    PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, 0);
-    PIDController m_ySpeedController = new PIDController(kSpeedKp, kSpeedKi, 0);
+    PIDController m_rotationController = new PIDController(kRotationKp, kRotationKi, kRotationKd);
+    PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
+    PIDController m_ySpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
 
     public AprilTagPID()
     {
@@ -26,6 +28,8 @@ public class AprilTagPID
         SmartDashboard.putNumber("AprilTag/kP Rotation", kRotationKp);
         SmartDashboard.putNumber("AprilTag/kI Speed", kSpeedKi);
         SmartDashboard.putNumber("AprilTag/kI Rotation", kRotationKi);
+        SmartDashboard.putNumber("AprilTag/kD Speed", kSpeedKd);
+        SmartDashboard.putNumber("AprilTag/kD Rotation", kRotationKd);
     }
 
     public void updatePID()
@@ -34,6 +38,8 @@ public class AprilTagPID
         kRotationKp = SmartDashboard.getNumber("AprilTag/kP Rotation", kRotationKp);
         kSpeedKi = SmartDashboard.getNumber("AprilTag/kI Speed", kSpeedKi);
         kRotationKi = SmartDashboard.getNumber("AprilTag/kI Rotation", kRotationKi);
+        kSpeedKd = SmartDashboard.getNumber("AprilTag/kD Speed", kSpeedKd);
+        kRotationKd = SmartDashboard.getNumber("AprilTag/kD Rotation", kRotationKd);
     }
 }
   // from 2023 arm rotation subsystem

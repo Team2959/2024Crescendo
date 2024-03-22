@@ -41,6 +41,7 @@ public final class RobotMap {
     public static final int kNoteDetectorDigitalInput = 1;
     public static final int kWallSpacerExtendedDigitalInput = 2;
     public static final int kWallSpacerRetractedDigitalInput = 3;
+    public static final int kbeastEyesDigitalOutput = 4;
 
     // Operator input USB ports
     public static final int kLeftJoystick = 0;
@@ -55,7 +56,7 @@ public final class RobotMap {
     public static final int kLeftExtendClimbButton = 8; //7;
     public static final int kLeftRetractClimbButton = 9; //9;
     public static final int kLeftLatchClimbButton = 5; //11;
-    public static final int kTrapAlignButton = 6;//8;
+    public static final int kTrapAlignButton = 3;//8;
 
     // Co-Piolt Button board
     public static final int kExtendAmpAssistPleaseButton = 1;
@@ -67,6 +68,8 @@ public final class RobotMap {
     public static final int kLeftSpeakerShooterVelocityControl = 12;
     public static final int kRightSpeakerShooterVelocityControl = 9;
     public static final int kFireNote = 5;
+    public static final int kAmpShootVelocity = 10;
+
 
     // Zeroed values, should be in radians
     // source is google document in Electrical for team - module data

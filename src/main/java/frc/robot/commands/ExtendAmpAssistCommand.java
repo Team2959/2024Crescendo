@@ -20,7 +20,7 @@ public class ExtendAmpAssistCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_AmpAssistSubsystem.extendAmpRamp();
+    m_AmpAssistSubsystem.extendAmpRamp(AmpAssistSubsystem.kExtendSlot);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,7 +30,7 @@ public class ExtendAmpAssistCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_AmpAssistSubsystem.stopMotor();
+    m_AmpAssistSubsystem.extendAmpRamp(AmpAssistSubsystem.kDefaultSlot);
   }
 
   // Returns true when the command should end.

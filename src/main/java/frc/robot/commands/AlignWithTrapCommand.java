@@ -5,8 +5,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
@@ -47,7 +45,7 @@ public class AlignWithTrapCommand extends Command {
       m_targetRotaion = 0;
 
     m_targetZ = SmartDashboard.getNumber("AprilTag/target Z", m_targetZ);
-kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
+    kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
     kRotationKp = SmartDashboard.getNumber("AprilTag/kP Rotation", kRotationKp);
     m_lastRotation = 5;
     m_lastDeltaX = 5;
@@ -83,8 +81,8 @@ kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return false;
-      return m_lastRotation < 0.5 && m_lastDeltaX < 0.05 && m_lastDeltaZ < 0.05;
+    return false;
+      // return m_lastRotation < 0.5 && m_lastDeltaX < 0.05 && m_lastDeltaZ < 0.05;
   }
 
   private double ySpeed()

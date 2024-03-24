@@ -22,15 +22,15 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private double m_lastTarget = 0;
   private static final double kMaxMeasuredExtension = -2.45;
   private static final double kMinMeasuredRetraction = 0;
-  public double m_extendDistance = -2.41; 
+  public double m_extendDistance = -2.52959; 
   private double m_retractDistance = -0.02;
 
-  private static final double kAmpP = 0.2;   //guess
+  private static final double kAmpP = 0.4;   //guess
   private static final double kAmpI = 0.0;   //guess
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
-  private static final double kMaxExtendPower = -0.22;
+  private static final double kMaxExtendPower = -0.24;
   private static final double kMaxRetractPower = 1.0;
 
   private static final int kSmartMotionSlot = 0;

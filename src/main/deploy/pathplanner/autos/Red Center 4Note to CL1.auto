@@ -94,7 +94,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Close Right Note Grab"
+                  "pathName": "Close Right Note Grab"
                 }
               }
             ]
@@ -107,7 +107,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Close Right Note Return"
+                  "pathName": "Close Right Note Return"
                 }
               },
               {
@@ -132,7 +132,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Close Left Note Grab"
+                  "pathName": "Red Line Start Close Left Note Grab"
                 }
               }
             ]
@@ -145,7 +145,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Close Left Note Return"
+                  "pathName": "Close Left Note Return"
                 }
               },
               {
@@ -170,7 +170,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Center 1 Note Grab"
+                  "pathName": "Red Line Start Center 1 Note Grab"
                 }
               }
             ]
@@ -183,7 +183,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Center 1 Note Return"
+                  "pathName": "Center 1 Note Return"
                 }
               },
               {

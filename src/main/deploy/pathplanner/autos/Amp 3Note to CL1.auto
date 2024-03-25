@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.855874387805114,
-      "y": 6.662826846780455
+      "x": 1.42,
+      "y": 7.0
     },
-    "rotation": 60.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Shooting Position"
+                  "pathName": "Adjusted Left Shooting Position"
                 }
               }
             ]

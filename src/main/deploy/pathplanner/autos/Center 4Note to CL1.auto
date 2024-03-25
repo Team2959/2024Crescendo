@@ -28,7 +28,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Red Center Start To Center Shoot Position"
+                        "pathName": "Adjusted Center Start To Center Shoot Position"
                       }
                     },
                     {
@@ -107,7 +107,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Right Note Return"
+                  "pathName": "CenterLine Note 2 Shoot (please don't make me do this, I have PTSD)"
                 }
               },
               {
@@ -132,7 +132,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Line Start Close Left Note Grab"
+                  "pathName": "Close Left Note Grab"
                 }
               }
             ]
@@ -170,7 +170,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Line Start Center 1 Note Grab"
+                  "pathName": "Center 1 Note Grab"
                 }
               }
             ]

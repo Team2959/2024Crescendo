@@ -5,7 +5,7 @@
       "x": 1.42,
       "y": 4.1
     },
-    "rotation": -60.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -43,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Far PickUp from Right"
+                  "pathName": "Right to CL 5 Grab"
                 }
               },
               {
@@ -62,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Far Shoot from Right"
+                  "pathName": "Right to CL 5 Shoot"
                 }
               },
               {
@@ -116,6 +116,12 @@
           "type": "named",
           "data": {
             "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right to CL 4 Grab"
           }
         }
       ]

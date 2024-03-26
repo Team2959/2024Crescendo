@@ -43,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Far PickUp from Right"
+                  "pathName": "Right to CL 5 Grab"
                 }
               },
               {
@@ -62,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Far Shoot from Right"
+                  "pathName": "Right to CL 5 Shoot"
                 }
               },
               {
@@ -78,6 +78,25 @@
           "type": "named",
           "data": {
             "name": "stopShooter"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right to CL 4 Grab"
+                }
+              }
+            ]
           }
         }
       ]

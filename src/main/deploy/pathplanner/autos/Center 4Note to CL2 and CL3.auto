@@ -75,19 +75,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterLine Note 3 Pick"
-                }
-              },
               {
                 "type": "named",
                 "data": {
                   "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterLine Note 3 Pick"
                 }
               }
             ]
@@ -113,12 +113,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -135,6 +129,37 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterLine Note 2 Shoot (please don't make me do this, I have PTSD)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLine Note 3 Pick"
           }
         }
       ]

@@ -87,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Far Pick Up from Left"
+                  "pathName": "Left to CL1 Grab"
                 }
               }
             ]
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Far Shoot from Left"
+                  "pathName": "Left to CL1 Shoot"
                 }
               },
               {
@@ -119,9 +119,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left PickUp"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left to CL2 Grab"
+                }
+              }
+            ]
           }
         }
       ]

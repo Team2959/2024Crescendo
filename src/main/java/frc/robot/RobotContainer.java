@@ -229,29 +229,29 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    var startLocation = m_angleStartChooser.getSelected();
+ // public Command getAutonomousCommand() {
+   // var startLocation = m_angleStartChooser.getSelected();
 
-    switch (startLocation) {
-      case BlueAmp:
-        m_driveSubsystem.setStartAngle(60);
-        break;
-      case BlueSource:
-        m_driveSubsystem.setStartAngle(-60);
-        break;
-      case RedAmp:
-        m_driveSubsystem.setStartAngle(-60);
-        break;
-      case RedSource:
-        m_driveSubsystem.setStartAngle(60);
-        break;
-      case Center:
-      default:
-        break;
-    }
+  //  switch (startLocation) {
+    //  case BlueAmp:
+   //     m_driveSubsystem.setStartAngle(60);
+    //    break;
+    //  case BlueSource:
+     //   m_driveSubsystem.setStartAngle(-60);
+     //   break;
+    //  case RedAmp:
+      //  m_driveSubsystem.setStartAngle(-60);
+      //  break;
+    //  case RedSource:
+      //  m_driveSubsystem.setStartAngle(60);
+     //   break;
+     // case Center:
+     // default:
+      //  break;
+   // }
 
-    return m_autoChooser.getSelected();
-  }
+   // return m_autoChooser.getSelected();
+ // }
 
   public double getDriveXInput()
   {

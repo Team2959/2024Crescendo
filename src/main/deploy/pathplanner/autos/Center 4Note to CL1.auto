@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.42,
-      "y": 5.55472336015897
+      "y": 5.52
     },
     "rotation": 0
   },
@@ -101,25 +101,6 @@
           }
         },
         {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterLine Note 2 Shoot (please don't make me do this, I have PTSD)"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "shootNote"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -189,7 +170,26 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "delayedShootNote"
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterLine Note 2 Pick"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
                 }
               }
             ]

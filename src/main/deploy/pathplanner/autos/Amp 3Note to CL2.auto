@@ -3,34 +3,34 @@
   "startingPose": {
     "position": {
       "x": 1.42,
-      "y": 5.52
+      "y": 7.0
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "setShooterCenter"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Adjusted Center Start To Center Shoot Position"
+                  "name": "setShooterLeft"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "delayedShootNote"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Adjusted Left Shooting Position"
                 }
               }
             ]
@@ -49,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Leave From Center"
+                  "pathName": "Left PickUp"
                 }
               }
             ]
@@ -62,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Return to Center"
+                  "pathName": "Left Close Shoot"
                 }
               },
               {
@@ -79,15 +79,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterLine Note 3 Pick"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "startIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left to CL2 Grab"
                 }
               }
             ]
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterLine Note 3 Shoot"
+                  "pathName": "Left to CL2 Shoot"
                 }
               },
               {
@@ -131,7 +131,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterLine Note 2 Pick"
+                  "pathName": "Left to CL1 Grab"
                 }
               }
             ]

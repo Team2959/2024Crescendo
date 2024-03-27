@@ -88,16 +88,10 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
   public void directDrivePower()
   {
-    // var position = getAmpPosition();
-    // if (position < -2.3)
-    // {
-    //   setTargetPosition(m_extendDistance);
-    //   return;
-    // }
-
-    // var power = SmartDashboard.getNumber(getName() + "/direct power", kAmpIZone);
-    // power = Math.max(-1, Math.min(1, power));
-    m_AmpRampNEO.set(kMaxExtendPower);
+    var power = SmartDashboard.getNumber(getName() + "/direct power", kMaxExtendPower);
+    power = Math.max(-1, Math.min(1, power));
+    m_AmpRampNEO.set(power);
+    // m_AmpRampNEO.set(kMaxExtendPower);
   }
 
   public double getAmpPosition()
@@ -136,7 +130,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     SmartDashboard.putNumber(getName() + "/target position", 0);
 
-    SmartDashboard.putNumber(getName() + "/direct power", kAmpIZone);
+    SmartDashboard.putNumber(getName() + "/direct power", kMaxExtendPower);
   }
 
   public void smartDashboardUpdate()
@@ -190,7 +184,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
       // limit operator input
       target = Math.min(kMinMeasuredRetraction, Math.max(kMaxMeasuredExtension, target));
-      setTargetPosition(target, kDefaultSlot);
+      setTargetPosition(target, kExtendSlot);
 
       SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
     }

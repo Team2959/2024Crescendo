@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import cwtech.util.AprilTagPID;
 import cwtech.util.Bling;
 import cwtech.util.Conditioning;
 import cwtech.util.Bling.BlingMessage;
@@ -57,9 +58,10 @@ public class RobotContainer {
   private final AmpAssistSubsystem m_AmpAssistSubsystem = new AmpAssistSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   private final Bling m_bling = new Bling();
+  private final AprilTagPID m_AprilTagPID = new AprilTagPID(m_driveSubsystem);
 
   private SendableChooser<Command> m_autoChooser;
-  private SendableChooser<autoStartPosition> m_angleStartChooser;
+  // private SendableChooser<autoStartPosition> m_angleStartChooser;
 
   Robot m_robot;
 
@@ -113,8 +115,8 @@ public class RobotContainer {
     m_autoChooser = Autos.sendableChooserFullPathPlanner(this);
     // m_autoChooser = Autos.sendableChooser(this);
     SmartDashboard.putData("Auto/Routine", m_autoChooser);
-    m_angleStartChooser = Autos.sendableChooserAngleStart(this);
-    SmartDashboard.putData("Auto/StartLocation", m_angleStartChooser);
+    // m_angleStartChooser = Autos.sendableChooserAngleStart(this);
+    // SmartDashboard.putData("Auto/StartLocation", m_angleStartChooser);
 
     // Configure the trigger bindings
     configureBindings();
@@ -155,7 +157,6 @@ public class RobotContainer {
     m_rightSpeakerShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.RightSpeaker)
       .alongWith(new RetractAmpAssistCommand(m_AmpAssistSubsystem)));
     m_trapShootButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap));
-    m_setAmpVelocityButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
 
 
     m_fireNoteButton.onTrue(new FeedNoteIntoShooterCommand(m_intakeSubsystem)
@@ -167,6 +168,7 @@ public class RobotContainer {
     m_reverseIntakeButton.whileTrue(new ReverseIntakeCommand(m_intakeSubsystem));
 
     // Amp Assist
+    m_setAmpVelocityButton.onTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp));
     m_extendAmpAssistButton.onTrue(new ExtendAmpAssistCommand(m_AmpAssistSubsystem)
       .alongWith(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Amp)));
     //   .andThen(new FeedNoteIntoShooterCommand(m_intakeSubsystem)));
@@ -214,6 +216,7 @@ public class RobotContainer {
           // m_intakeSubsystem.smartDashboardUpdate();
           m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
+          m_AprilTagPID.updateAprilTagSmartDashboard();
       }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
@@ -229,7 +232,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
- // public Command getAutonomousCommand() {
+ public Command getAutonomousCommand() {
    // var startLocation = m_angleStartChooser.getSelected();
 
   //  switch (startLocation) {
@@ -250,8 +253,8 @@ public class RobotContainer {
       //  break;
    // }
 
-   // return m_autoChooser.getSelected();
- // }
+   return m_autoChooser.getSelected();
+ }
 
   public double getDriveXInput()
   {

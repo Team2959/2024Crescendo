@@ -42,3 +42,6 @@
 //Time for some more EasterEggs...
 
 //wow no response, the easter bunny will cry itself to sleep tonight
+
+// [When reading imagine a bunny with a fur coat and an old sword, there's a heavy wind coming from behind and snowflakes filling the ground with snow. The bunny sticks his sword to the ground, looks straight to your eyes, and says the following with a really low voice.]
+//Easter is coming...

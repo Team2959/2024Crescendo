@@ -20,6 +20,12 @@ public class AprilTagPID
     private double kRotationKi = 0;
     private double kSpeedKd = 0;
     private double kRotationKd = 0;
+    private double m_targetXPosition = 0;
+    private double m_targetZPosition = 0;
+    private double m_targetRotationPosition = 0;
+    private double m_deltaRotation = 0;
+    private double m_deltaX = 0;
+    private double m_deltaZ = 0;
 
     PIDController m_rotationController = new PIDController(kRotationKp, kRotationKi, kRotationKd);
     PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
@@ -35,9 +41,21 @@ public class AprilTagPID
         SmartDashboard.putNumber("AprilTag/kI Rotation", kRotationKi);
         SmartDashboard.putNumber("AprilTag/kD Speed", kSpeedKd);
         SmartDashboard.putNumber("AprilTag/kD Rotation", kRotationKd);
+        SmartDashboard.putBoolean("AprilTag/Update PIDs", false);
+        
     }
 
-    public void updatePID()
+    public void updateAprilTagSmartDashboard()
+    {
+        boolean updatePID = SmartDashboard.getBoolean("AprilTag/Update PIDs", false);
+        if ( updatePID == true)
+         {
+             updatePID();
+             updatePID = false;
+         }
+    }   
+
+    private void updatePID()
     {
         kSpeedKp = SmartDashboard.getNumber("AprilTag/kP Speed", kSpeedKp);
         kRotationKp = SmartDashboard.getNumber("AprilTag/kP Rotation", kRotationKp);
@@ -52,20 +70,29 @@ public class AprilTagPID
         m_xSpeedController.setSetpoint(xPosition);
         m_zSpeedController.setSetpoint(zPosition);
         m_rotationController.setSetpoint(rotation);
+        m_targetXPosition = xPosition;
+        m_targetZPosition = zPosition;
+        m_targetRotationPosition = rotation;
     }
 
-    private double zSpeed(double tz)
+    private double zSpeed()
     {
+        double[] robotSpace = LimelightHelpers.getTargetPose_RobotSpace(Vision.kLimeLightName);
+        double tz = robotSpace[2];
         double targetingForwardSpeed = m_zSpeedController.calculate(tz);
         targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
+        m_deltaZ = Math.abs(m_targetZPosition - tz);
         return targetingForwardSpeed;
     }
 
-    private double ySpeed(double tx)
+    private double ySpeed()
     {
+        double[] robotSpace = LimelightHelpers.getTargetPose_RobotSpace(Vision.kLimeLightName);
+        double tx = robotSpace[0];
         double targetingForwardSpeed = m_xSpeedController.calculate(tx);
         targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
         targetingForwardSpeed *= -1.0;
+        m_deltaX = Math.abs(m_targetXPosition - tx);
         return targetingForwardSpeed;
     }
 
@@ -75,13 +102,8 @@ public class AprilTagPID
         double remappedAngle = remapAngle(botAngle);
         double targetingAngularVelocity = m_rotationController.calculate(remappedAngle);
         targetingAngularVelocity *= DriveSubsystem.kMaxAngularSpeedRadiansPerSecond;
-
+        m_deltaRotation = Math.abs(m_targetRotationPosition - remappedAngle);
         return targetingAngularVelocity;
-    }
-
-    public void driveToTarget(double tx, double tz)
-    {
-        m_driveSubsystem.drive(-zSpeed(tz), ySpeed(tx), rotationTarget(), false);
     }
 
     private double remapAngle(double fromNavX)
@@ -92,5 +114,15 @@ public class AprilTagPID
             remapAngle = remapAngle + 360;
         }
         return remapAngle;
+    }
+
+    public void driveToTarget()
+    {
+        m_driveSubsystem.drive(-zSpeed(), ySpeed(), rotationTarget(), false);
+    }
+
+    public boolean atTargetPosition()
+    {
+       return m_deltaRotation < 0.5 && m_deltaX < 0.05 && m_deltaZ < 0.05;
     }
 }

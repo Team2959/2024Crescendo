@@ -20,18 +20,18 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private SparkPIDController m_ampPidController;
   
   private double m_lastTarget = 0;
-  private static final double kMaxMeasuredExtension = -2.45;
-  private static final double kMinMeasuredRetraction = 0;
-  public double m_extendDistance = -2.52959; 
-  private double m_retractDistance = -0.02;
+  private static final double kMaxMeasuredExtension = -29.5;
+  private static final double kMinMeasuredRetraction = 1;
+  public double m_extendDistance = -28.5; 
+  private double m_retractDistance = -3;
 
   private static final double kAmpP = 0.4;   //guess
   private static final double kAmpI = 0.0;   //guess
   private static final double kAmpD = 0.0;   //guess
   private static final double kAmpFF = 0;   //guess
   private static final double kAmpIZone = 0;   //guess
-  private static final double kMaxExtendPower = -0.24;
-  private static final double kMaxRetractPower = 1.0;
+  private static final double kMaxExtendPower = -0.5;
+  private static final double kMaxRetractPower = 0.5;
 
   private static final int kSmartMotionSlot = 0;
   private static final double kAmpMinVelocity = 50;
@@ -49,7 +49,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     m_AmpRampNEO.restoreFactoryDefaults();
 
-    m_AmpRampNEO.setIdleMode(IdleMode.kBrake);
+    m_AmpRampNEO.setIdleMode(IdleMode.kCoast);
  
     m_AmpRampEncoder = (SparkRelativeEncoder)m_AmpRampNEO.getEncoder();
 

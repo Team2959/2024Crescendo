@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4707856249343993,
-      "y": 7.342841161532055
+      "x": 0.0,
+      "y": 4.0
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Straight Test"
+            "pathName": "5.65m diagonal test"
           }
         }
       ]

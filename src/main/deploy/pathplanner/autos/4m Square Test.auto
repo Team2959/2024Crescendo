@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.0,
+      "y": 4.0
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4m Right Test"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4m Forward Test"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4m Left Test"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4m Backward Test"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -49,7 +49,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
 
     m_AmpRampNEO.restoreFactoryDefaults();
 
-    m_AmpRampNEO.setIdleMode(IdleMode.kCoast);
+    m_AmpRampNEO.setIdleMode(IdleMode.kBrake);
  
     m_AmpRampEncoder = (SparkRelativeEncoder)m_AmpRampNEO.getEncoder();
 

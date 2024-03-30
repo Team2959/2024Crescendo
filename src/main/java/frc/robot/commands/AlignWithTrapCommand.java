@@ -15,7 +15,7 @@ import frc.robot.subsystems.Vision;
 public class AlignWithTrapCommand extends Command {
   /** Creates a new AlignWithTrapCommand. */
   private DriveSubsystem m_driveSubsystem;
-  private final AprilTagPID m_AprilTagPID = new AprilTagPID(m_driveSubsystem);
+  private final AprilTagPID m_AprilTagPID;
   // private double m_lastRotation;
   // private double m_lastDeltaX;
   // private double m_lastDeltaZ;
@@ -24,9 +24,10 @@ public class AlignWithTrapCommand extends Command {
   // private double kSpeedKp = 0.38;
   // private double kRotationKp = 0.035;
 
-  public AlignWithTrapCommand(DriveSubsystem driveSubsystem) {
+  public AlignWithTrapCommand(DriveSubsystem driveSubsystem, AprilTagPID aprilTagPID) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
+    m_AprilTagPID = aprilTagPID;
 
     addRequirements(driveSubsystem);
 

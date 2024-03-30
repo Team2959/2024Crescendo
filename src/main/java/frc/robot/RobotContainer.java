@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignWithAmpCommand;
 import frc.robot.commands.AlignWithTrapCommand;
 import frc.robot.commands.AmpDirectDrive;
 import frc.robot.commands.Autos;
@@ -84,6 +85,7 @@ public class RobotContainer {
   JoystickButton m_retractClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftRetractClimbButton);
   JoystickButton m_latchClimbButton = new JoystickButton(m_leftJoystick, RobotMap.kLeftLatchClimbButton);
   JoystickButton m_trapAlignButton = new JoystickButton(m_rightJoystick, RobotMap.kTrapAlignButton);
+  JoystickButton m_ampAlignButton = new JoystickButton(m_rightJoystick, RobotMap.kRightAmpAlign);
 
   // co-pilot box buttons
   JoystickButton m_extendAmpAssistButton =new JoystickButton(m_buttonBox, RobotMap.kExtendAmpAssistPleaseButton);
@@ -144,7 +146,8 @@ public class RobotContainer {
     m_resetNavX.onTrue(new InstantCommand(() -> {m_driveSubsystem.resetNavX();}));
 
     m_trapAlignButton.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Trap)
-      .andThen(new AlignWithTrapCommand(m_driveSubsystem)));
+      .andThen(new AlignWithTrapCommand(m_driveSubsystem, m_AprilTagPID)));
+    m_ampAlignButton.whileTrue(new AlignWithAmpCommand(m_driveSubsystem, m_AprilTagPID));
 
     // All the Note delivery commands
     m_fireButtonRT.whileTrue(new ShooterVelocityCommand(m_shooterSubsystem, ShooterLocation.Generic)
@@ -214,7 +217,7 @@ public class RobotContainer {
       m_robot.addPeriodic(() -> {
           m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
-          m_AmpAssistSubsystem.smartDashboardUpdate();
+          // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
           m_AprilTagPID.updateAprilTagSmartDashboard();
       }, 1, 0.303);

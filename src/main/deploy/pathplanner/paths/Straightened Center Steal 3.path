@@ -38,18 +38,18 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -21.694114985573858,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Steal Autos",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -121,6 +121,11 @@ public class AprilTagPID
         m_driveSubsystem.drive(-zSpeed(), ySpeed(), rotationTarget(), false);
     }
 
+    public void driveToTargetNoZ()
+    {
+        m_driveSubsystem.drive(0, ySpeed(), rotationTarget(), false);
+    }
+
     public boolean atTargetPosition()
     {
        return m_deltaRotation < 0.5 && m_deltaX < 0.05 && m_deltaZ < 0.05;

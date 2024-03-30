@@ -101,6 +101,25 @@
           }
         },
         {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Close Right Note Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootNote"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -198,6 +217,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Center Autos",
   "choreoAuto": false
 }

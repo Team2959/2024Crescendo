@@ -34,9 +34,11 @@ public class SwerveModuleCanCoder {
     private final String m_name;
 
     // measured circumference as 12.375 inches = radius 1.97
-    private static final double kWheelRadius = 1.90 * 0.0254; // 2" * 0.0254 m / inch
+    // private static final double kWheelRadius = 1.90 * 0.0254; // 2" * 0.0254 m / inch
+    // private static final double kDrivePositionFactor = (2.0 * Math.PI * kWheelRadius * kGearboxRatio);
     private static final double kGearboxRatio = 1.0 / 6.12; // One turn of the wheel is 6.86 turns of the motor
-    private static final double kDrivePositionFactor = (2.0 * Math.PI * kWheelRadius * kGearboxRatio);
+    private static final double kWheelCircumference = 0.3; // m
+    private static final double kDrivePositionFactor = kWheelCircumference * kGearboxRatio;
     private static final int kDriveCurrentLimitAmps = 70;
     private static final int kSteerCurrentLimitAmps = 40; 
     private static final double kSteerMotorRotationsPerRevolution = 12.8;

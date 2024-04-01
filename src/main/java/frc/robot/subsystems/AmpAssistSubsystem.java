@@ -23,7 +23,7 @@ public class AmpAssistSubsystem extends SubsystemBase {
   private static final double kMaxMeasuredExtension = -29.5;
   private static final double kMinMeasuredRetraction = 1;
   public double m_extendDistance = -28.5; 
-  private double m_retractDistance = -3;
+  private double m_retractDistance = -0.5;
 
   private static final double kAmpP = 0.4;   //guess
   private static final double kAmpI = 0.0;   //guess

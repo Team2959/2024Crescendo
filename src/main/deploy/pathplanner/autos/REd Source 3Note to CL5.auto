@@ -3,28 +3,28 @@
   "startingPose": {
     "position": {
       "x": 1.42,
-      "y": 5.52
+      "y": 4.1
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "setShooterCenter"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "setShooterRight"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "Adjusted Center Start To Center Shoot Position"
+                  "pathName": "Red Adjusted Right Shoot Position"
                 }
               },
               {
@@ -41,15 +41,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "startIntake"
+                  "pathName": "Right PickUp"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Leave From Center"
+                  "name": "startIntake"
                 }
               }
             ]
@@ -62,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Return to Center"
+                  "pathName": "Right Shoot"
                 }
               },
               {
@@ -79,15 +79,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "startIntake"
+                  "pathName": "Red Right to CL 5 Grab"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "CenterLine Note 4 Pick"
+                  "name": "startIntake"
                 }
               }
             ]
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterLine Note 4 Shoot"
+                  "pathName": "Right to CL 5 Shoot"
                 }
               },
               {
@@ -131,7 +131,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red CenterLine Note 3 Pick"
+                  "pathName": "Red Right to CL 4 Grab"
                 }
               }
             ]

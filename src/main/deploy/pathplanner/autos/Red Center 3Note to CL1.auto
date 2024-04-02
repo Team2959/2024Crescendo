@@ -75,7 +75,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -87,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterLine Note 4 Pick"
+                  "pathName": "CenterLine Note 1 Pick"
                 }
               }
             ]
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterLine Note 4 Shoot"
+                  "pathName": "CenterLine Note 1 Shoot"
                 }
               },
               {
@@ -131,7 +131,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red CenterLine Note 3 Pick"
+                  "pathName": "CenterLine Note 2 Pick"
                 }
               }
             ]

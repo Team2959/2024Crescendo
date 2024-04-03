@@ -25,19 +25,19 @@ public class AmpAssistSubsystem extends SubsystemBase {
   public double m_extendDistance = -28.5; 
   private double m_retractDistance = -0.5;
 
-  private static final double kAmpP = 0.4;   //guess
-  private static final double kAmpI = 0.0;   //guess
-  private static final double kAmpD = 0.0;   //guess
-  private static final double kAmpFF = 0;   //guess
-  private static final double kAmpIZone = 0;   //guess
+  private static final double kAmpP = 0.4;
+  private static final double kAmpI = 0.0;
+  private static final double kAmpD = 0.0;
+  private static final double kAmpFF = 0; 
+  private static final double kAmpIZone = 0;
   private static final double kMaxExtendPower = -0.5;
   private static final double kMaxRetractPower = 0.5;
 
-  private static final int kSmartMotionSlot = 0;
-  private static final double kAmpMinVelocity = 50;
-  private static final double kAmpMaxVelocity = 145;
-  private static final double kAmpMaxAcceleration = 70;
-  private static final double kAmpClosedLoopError = 0.0;
+  // private static final int kSmartMotionSlot = 0;
+  // private static final double kAmpMinVelocity = 50;
+  // private static final double kAmpMaxVelocity = 145;
+  // private static final double kAmpMaxAcceleration = 70;
+  // private static final double kAmpClosedLoopError = 0.0;
 
   public static final int kDefaultSlot = 0;
   public static final int kExtendSlot = 1;
@@ -70,9 +70,9 @@ public class AmpAssistSubsystem extends SubsystemBase {
     m_ampPidController.setFF(kAmpFF, kExtendSlot);
     m_ampPidController.setIZone(kAmpIZone, kExtendSlot);
 
-    m_ampPidController.setSmartMotionMinOutputVelocity(kAmpMinVelocity, kSmartMotionSlot);
-    m_ampPidController.setSmartMotionMaxVelocity(kAmpMaxVelocity, kSmartMotionSlot);
-    m_ampPidController.setSmartMotionMaxAccel(kAmpMaxAcceleration, kSmartMotionSlot);
+    // m_ampPidController.setSmartMotionMinOutputVelocity(kAmpMinVelocity, kSmartMotionSlot);
+    // m_ampPidController.setSmartMotionMaxVelocity(kAmpMaxVelocity, kSmartMotionSlot);
+    // m_ampPidController.setSmartMotionMaxAccel(kAmpMaxAcceleration, kSmartMotionSlot);
     // m_ampPidController.setSmartMotionAllowedClosedLoopError(kAmpClosedLoopError, kSmartMotionSlot);
   }
 
@@ -119,9 +119,9 @@ public class AmpAssistSubsystem extends SubsystemBase {
     SmartDashboard.putNumber(getName() + "/Min Output", kMaxExtendPower);
     SmartDashboard.putNumber(getName() + "/Max Output", kMaxRetractPower);
 
-    SmartDashboard.putNumber(getName() + "/Min Vel", kAmpMinVelocity);
-    SmartDashboard.putNumber(getName() + "/Max Vel", kAmpMaxVelocity);
-    SmartDashboard.putNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
+    // SmartDashboard.putNumber(getName() + "/Min Vel", kAmpMinVelocity);
+    // SmartDashboard.putNumber(getName() + "/Max Vel", kAmpMaxVelocity);
+    // SmartDashboard.putNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
     // SmartDashboard.putNumber(getName() + "/Closed Loop Error", kAmpClosedLoopError);
 
     SmartDashboard.putNumber(getName() + "/Extend Distance", m_extendDistance);
@@ -165,14 +165,14 @@ public class AmpAssistSubsystem extends SubsystemBase {
       // var maxOutput = SmartDashboard.getNumber(getName() + "/Max Output", kMaxRetractPower);
       // m_ampPidController.setOutputRange(minOutput, maxOutput);
 
-      var minVel = SmartDashboard.getNumber(getName() + "/Min Vel", kAmpMinVelocity);
-      var maxVel = SmartDashboard.getNumber(getName() + "/Max Vel", kAmpMaxVelocity);
-      var maxAccel = SmartDashboard.getNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
+      // var minVel = SmartDashboard.getNumber(getName() + "/Min Vel", kAmpMinVelocity);
+      // var maxVel = SmartDashboard.getNumber(getName() + "/Max Vel", kAmpMaxVelocity);
+      // var maxAccel = SmartDashboard.getNumber(getName() + "/Max Accel", kAmpMaxAcceleration);
       // var loopError = SmartDashboard.getNumber(getName() + "/Closed Loop Error", kAmpClosedLoopError);
 
-      m_ampPidController.setSmartMotionMinOutputVelocity(minVel, kSmartMotionSlot);
-      m_ampPidController.setSmartMotionMaxVelocity(maxVel, kSmartMotionSlot);
-      m_ampPidController.setSmartMotionMaxAccel(maxAccel, kSmartMotionSlot);
+      // m_ampPidController.setSmartMotionMinOutputVelocity(minVel, kSmartMotionSlot);
+      // m_ampPidController.setSmartMotionMaxVelocity(maxVel, kSmartMotionSlot);
+      // m_ampPidController.setSmartMotionMaxAccel(maxAccel, kSmartMotionSlot);
       // m_ampPidController.setSmartMotionAllowedClosedLoopError(loopError, kSmartMotionSlot);
 
       SmartDashboard.putBoolean(getName() + "/Update PIDs", false);

@@ -213,13 +213,13 @@ public class RobotContainer {
           m_driveSubsystem.smartDashboardUpdate();
           smartDashboardUpdate();
       }, 2, 0.502);
-      // m_robot.addPeriodic(() -> {
-          // // m_shooterSubsystem.smartDashboardUpdate();
+      m_robot.addPeriodic(() -> {
+          m_shooterSubsystem.smartDashboardUpdate();
           // m_intakeSubsystem.smartDashboardUpdate();
           // m_AmpAssistSubsystem.smartDashboardUpdate();
           // m_climbSubsystem.smartDashboardUpdate();
-          // m_AprilTagPID.updateAprilTagSmartDashboard();
-      // }, 1, 0.303);
+          m_AprilTagPID.updateAprilTagSmartDashboard();
+      }, 1, 0.303);
       // m_robot.addPeriodic(() -> {
       //     m_driveSubsystem.checkRelativeEncoderToAbsoluteEncoder();
       // }, 0.5, 0.107);

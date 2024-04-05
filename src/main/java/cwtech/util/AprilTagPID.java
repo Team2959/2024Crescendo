@@ -14,7 +14,7 @@ import frc.robot.subsystems.Vision;
 public class AprilTagPID
 {
     private DriveSubsystem m_driveSubsystem;
-    private double kSpeedKp = 0.38;
+    private double kSpeedKp = 0.75;
     private double kRotationKp = 0.035;
     private double kSpeedKi = 0;
     private double kRotationKi = 0;
@@ -51,7 +51,7 @@ public class AprilTagPID
         if ( updatePID == true)
          {
              updatePID();
-             updatePID = false;
+            SmartDashboard.putBoolean("AprilTag/Update PIDs", false);
          }
     }   
 
@@ -82,7 +82,7 @@ public class AprilTagPID
         double targetingForwardSpeed = m_zSpeedController.calculate(tz);
         targetingForwardSpeed *= DriveSubsystem.kMaxSpeedMetersPerSecond;
         m_deltaZ = Math.abs(m_targetZPosition - tz);
-        return targetingForwardSpeed;
+        return -targetingForwardSpeed;
     }
 
     private double ySpeed()

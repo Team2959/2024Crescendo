@@ -62,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Left to CL2 Shoot"
+                  "pathName": "Red Left Close Shoot"
                 }
               },
               {
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Red Left Close Shoot"
+                  "pathName": "Red Left to CL2 Shoot"
                 }
               },
               {

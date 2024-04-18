@@ -33,7 +33,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private double m_lastRightTarget = 0;
   private double m_extendDistance = 142;
   private double m_retractDistance = 12;
-  private double m_latchDistance = 0.5;
+  private double m_latchDistance = 0.2;
 
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
@@ -128,7 +128,7 @@ public class ClimbSubsystem extends SubsystemBase {
     //   setLeftTargetPosition(leftTarget);
     //   setRightTargetPosition(rightTarget);
 
-    //   SmartDashboard.putBoolean(getName() + "/Test Go To Targets", false);
+    //   SmartDashboard.putBoolean(getName( ) + "/Test Go To Targets", false);
     // }
   }
 

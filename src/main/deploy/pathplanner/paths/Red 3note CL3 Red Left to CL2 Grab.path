@@ -3,66 +3,72 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.299162513817985,
-        "y": 5.781194660980872
+        "x": 1.33,
+        "y": 6.66
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.226897580555724,
-        "y": 5.76674167432842
+        "x": 1.2577350667377392,
+        "y": 6.6455470133475485
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.582776675392349,
-        "y": 6.535128633763529
+        "x": 5.4359198521617085,
+        "y": 6.66
       },
       "prevControl": {
-        "x": 7.296535339582213,
-        "y": 6.3130906419058554
+        "x": 4.10026615276798,
+        "y": 6.799163234275138
       },
       "nextControl": {
-        "x": 3.8690180112024857,
-        "y": 6.757166625621203
+        "x": 7.198201730929401,
+        "y": 6.476385904471273
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4628998272081055,
-        "y": 6.662826846780455
+        "x": 8.358370634451466,
+        "y": 6.329529081240632
       },
       "prevControl": {
-        "x": 1.4946287478490456,
-        "y": 6.651200706908456
+        "x": 8.390099555092407,
+        "y": 6.317902941368634
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": -14.399596472029348,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 47.701571539754944,
+    "rotation": -14.930304521613447,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Red Paths",
   "previewStartingState": {
-    "rotation": -13.1340223063963,
+    "rotation": 45.00036466580567,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

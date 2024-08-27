@@ -72,7 +72,7 @@ public class RobotContainer {
   Conditioning m_driveXConditioning = new Conditioning();
   Conditioning m_driveYConditioning = new Conditioning();
   Conditioning m_turnConditioning = new Conditioning();
-  double m_speedMultiplier = 0.3;
+  double m_speedMultiplier = 0.85;
   public double m_delayTimeForShooter = 0.75;
   // Driver Buttons
   JoystickButton m_intakeButton = new JoystickButton(m_rightJoystick, RobotMap.kRightToggleIntakeButton);
